@@ -50,7 +50,7 @@ How do I know when to release 1.0.0?
 
 ## License
 
-MIT © angular-package ([license](https://github.com/angular-package/type/blob/main/LICENSE))
+MIT © angular-package ([license](https://github.com/angular-package/property/blob/main/LICENSE))
 
 [0]: https://github.com/angular-package/change-detection#readme
 [1]: https://github.com/angular-package/prism#readme
