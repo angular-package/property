@@ -1,0 +1,34 @@
+{
+  "name": "@angular-package/property",
+  "version": "0.0.1",
+  "description": "Features to handle properties.",
+  "author": "Angular Package <angular-package@wvvw.dev> (http://wvvw.dev)",
+  "homepage": "https://github.com/angular-package/property#readme",
+  "peerDependencies": {
+    "@angular-package/type": "^3.0.1",
+    "@angular/core": "^11.0.9"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "keywords": [
+    "angular-package",
+    "@angular-package/property",
+    "Property",
+    "Properties",
+    "Bind",
+    "Wrap"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angular-package/property.git"
+  },
+  "bugs": {
+    "url": "https://github.com/angular-package/property/issues"
+  },
+  "license": "MIT"
+}
