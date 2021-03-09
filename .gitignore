@@ -131,5 +131,5 @@ fonts
 packages/change-detection
 packages/component-loader
 packages/core
-packages/property
-# packages/type
+# packages/property
+packages/type
