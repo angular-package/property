@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { guard } from '@angular-package/type';
+// Internal.
 import { SuffixName } from '../interface/suffix-name.interface';
-import { propertySet } from '../../lib/set-property.function';
 
 @Injectable()
 export class NameSuffix implements SuffixName {
@@ -26,7 +27,9 @@ export class NameSuffix implements SuffixName {
    * @returns this.
    */
   public set(suffix: string): this {
-    propertySet<NameSuffix, any, string>(this, 'suffix$$', suffix, 'string');
+    if (guard.is.string(suffix)) {
+      this.suffix$$ = suffix;
+    }
     return this;
   }
 }
