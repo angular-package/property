@@ -33,7 +33,11 @@ export class DescriptorValue<ValueType = any> {
    */
   public set(descriptor: ValueDescriptor<ValueType>, type?: Types<ValueType>): this {
     if (is.object<ValueDescriptor<ValueType>>(descriptor)) {
-      if (is.type<ValueType>(descriptor.value, type)) {
+      if (is.defined(type)) {
+        if (is.type<ValueType>(descriptor.value, type)) {
+          this.descriptor$$ = { ...this.descriptor$$, ...descriptor };
+        }
+      } else {
         this.descriptor$$ = { ...this.descriptor$$, ...descriptor };
       }
     }
