@@ -20,7 +20,7 @@ export class DescriptorAccessor<ValueType = any> {
    * Creates instance.
    * @param descriptor Accessor descriptor.
    */
-  constructor(descriptor: AccessorDescriptor<ValueType>) {
+  constructor(descriptor?: AccessorDescriptor<ValueType>) {
     this.set(descriptor);
   }
 
