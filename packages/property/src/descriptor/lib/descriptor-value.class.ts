@@ -21,7 +21,7 @@ export class DescriptorValue<ValueType = any> {
    * @param descriptor Value descriptor.
    * @param type One of the types to check descriptor value.
    */
-  constructor(descriptor: ValueDescriptor<ValueType>, type?: Types<ValueType>) {
+  constructor(descriptor?: ValueDescriptor<ValueType>, type?: Types<ValueType>) {
     this.set(descriptor, type);
   }
 
