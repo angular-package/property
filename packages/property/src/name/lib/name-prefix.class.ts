@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { propertySet } from '../../lib/set-property.function';
+import { guard } from '@angular-package/type';
+// Internal.
 import { PrefixName } from '../interface/prefix-name.interface';
 
 @Injectable()
@@ -26,7 +27,9 @@ export class NamePrefix implements PrefixName {
    * @returns this.
    */
   public set(prefix: string): this {
-    propertySet<NamePrefix, any, string>(this, 'prefix$$', prefix, 'string');
+    if (guard.is.string(prefix)) {
+      this.prefix$$ = prefix;
+    }
     return this;
   }
 }
