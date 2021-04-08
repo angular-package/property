@@ -1,35 +1,34 @@
-import { Injectable } from '@angular/core';
-import { guard } from '@angular-package/type';
+import { is } from '@angular-package/type';
 // Internal.
 import { PrefixName } from '../interface/prefix-name.interface';
 
-@Injectable()
 export class NamePrefix implements PrefixName {
   // Declare default prefix.
-  private prefix$$ = '';
+  #prefix = '';
 
   // Get prefix.
   get get(): string {
-    return this.prefix$$;
+    return this.#prefix;
   }
 
   /**
    * Create instance.
-   * @param suffix Just suffix.
+   * @param prefix Default string value as prefix.
    */
   constructor(prefix?: string ) {
     this.set(prefix);
   }
 
   /**
-   * Set prefix.
-   * @param prefix String value to be prefix.
+   * Set prefix for name.
+   * @param prefix String value.
    * @returns this.
    */
-  public set(prefix: string): this {
-    if (guard.is.string(prefix)) {
-      this.prefix$$ = prefix;
+  public set(prefix?: string): this {
+    if (is.string(prefix)) {
+      this.#prefix = prefix;
     }
     return this;
   }
 }
+
