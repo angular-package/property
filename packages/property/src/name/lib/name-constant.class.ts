@@ -1,15 +1,13 @@
-import { NameCommon } from './name-common.class';
+// External.
 import { guard } from '@angular-package/type';
+// Internal.
+import { NameCommon } from './name-common.class';
 import { ConfigName } from '../interface/config-name.interface';
-import { Injectable } from '@angular/core';
 
-@Injectable()
 export class NameConstant extends NameCommon {
-  readonly name$: string;
+  readonly $name: string;
   constructor(name: string, config?: ConfigName) {
     super(config);
-    if (guard.is.string(name)) {
-      this.name$ = name;
-    }
+    this.$name = guard.is.string(name) ? name : '';
   }
 }
