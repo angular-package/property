@@ -1,5 +1,5 @@
 // External.
-import { guard, is } from '@angular-package/type';
+import { is } from '@angular-package/type';
 // Classes.
 import { NamePrefix } from './name-prefix.class';
 import { NameSuffix } from './name-suffix.class';
@@ -10,22 +10,20 @@ import { CommonName } from '../interface/common-name.interface';
 export abstract class NameCommon implements CommonName {
 
   // Namespace for prefix.
-  private prefix$$: NamePrefix;
+  #prefix: NamePrefix;
   // Namespace for suffix.
-  private suffix$$: NameSuffix;
+  #suffix: NameSuffix;
   // Name.
-  protected name$: string;
+  protected $name = '';
 
   // Get name.
   get get(): string {
-    return this.name$;
+    return this.$name;
   }
 
   // Generate name with prefix and suffix.
   get generate(): string {
-    if (guard.is.string(this.name$)) {
-      return `${this.prefix$$.get}${this.name$}${this.suffix$$.get}`;
-    }
+    return `${this.#prefix.get}${this.$name}${this.#suffix.get}`;
   }
 
   /**
@@ -33,8 +31,8 @@ export abstract class NameCommon implements CommonName {
    * @param config Prefix and suffix for name.
    */
   constructor(config?: ConfigName) {
-    this.prefix$$ = new NamePrefix(config?.prefix);
-    this.suffix$$ = new NameSuffix(config?.suffix);
+    this.#prefix = new NamePrefix(config?.prefix);
+    this.#suffix = new NameSuffix(config?.suffix);
   }
 
   /**
@@ -42,9 +40,14 @@ export abstract class NameCommon implements CommonName {
    * @param config Prefix and suffix for generating name.
    * @returns this.
    */
-  public config(config: ConfigName): this {
-    if (guard.is.object<ConfigName>(config)) {
-      this.prefix(config?.prefix).suffix(config?.suffix);
+  public config(config?: ConfigName): this {
+    if (is.object<ConfigName>(config)) {
+      if (is.string(config.prefix)) {
+        this.prefix(config.prefix);
+      }
+      if (is.string(config.suffix)) {
+        this.suffix(config?.suffix);
+      }
     }
     return this;
   }
@@ -55,7 +58,7 @@ export abstract class NameCommon implements CommonName {
    * @returns this.
    */
   public prefix(value: string): this {
-    this.prefix$$.set(value);
+    this.#prefix.set(value);
     return this;
   }
 
@@ -65,7 +68,7 @@ export abstract class NameCommon implements CommonName {
    * @returns this.
    */
   public suffix(value: string): this {
-    this.suffix$$.set(value);
+    this.#suffix.set(value);
     return this;
   }
 }
