@@ -1,10 +1,10 @@
-import { NameCommon } from './name-common.class';
+// External.
 import { guard } from '@angular-package/type';
+// Internal.
+import { NameCommon } from './name-common.class';
 import { ConfigName } from '../interface/config-name.interface';
 import { GenericName } from '../interface/generic-name.interface';
-import { Injectable } from '@angular/core';
 
-@Injectable()
 export class NameGeneric extends NameCommon implements GenericName {
   /**
    * Creates instance.
@@ -21,7 +21,7 @@ export class NameGeneric extends NameCommon implements GenericName {
    */
   public set(name: string): this {
     if (guard.is.string(name)) {
-      this.name$ = name;
+      this.$name = name;
     }
     return this;
   }
