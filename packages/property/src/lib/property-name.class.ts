@@ -1,11 +1,13 @@
 // External.
 import { is } from '@angular-package/type';
 // Internal.
-import { ConfigName } from '../name/interface/config-name.interface';
 import { NameConstant } from '../name/lib/name-constant.class';
 import { NameGeneric } from '../name/lib/name-generic.class';
-import { NameType } from '../name/type/name-type.type';
+// Interface.
+import { ConfigName } from '../name/interface/config-name.interface';
 import { PickName } from '../name/interface/pick-name.interface';
+// Type.
+import { NameType } from '../name/type/name-type.type';
 
 export class PropertyName {
   /**
