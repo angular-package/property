@@ -47,7 +47,7 @@ export abstract class NameCommon implements CommonName {
    * Create instance.
    * @param config Prefix and suffix for name.
    */
-  constructor(name = '', config?: ConfigName) {
+  constructor(config?: ConfigName, name = '') {
     this.#name = name;
     this.#prefix = new NamePrefix(config?.prefix);
     this.#suffix = new NameSuffix(config?.suffix);
