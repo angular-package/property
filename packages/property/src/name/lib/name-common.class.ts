@@ -39,9 +39,9 @@ export abstract class NameCommon implements CommonName {
   // Name.
   #name = '';
   // Namespace for prefix.
-  #prefix: NamePrefix;
+  #prefix: NamePrefix = new NamePrefix();
   // Namespace for suffix.
-  #suffix: NameSuffix;
+  #suffix: NameSuffix = new NameSuffix();
 
   /**
    * Create instance.
@@ -49,8 +49,10 @@ export abstract class NameCommon implements CommonName {
    */
   constructor(config?: ConfigName, name = '') {
     this.#name = name;
-    this.#prefix = new NamePrefix(config?.prefix);
-    this.#suffix = new NameSuffix(config?.suffix);
+    if (is.object<ConfigName>(config)) {
+      this.#prefix.set(config.prefix);
+      this.#suffix.set(config.suffix);
+    }
   }
 
   /**
@@ -68,7 +70,7 @@ export abstract class NameCommon implements CommonName {
         this.prefix(config.prefix);
       }
       if (is.string(config.suffix)) {
-        this.suffix(config?.suffix);
+        this.suffix(config.suffix);
       }
     }
     return this;
