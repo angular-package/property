@@ -3,13 +3,13 @@ import { is } from '@angular-package/type';
 import { SuffixName } from '../interface/suffix-name.interface';
 
 export class NameSuffix implements SuffixName {
-  // Declare default suffix.
-  #suffix = '';
-
   // Get suffix.
-  get get(): string {
+  public get get(): string {
     return this.#suffix;
   }
+
+  // Declare default suffix.
+  #suffix = '';
 
   /**
    * Create instance.
