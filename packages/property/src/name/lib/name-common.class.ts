@@ -15,18 +15,18 @@ export abstract class NameCommon implements CommonName {
    */
   // Get name.
   public get get(): string {
-    return this.$name;
+    return this.#name;
   }
 
   // Generate name with prefix and suffix.
   public get generate(): string {
-    return `${this.#prefix.get}${this.$name}${this.#suffix.get}`;
+    return `${this.#prefix.get}${this.get}${this.#suffix.get}`;
   }
 
   public get pick(): PickName {
     return {
       generate: this.generate,
-      get: this.$name,
+      name: this.get,
       prefix: this.#prefix.get,
       suffix: this.#suffix.get
     };
@@ -34,15 +34,10 @@ export abstract class NameCommon implements CommonName {
 
   /**
    * Properties.
-   * @protected
-   */
-  // Name.
-  protected $name = '';
-
-  /**
-   * Properties.
    * @private
    */
+  // Name.
+  #name = '';
   // Namespace for prefix.
   #prefix: NamePrefix;
   // Namespace for suffix.
@@ -52,7 +47,8 @@ export abstract class NameCommon implements CommonName {
    * Create instance.
    * @param config Prefix and suffix for name.
    */
-  constructor(config?: ConfigName) {
+  constructor(name = '', config?: ConfigName) {
+    this.#name = name;
     this.#prefix = new NamePrefix(config?.prefix);
     this.#suffix = new NameSuffix(config?.suffix);
   }
