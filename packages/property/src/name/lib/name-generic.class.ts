@@ -24,7 +24,7 @@ export class NameGeneric extends NameCommon implements GenericName {
    */
   constructor(config?: ConfigGenericName) {
     super(config);
-    if (is.object<ConfigName>(config)){
+    if (is.object<ConfigName>(config)) {
       if (is.string(config.name)) {
         this.#name = config.name;
       }
