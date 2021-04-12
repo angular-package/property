@@ -6,25 +6,47 @@ import { NameSuffix } from './name-suffix.class';
 // Interfaces.
 import { ConfigName } from '../interface/config-name.interface';
 import { CommonName } from '../interface/common-name.interface';
+import { PickName } from '../interface/pick-name.interface';
 
 export abstract class NameCommon implements CommonName {
-
-  // Namespace for prefix.
-  #prefix: NamePrefix;
-  // Namespace for suffix.
-  #suffix: NameSuffix;
-  // Name.
-  protected $name = '';
-
+  /**
+   * Properties.
+   * @public
+   */
   // Get name.
-  get get(): string {
+  public get get(): string {
     return this.$name;
   }
 
   // Generate name with prefix and suffix.
-  get generate(): string {
+  public get generate(): string {
     return `${this.#prefix.get}${this.$name}${this.#suffix.get}`;
   }
+
+  public get pick(): PickName {
+    return {
+      generate: this.generate,
+      get: this.$name,
+      prefix: this.#prefix.get,
+      suffix: this.#suffix.get
+    };
+  }
+
+  /**
+   * Properties.
+   * @protected
+   */
+  // Name.
+  protected $name = '';
+
+  /**
+   * Properties.
+   * @private
+   */
+  // Namespace for prefix.
+  #prefix: NamePrefix;
+  // Namespace for suffix.
+  #suffix: NameSuffix;
 
   /**
    * Create instance.
@@ -35,6 +57,10 @@ export abstract class NameCommon implements CommonName {
     this.#suffix = new NameSuffix(config?.suffix);
   }
 
+  /**
+   * Methods.
+   * @public
+   */
   /**
    * Configure prefix and suffix to generate name.
    * @param config Prefix and suffix for generating name.
