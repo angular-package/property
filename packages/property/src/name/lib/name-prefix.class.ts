@@ -3,16 +3,16 @@ import { is } from '@angular-package/type';
 import { PrefixName } from '../interface/prefix-name.interface';
 
 export class NamePrefix implements PrefixName {
-  // Declare default prefix.
-  #prefix = '';
-
   // Get prefix.
-  get get(): string {
+  public get get(): string {
     return this.#prefix;
   }
 
+  // Declare default prefix.
+  #prefix = '';
+
   /**
-   * Create instance.
+   * Creates instance.
    * @param prefix Default string value as prefix.
    */
   constructor(prefix?: string ) {
@@ -31,4 +31,3 @@ export class NamePrefix implements PrefixName {
     return this;
   }
 }
-
