@@ -37,14 +37,14 @@ export abstract class NameCommon implements CommonName {
    * @private
    */
   // Name.
-  #name = '';
+  #name;
   // Namespace for prefix.
   #prefix: NamePrefix = new NamePrefix();
   // Namespace for suffix.
   #suffix: NameSuffix = new NameSuffix();
 
   /**
-   * Create instance.
+   * Creates instance.
    * @param config Prefix and suffix for name.
    */
   constructor(config?: ConfigName, name = '') {
@@ -64,14 +64,10 @@ export abstract class NameCommon implements CommonName {
    * @param config Prefix and suffix for generating name.
    * @returns this.
    */
-  public config(config?: ConfigName): this {
+  public config(config: ConfigName): this {
     if (is.object<ConfigName>(config)) {
-      if (is.string(config.prefix)) {
-        this.prefix(config.prefix);
-      }
-      if (is.string(config.suffix)) {
-        this.suffix(config.suffix);
-      }
+      this.#prefix.set(config.prefix);
+      this.#suffix.set(config.suffix);
     }
     return this;
   }
