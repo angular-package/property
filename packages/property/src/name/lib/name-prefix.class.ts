@@ -8,12 +8,12 @@ export class NamePrefix implements PrefixName {
     return this.#prefix;
   }
 
-  // Declare default prefix.
+  // Initialize default prefix.
   #prefix = '';
 
   /**
    * Creates instance.
-   * @param prefix Default string value as prefix.
+   * @param prefix Default `string` value as the prefix.
    */
   constructor(prefix?: string ) {
     this.set(prefix);
@@ -21,7 +21,7 @@ export class NamePrefix implements PrefixName {
 
   /**
    * Set prefix for name.
-   * @param prefix String value.
+   * @param prefix A `string` type value.
    * @returns this.
    */
   public set(prefix?: string): this {
