@@ -1,10 +1,10 @@
 // External.
 import { guard, is } from '@angular-package/type';
-// Internal.
+// Class.
 import { NameCommon } from './name-common.class';
-import { ConfigName } from '../interface/config-name.interface';
-import { GenericName } from '../interface/generic-name.interface';
+// Interface.
 import { ConfigGenericName } from '../interface/config-generic-name.interface';
+import { GenericName } from '../interface/generic-name.interface';
 
 export class NameGeneric extends NameCommon implements GenericName {
   /**
@@ -24,16 +24,18 @@ export class NameGeneric extends NameCommon implements GenericName {
    */
   constructor(config?: ConfigGenericName) {
     super(config);
-    if (is.object<ConfigName>(config)) {
-      if (is.string(config.name)) {
-        this.#name = config.name;
+    if (!is.undefined(config)) {
+      if (guard.is.objectKey<ConfigGenericName, 'name'>(config, 'name')) {
+        if (is.string(config.name)) {
+          this.#name = config.name;
+        }
       }
     }
   }
 
   /**
-   * Set name to generate with prefix and suffix.
-   * @param name String value to generate name.
+   * Set the name to generate with prefix and suffix.
+   * @param name A `string` type value as the `name`.
    * @returns this.
    */
   public set(name: string): this {
