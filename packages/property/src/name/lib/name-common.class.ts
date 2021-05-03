@@ -18,11 +18,12 @@ export abstract class NameCommon implements CommonName {
     return this.#name;
   }
 
-  // Generate name with prefix and suffix.
+  // Generate a name with prefix and suffix.
   public get generate(): string {
     return `${this.#prefix.get}${this.get}${this.#suffix.get}`;
   }
 
+  // Pick all property from the name.
   public get pick(): PickName {
     return {
       generate: this.generate,
@@ -38,14 +39,14 @@ export abstract class NameCommon implements CommonName {
    */
   // Name.
   #name;
-  // Namespace for prefix.
+  // Private namespace for prefix.
   #prefix: NamePrefix = new NamePrefix();
-  // Namespace for suffix.
+  // Private namespace for suffix.
   #suffix: NameSuffix = new NameSuffix();
 
   /**
    * Creates instance.
-   * @param config Prefix and suffix for name.
+   * @param config An optional `ConfigName` type `prefix` or `suffix` for the name.
    */
   constructor(config?: ConfigName, name = '') {
     this.#name = name;
@@ -60,8 +61,8 @@ export abstract class NameCommon implements CommonName {
    * @public
    */
   /**
-   * Configure prefix and suffix to generate name.
-   * @param config Prefix and suffix for generating name.
+   * Set prefix or suffix for the name.
+   * @param config A `ConfigName` type value.
    * @returns this.
    */
   public config(config: ConfigName): this {
@@ -73,22 +74,22 @@ export abstract class NameCommon implements CommonName {
   }
 
   /**
-   * Set prefix to generate name.
-   * @param value Prefix for name.
+   * Set prefix for the name.
+   * @param prefix A `string` type value as prefix.
    * @returns this.
    */
-  public prefix(value: string): this {
-    this.#prefix.set(value);
+  public prefix(prefix: string): this {
+    this.#prefix.set(prefix);
     return this;
   }
 
   /**
-   * Set suffix to generate name.
-   * @param value Suffix for name.
+   * Set suffix for the name.
+   * @param suffix A `string` type value as suffix.
    * @returns this.
    */
-  public suffix(value: string): this {
-    this.#suffix.set(value);
+  public suffix(suffix: string): this {
+    this.#suffix.set(suffix);
     return this;
   }
 }
