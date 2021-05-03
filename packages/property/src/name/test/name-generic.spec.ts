@@ -7,15 +7,12 @@ describe(NameGeneric.name, () => {
   const newPrefix = '___';
   const newSuffix = '$$$';
   const suffix = '__';
+  // Define.
   let nameGeneric: NameGeneric;
-  beforeEach(() => {
-    nameGeneric = new NameGeneric({
-      name,
-      prefix,
-      suffix
-    });
-  });
+  beforeEach(() => nameGeneric = new NameGeneric({ name, prefix, suffix }));
+  // Defined.
   it(`is DEFINED`, () => expect(nameGeneric).toBeDefined());
+  // Test.
   describe('should have' , () => {
     it(`name equal to ${name}.`, () => {
       expect(nameGeneric.get).toEqual(name);
@@ -23,8 +20,7 @@ describe(NameGeneric.name, () => {
       expect(nameGeneric.pick.name).toEqual(nameGeneric.get);
     });
     it(`name changed to ${newName}.`, () => {
-      nameGeneric.set(newName);
-      expect(nameGeneric.get).toEqual(newName);
+      expect(nameGeneric.set(newName).get).toEqual(newName);
       expect(nameGeneric.pick.name).toEqual(newName);
       expect(nameGeneric.pick.name).toEqual(nameGeneric.get);
     });
@@ -36,20 +32,14 @@ describe(NameGeneric.name, () => {
       expect(nameGeneric.generate).toEqual(nameGeneric.pick.generate);
     });
     it(`prefix changed to ${newPrefix} by prefix() and config() method`, () => {
-      nameGeneric.prefix(newPrefix);
-      expect(nameGeneric.pick.prefix).toEqual(newPrefix);
-      nameGeneric.prefix(prefix);
-      expect(nameGeneric.pick.prefix).toEqual(prefix);
-      nameGeneric.config({prefix: newPrefix});
-      expect(nameGeneric.pick.prefix).toEqual(newPrefix);
+      expect(nameGeneric.prefix(newPrefix).pick.prefix).toEqual(newPrefix);
+      expect(nameGeneric.prefix(prefix).pick.prefix).toEqual(prefix);
+      expect(nameGeneric.config({prefix: newPrefix}).pick.prefix).toEqual(newPrefix);
     });
     it(`suffix changed to ${newSuffix} by suffix() and config() method`, () => {
-      nameGeneric.suffix(newSuffix);
-      expect(nameGeneric.pick.suffix).toEqual(newSuffix);
-      nameGeneric.suffix(suffix);
-      expect(nameGeneric.pick.prefix).toEqual(prefix);
-      nameGeneric.config({suffix: newSuffix});
-      expect(nameGeneric.pick.suffix).toEqual(newSuffix);
+      expect(nameGeneric.suffix(newSuffix).pick.suffix).toEqual(newSuffix);
+      expect(nameGeneric.suffix(suffix).pick.prefix).toEqual(prefix);
+      expect(nameGeneric.config({suffix: newSuffix}).pick.suffix).toEqual(newSuffix);
     });
   });
 });
