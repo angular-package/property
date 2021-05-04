@@ -1,4 +1,4 @@
 export interface CommonDescriptor {
-  configurable?: boolean;
-  enumerable?: boolean;
+  configurable: boolean;
+  enumerable: boolean;
 }
