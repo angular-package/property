@@ -1,5 +1,5 @@
 import { CommonDescriptor } from './common-descriptor.interface';
-export interface ValueDescriptor<Type> extends CommonDescriptor {
-  writable?: boolean;
-  value?: Type;
+export interface ValueDescriptor<ValueType> extends CommonDescriptor {
+  writable: boolean;
+  value: ValueType;
 }
