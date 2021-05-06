@@ -1,9 +1,7 @@
 // Object.
 import { is } from '@angular-package/type';
-// Interface.
-import { SuffixName } from '../interface/suffix-name.interface';
 
-export class NameSuffix implements SuffixName {
+export class NameSuffix {
   // Get suffix.
   public get get(): string {
     return this.#suffix;
@@ -14,14 +12,14 @@ export class NameSuffix implements SuffixName {
 
   /**
    * Create instance.
-   * @param suffix Default `string` value as the suffix.
+   * @param suffix Default `string` value as suffix.
    */
   constructor(suffix?: string) {
     this.set(suffix);
   }
 
   /**
-   * Set suffix for name.
+   * Set suffix for the name.
    * @param suffix A `string` type value.
    * @returns this.
    */
