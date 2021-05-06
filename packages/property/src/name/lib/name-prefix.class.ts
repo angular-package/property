@@ -1,8 +1,7 @@
+// Object,
 import { is } from '@angular-package/type';
-// Internal.
-import { PrefixName } from '../interface/prefix-name.interface';
 
-export class NamePrefix implements PrefixName {
+export class NamePrefix {
   // Get prefix.
   public get get(): string {
     return this.#prefix;
@@ -13,14 +12,14 @@ export class NamePrefix implements PrefixName {
 
   /**
    * Creates instance.
-   * @param prefix Default `string` value as the prefix.
+   * @param prefix Default `string` value as prefix.
    */
   constructor(prefix?: string ) {
     this.set(prefix);
   }
 
   /**
-   * Set prefix for name.
+   * Set prefix for the name.
    * @param prefix A `string` type value.
    * @returns this.
    */

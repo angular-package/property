@@ -1,4 +1,4 @@
 import { ConfigName } from './config-name.interface';
-export interface ConfigGenericName extends ConfigName {
+export interface GenericConfigName extends ConfigName {
   name?: string;
 }

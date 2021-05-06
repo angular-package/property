@@ -4,7 +4,7 @@ import { is } from '@angular-package/type';
 import { NamePrefix } from './name-prefix.class';
 import { NameSuffix } from './name-suffix.class';
 // Interfaces.
-import { NameConfig } from '../interface/name-config.interface';
+import { ConfigName } from '../interface/config-name.interface';
 import { PickName } from '../interface/pick-name.interface';
 
 export abstract class CommonNames {
@@ -39,9 +39,9 @@ export abstract class CommonNames {
    * Creates instance.
    * @param config An optional `ConfigName` type `prefix` or `suffix` for the name.
    */
-  constructor(config?: NameConfig, name = '') {
+  constructor(config?: ConfigName, name = '') {
     this.#name = name;
-    if (is.object<NameConfig>(config)) {
+    if (is.object<ConfigName>(config)) {
       this.#prefix.set(config.prefix);
       this.#suffix.set(config.suffix);
     }
@@ -52,8 +52,8 @@ export abstract class CommonNames {
    * @param config A `ConfigName` type value.
    * @returns this.
    */
-  public config(config: NameConfig): this {
-    if (is.object<NameConfig>(config)) {
+  public config(config: ConfigName): this {
+    if (is.object<ConfigName>(config)) {
       this.#prefix.set(config.prefix);
       this.#suffix.set(config.suffix);
     }
