@@ -4,15 +4,10 @@ import { is } from '@angular-package/type';
 import { NamePrefix } from './name-prefix.class';
 import { NameSuffix } from './name-suffix.class';
 // Interfaces.
-import { ConfigName } from '../interface/config-name.interface';
-import { CommonName } from '../interface/common-name.interface';
+import { NameConfig } from '../interface/name-config.interface';
 import { PickName } from '../interface/pick-name.interface';
 
-export abstract class NameCommon implements CommonName {
-  /**
-   * Properties.
-   * @public
-   */
+export abstract class CommonNames {
   // Get name.
   public get get(): string {
     return this.#name;
@@ -33,10 +28,6 @@ export abstract class NameCommon implements CommonName {
     };
   }
 
-  /**
-   * Properties.
-   * @private
-   */
   // Name.
   #name;
   // Private namespace for prefix.
@@ -48,25 +39,21 @@ export abstract class NameCommon implements CommonName {
    * Creates instance.
    * @param config An optional `ConfigName` type `prefix` or `suffix` for the name.
    */
-  constructor(config?: ConfigName, name = '') {
+  constructor(config?: NameConfig, name = '') {
     this.#name = name;
-    if (is.object<ConfigName>(config)) {
+    if (is.object<NameConfig>(config)) {
       this.#prefix.set(config.prefix);
       this.#suffix.set(config.suffix);
     }
   }
 
   /**
-   * Methods.
-   * @public
-   */
-  /**
    * Set prefix or suffix for the name.
    * @param config A `ConfigName` type value.
    * @returns this.
    */
-  public config(config: ConfigName): this {
-    if (is.object<ConfigName>(config)) {
+  public config(config: NameConfig): this {
+    if (is.object<NameConfig>(config)) {
       this.#prefix.set(config.prefix);
       this.#suffix.set(config.suffix);
     }
