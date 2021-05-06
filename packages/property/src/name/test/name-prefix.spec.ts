@@ -1,6 +1,6 @@
 import { NamePrefix } from '../lib/name-prefix.class';
 
-describe('NamePrefix', () => {
+describe(NamePrefix.name, () => {
   let namePrefix: NamePrefix;
   beforeEach(() => namePrefix = new NamePrefix());
 

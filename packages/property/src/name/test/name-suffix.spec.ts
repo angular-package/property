@@ -1,6 +1,6 @@
 import { NameSuffix } from '../lib/name-suffix.class';
 
-describe('NameSuffix', () => {
+describe(NameSuffix.name, () => {
   let nameSuffix: NameSuffix;
   beforeEach(() => nameSuffix = new NameSuffix());
 
