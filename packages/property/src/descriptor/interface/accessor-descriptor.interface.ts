@@ -1,5 +1,8 @@
 import { CommonDescriptor } from './common-descriptor.interface';
-export interface AccessorDescriptor<ValueType> extends CommonDescriptor {
-  get: () => ValueType;
-  set: (value: ValueType) => void;
+/**
+ * Accessor descriptor with `get` and `set` keys.
+ */
+export interface AccessorDescriptor<Value> extends CommonDescriptor {
+  get: (() => Value) | undefined;
+  set: ((value: Value) => void) | undefined;
 }
