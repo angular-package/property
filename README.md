@@ -39,7 +39,7 @@ import { GetterCallback, SetterCallback } from '@angular-package/property';
 
 * [Installation](#installation)
 * [Descriptor](#descriptor)
-  * [Accessor](#accessor-descriptors)
+  * [Accessor](#accessordescriptors)
   * [Data](#data-descriptors)
   * [Interface](#descriptor)
 * [Git](#git)
@@ -61,7 +61,7 @@ npm i --save @angular-package/property
 
 ### Descriptor
 
-#### Accessor
+#### AccessorDescriptors
 
 Class to strictly define accessor descriptor and store it privately.
 
@@ -70,22 +70,39 @@ import { AccessorDescriptors } from '@angular-package/type';
 ```
 
 ```typescript
-export class AccessorDescriptors<Value, Obj = any> {
-  #pick: (keyof AccessorThisDescriptor<Value, Obj>)[] = ['configurable', 'enumerable', 'get', 'set'];
-  #descriptor: AccessorThisDescriptor<Value, Obj> = ACCESSOR_DESCRIPTOR;
+class AccessorDescriptors<Value, Obj = any> { ... }
+```
 
-  get get(): AccessorThisDescriptor<Value, Obj> {
-    return this.#descriptor;
-  }
+----
 
+##### AccessorDescriptors constructor
+
+Initially set accessor descriptor.
+
+```typescript
+  ...
   constructor(descriptor?: AccessorThisDescriptor<Value, Obj>) {
     if (is.object<AccessorThisDescriptor<Value, Obj>>(descriptor)) {
       this.set(descriptor);
     }
   }
+  ...
+```
 
-  public set(descriptor: AccessorThisDescriptor<Value, Obj>): this {
-    if (guard.is.object(descriptor)) {
+| Parameter   | Type                                 | Description          |
+| :---------- | :----------------------------------: | :------------------- |
+| descriptor? | `AccessorThisDescriptor<Value, Obj>` | An optional [`AccessorDescriptor`][accessor-descriptor] type value to initially set |
+
+----
+
+##### AccessorDescriptors set method
+
+Strictly set with default values and store privately accessor descriptor that contains `get` and `set` properties.
+
+```typescript
+  ...
+  public set(descriptor: AccessorThisDescriptor<Value, Obj>, callback?: ResultCallback): this {
+    if (guard.is.object(descriptor, callback)) {
         this.#descriptor = {
           ...this.#descriptor,
           ...pickProperty(descriptor, this.#pick),
@@ -93,16 +110,7 @@ export class AccessorDescriptors<Value, Obj = any> {
     }
     return this;
   }
-}
-
-```
-
-##### Descriptor accessor set method
-
-Set accessor descriptor that contains `get` and `set` properties.
-
-```typescript
-public set(descriptor: AccessorThisDescriptor<Value, Obj>): this;
+  ...
 ```
 
 | Parameter  | Type                                                            | Description          |
@@ -110,18 +118,66 @@ public set(descriptor: AccessorThisDescriptor<Value, Obj>): this;
 | descriptor | `AccessorThisDescriptor<Value, Obj>`                            | A [`AccessorDescriptor`][accessor-descriptor] type value |
 | callback   | [`ResultCallback`][resultcallback]=[`this.callback`][callback]  | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` |
 
-The **return value** is a `boolean` indicating whether or not the `value` is an [`Array`][array].
+The **return value** is a [`AccessorDescriptors`](#accessordescriptors) instance.
+
+----
+
+##### AccessorDescriptors get getter
+
+Initially set accessor descriptor.
 
 ```typescript
-// Example usage
-import { isArray } from '@angular-package/type';
+  ...
+  get get(): AccessorThisDescriptor<Value, Obj> {
+    return this.#descriptor;
+  }
+  ...
+```
 
-const ARRAY_NUMBER = [1, 2, 3];
-const ARRAY_STRING = ['a', 'b', 'c'];
+The **return value** is [`AccessorThisDescriptor`](#accessorthisdescriptor) defined by [`set`](#accessordescriptors-set-method) method.
 
-isArray(ARRAY_NUMBER); // true
-isArray<string>(ARRAY_STRING); // true
+----
 
+## Interface
+
+### AccessorDescriptor
+
+Accessor descriptor with `get` and `set` attributes with the value type.
+
+```typescript
+interface AccessorDescriptor<Value> extends CommonDescriptor {
+  get: (() => Value) | undefined;
+  set: ((value: Value) => void) | undefined;
+}
+```
+
+### CommonDescriptor
+
+Common attributes for accessor and data descriptor.
+
+```typescript
+interface CommonDescriptor extends Pick<PropertyDescriptor, 'configurable' | 'enumerable'> {}
+```
+
+### DataDescriptor
+
+```typescript
+interface DataDescriptor<Value> extends CommonDescriptor {
+  writable: boolean;
+  value: Value;
+}
+```
+
+----
+
+## Type
+
+### AccessorThisDescriptor
+
+Accessor descriptor structure with the value and object type.
+
+```typescript
+type AccessorThisDescriptor<Value, Obj = any> = AccessorDescriptor<Value> & ThisType<Obj>;
 ```
 
 ----
