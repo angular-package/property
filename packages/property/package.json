@@ -2,10 +2,10 @@
   "name": "@angular-package/property",
   "version": "0.0.1",
   "description": "Features to handle properties.",
-  "author": "Angular Package <angular-package@wvvw.dev> (http://wvvw.dev)",
+  "author": "Angular Package <angular-package@wvvw.dev> (https://wvvw.dev)",
   "homepage": "https://github.com/angular-package/property#readme",
   "peerDependencies": {
-    "@angular-package/type": "^3.0.1",
+    "@angular-package/type": "^4.0.1",
     "@angular/core": "^11.0.9"
   },
   "dependencies": {
