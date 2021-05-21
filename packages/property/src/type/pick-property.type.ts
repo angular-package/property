@@ -1,1 +1,1 @@
-export type PickProperty = <Obj>(obj: any, keys: Array<string>) => Obj;
+export type PickProperty = <Obj extends object>(obj: Obj, keys: (keyof Obj)[]) => {[P in keyof Obj]: Obj[P]};
