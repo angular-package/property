@@ -63,7 +63,7 @@ npm i --save @angular-package/property
 
 #### AccessorDescriptors
 
-Class to strictly define accessor descriptor and store it privately.
+Class to strictly define and store privately accessor descriptor.
 
 ```typescript
 import { AccessorDescriptors } from '@angular-package/type';
@@ -89,9 +89,9 @@ Initially set accessor descriptor.
   ...
 ```
 
-| Parameter   | Type                                 | Description          |
-| :---------- | :----------------------------------: | :------------------- |
-| descriptor? | `AccessorThisDescriptor<Value, Obj>` | An optional [`AccessorDescriptor`][accessor-descriptor] type value to initially set |
+| Parameter   | Type                                                            | Description          |
+| :---------- | :-------------------------------------------------------------: | :------------------- |
+| descriptor? | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | An optional [`AccessorDescriptor`][accessor-descriptor] type value to initially set |
 
 ----
 
@@ -115,7 +115,7 @@ Strictly set with default values and store privately accessor descriptor that co
 
 | Parameter  | Type                                                            | Description          |
 | :--------- | :-------------------------------------------------------------: | :------------------- |
-| descriptor | `AccessorThisDescriptor<Value, Obj>`                            | A [`AccessorDescriptor`][accessor-descriptor] type value |
+| descriptor | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | A [`AccessorDescriptor`][accessor-descriptor] type value |
 | callback   | [`ResultCallback`][resultcallback]=[`this.callback`][callback]  | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` |
 
 The **return value** is a [`AccessorDescriptors`](#accessordescriptors) instance.
@@ -142,7 +142,7 @@ The **return value** is [`AccessorThisDescriptor`](#accessorthisdescriptor) defi
 
 ### AccessorDescriptor
 
-Accessor descriptor with `get` and `set` attributes with the value type.
+Accessor descriptor with its unique `get` and `set` attributes and theirs generic `Value` type.
 
 ```typescript
 interface AccessorDescriptor<Value> extends CommonDescriptor {
@@ -153,13 +153,15 @@ interface AccessorDescriptor<Value> extends CommonDescriptor {
 
 ### CommonDescriptor
 
-Common attributes for accessor and data descriptor.
+Common `configurable` and `enumerable` of a `boolean` type attributes picked from default `PropertyDescriptor` for accessor and data descriptor.
 
 ```typescript
 interface CommonDescriptor extends Pick<PropertyDescriptor, 'configurable' | 'enumerable'> {}
 ```
 
 ### DataDescriptor
+
+Data descriptor with its unique `writable`, `value` attributes, and a generic `Value` type for the `value`.
 
 ```typescript
 interface DataDescriptor<Value> extends CommonDescriptor {
@@ -174,7 +176,7 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 
 ### AccessorThisDescriptor
 
-Accessor descriptor structure with the value and object type.
+Accessor descriptor structure with the `Value`, `Obj` type extended with `ThisType<Obj>` object to use `this` properly in its unique attributes.
 
 ```typescript
 type AccessorThisDescriptor<Value, Obj = any> = AccessorDescriptor<Value> & ThisType<Obj>;
@@ -228,6 +230,7 @@ MIT © angular-package ([license][license])
 
 <!-- Type -->
 [resultcallback]: #resultcallback
+[accessor-descriptor]: #accessordescriptor
 
 <!-- Package: property -->
 [property-npm-svg]: https://badge.fury.io/js/%40angular-package%property.svg

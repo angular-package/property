@@ -38,6 +38,10 @@ import { GetterCallback, SetterCallback } from '@angular-package/property';
 ----
 
 * [Installation](#installation)
+* [Descriptor](#descriptor)
+  * [Accessor](#accessordescriptors)
+  * [Data](#data-descriptors)
+  * [Interface](#descriptor)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -51,6 +55,131 @@ Install `@angular-package/property` package with command:
 
 ```bash
 npm i --save @angular-package/property
+```
+
+----
+
+### Descriptor
+
+#### AccessorDescriptors
+
+Class to strictly define and store privately accessor descriptor.
+
+```typescript
+import { AccessorDescriptors } from '@angular-package/type';
+```
+
+```typescript
+class AccessorDescriptors<Value, Obj = any> { ... }
+```
+
+----
+
+##### AccessorDescriptors constructor
+
+Initially set accessor descriptor.
+
+```typescript
+  ...
+  constructor(descriptor?: AccessorThisDescriptor<Value, Obj>) {
+    if (is.object<AccessorThisDescriptor<Value, Obj>>(descriptor)) {
+      this.set(descriptor);
+    }
+  }
+  ...
+```
+
+| Parameter   | Type                                                            | Description          |
+| :---------- | :-------------------------------------------------------------: | :------------------- |
+| descriptor? | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | An optional [`AccessorDescriptor`][accessor-descriptor] type value to initially set |
+
+----
+
+##### AccessorDescriptors set method
+
+Strictly set with default values and store privately accessor descriptor that contains `get` and `set` properties.
+
+```typescript
+  ...
+  public set(descriptor: AccessorThisDescriptor<Value, Obj>, callback?: ResultCallback): this {
+    if (guard.is.object(descriptor, callback)) {
+        this.#descriptor = {
+          ...this.#descriptor,
+          ...pickProperty(descriptor, this.#pick),
+        };
+    }
+    return this;
+  }
+  ...
+```
+
+| Parameter  | Type                                                            | Description          |
+| :--------- | :-------------------------------------------------------------: | :------------------- |
+| descriptor | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | A [`AccessorDescriptor`][accessor-descriptor] type value |
+| callback   | [`ResultCallback`][resultcallback]=[`this.callback`][callback]  | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` |
+
+The **return value** is a [`AccessorDescriptors`](#accessordescriptors) instance.
+
+----
+
+##### AccessorDescriptors get getter
+
+Initially set accessor descriptor.
+
+```typescript
+  ...
+  get get(): AccessorThisDescriptor<Value, Obj> {
+    return this.#descriptor;
+  }
+  ...
+```
+
+The **return value** is [`AccessorThisDescriptor`](#accessorthisdescriptor) defined by [`set`](#accessordescriptors-set-method) method.
+
+----
+
+## Interface
+
+### AccessorDescriptor
+
+Accessor descriptor with its unique `get` and `set` attributes and theirs generic `Value` type.
+
+```typescript
+interface AccessorDescriptor<Value> extends CommonDescriptor {
+  get: (() => Value) | undefined;
+  set: ((value: Value) => void) | undefined;
+}
+```
+
+### CommonDescriptor
+
+Common `configurable` and `enumerable` of a `boolean` type attributes picked from default `PropertyDescriptor` for accessor and data descriptor.
+
+```typescript
+interface CommonDescriptor extends Pick<PropertyDescriptor, 'configurable' | 'enumerable'> {}
+```
+
+### DataDescriptor
+
+Data descriptor with its unique `writable`, `value` attributes, and a generic `Value` type for the `value`.
+
+```typescript
+interface DataDescriptor<Value> extends CommonDescriptor {
+  writable: boolean;
+  value: Value;
+}
+```
+
+----
+
+## Type
+
+### AccessorThisDescriptor
+
+Accessor descriptor structure with the `Value`, `Obj` type extended with `ThisType<Obj>` object to use `this` properly in its unique attributes.
+
+```typescript
+type AccessorThisDescriptor<Value, Obj = any> = AccessorDescriptor<Value> & ThisType<Obj>;
 ```
 
 ----
@@ -99,6 +228,10 @@ MIT © angular-package ([license][license])
 [license]: https://github.com/angular-package/property/blob/main/LICENSE
 [stars]: https://github.com/angular-package/property/stargazers
 
+<!-- Type -->
+[resultcallback]: #resultcallback
+[accessor-descriptor]: #accessordescriptor
+
 <!-- Package: property -->
 [property-npm-svg]: https://badge.fury.io/js/%40angular-package%property.svg
 [property-npm-badge]: https://badge.fury.io/js/%40angular-package%property
@@ -126,3 +259,30 @@ MIT © angular-package ([license][license])
 [git-commit-angular]: https://gist.github.com/stephenparish/9941e89d80e2bc58a153
 [git-commit-karma]: http://karma-runner.github.io/0.10/dev/git-commit-msg.html
 [git-commit-conventional]: https://www.conventionalcommits.org/en/v1.0.0/
+
+<!-- Javascript  -->
+[array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[classes]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+
+[bigint]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+[bigintconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/BigInt
+
+[boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[booleanconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean/Boolean
+
+[function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+
+[hasownproperty]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
+
+[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number
+[numberconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/Number
+
+[object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
+[primitive]: https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+
+[string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
+[stringconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/String
+
+[symbol]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+[symbolconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/Symbol
