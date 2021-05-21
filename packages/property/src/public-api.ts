@@ -2,11 +2,24 @@
  * Public API Surface of property
  */
 
-// Main features.
-export { getProperty, PropertyClass, setProperty, StoreOriginalClass } from './lib';
-
-// Bind decorators.
-export { BindParam, BindProperties } from './bind';
-
-// Types.
-export { GetterCallback, SetterCallback } from './type';
+/**
+ * Descriptor
+ */
+// Class.
+export {
+  AccessorDescriptors,
+  DataDescriptors,
+  Descriptor,
+  GetOwnDescriptor
+} from './descriptor';
+// Interface.
+export {
+  AccessorDescriptor,
+  DataDescriptor,
+} from './descriptor/interface';
+// Type.
+export {
+  AnyDescriptor,
+  AccessorThisDescriptor,
+  ObjectPropertyDescriptors
+} from './descriptor/type';
