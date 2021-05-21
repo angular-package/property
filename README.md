@@ -38,6 +38,10 @@ import { GetterCallback, SetterCallback } from '@angular-package/property';
 ----
 
 * [Installation](#installation)
+* [Descriptor](#descriptor)
+  * [Accessor](#accessor-descriptors)
+  * [Data](#data-descriptors)
+  * [Interface](#descriptor)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -51,6 +55,73 @@ Install `@angular-package/property` package with command:
 
 ```bash
 npm i --save @angular-package/property
+```
+
+----
+
+### Descriptor
+
+#### Accessor
+
+Class to strictly define accessor descriptor and store it privately.
+
+```typescript
+import { AccessorDescriptors } from '@angular-package/type';
+```
+
+```typescript
+export class AccessorDescriptors<Value, Obj = any> {
+  #pick: (keyof AccessorThisDescriptor<Value, Obj>)[] = ['configurable', 'enumerable', 'get', 'set'];
+  #descriptor: AccessorThisDescriptor<Value, Obj> = ACCESSOR_DESCRIPTOR;
+
+  get get(): AccessorThisDescriptor<Value, Obj> {
+    return this.#descriptor;
+  }
+
+  constructor(descriptor?: AccessorThisDescriptor<Value, Obj>) {
+    if (is.object<AccessorThisDescriptor<Value, Obj>>(descriptor)) {
+      this.set(descriptor);
+    }
+  }
+
+  public set(descriptor: AccessorThisDescriptor<Value, Obj>): this {
+    if (guard.is.object(descriptor)) {
+        this.#descriptor = {
+          ...this.#descriptor,
+          ...pickProperty(descriptor, this.#pick),
+        };
+    }
+    return this;
+  }
+}
+
+```
+
+##### Descriptor accessor set method
+
+Set accessor descriptor that contains `get` and `set` properties.
+
+```typescript
+public set(descriptor: AccessorThisDescriptor<Value, Obj>): this;
+```
+
+| Parameter  | Type                                                            | Description          |
+| :--------- | :-------------------------------------------------------------: | :------------------- |
+| descriptor | `AccessorThisDescriptor<Value, Obj>`                            | A [`AccessorDescriptor`][accessor-descriptor] type value |
+| callback   | [`ResultCallback`][resultcallback]=[`this.callback`][callback]  | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` |
+
+The **return value** is a `boolean` indicating whether or not the `value` is an [`Array`][array].
+
+```typescript
+// Example usage
+import { isArray } from '@angular-package/type';
+
+const ARRAY_NUMBER = [1, 2, 3];
+const ARRAY_STRING = ['a', 'b', 'c'];
+
+isArray(ARRAY_NUMBER); // true
+isArray<string>(ARRAY_STRING); // true
+
 ```
 
 ----
@@ -99,6 +170,9 @@ MIT © angular-package ([license][license])
 [license]: https://github.com/angular-package/property/blob/main/LICENSE
 [stars]: https://github.com/angular-package/property/stargazers
 
+<!-- Type -->
+[resultcallback]: #resultcallback
+
 <!-- Package: property -->
 [property-npm-svg]: https://badge.fury.io/js/%40angular-package%property.svg
 [property-npm-badge]: https://badge.fury.io/js/%40angular-package%property
@@ -126,3 +200,30 @@ MIT © angular-package ([license][license])
 [git-commit-angular]: https://gist.github.com/stephenparish/9941e89d80e2bc58a153
 [git-commit-karma]: http://karma-runner.github.io/0.10/dev/git-commit-msg.html
 [git-commit-conventional]: https://www.conventionalcommits.org/en/v1.0.0/
+
+<!-- Javascript  -->
+[array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[classes]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+
+[bigint]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+[bigintconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/BigInt
+
+[boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[booleanconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean/Boolean
+
+[function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+
+[hasownproperty]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
+
+[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number
+[numberconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/Number
+
+[object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
+[primitive]: https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+
+[string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
+[stringconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/String
+
+[symbol]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol
+[symbolconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/Symbol
