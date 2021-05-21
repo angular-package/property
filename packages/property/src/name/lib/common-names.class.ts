@@ -1,5 +1,5 @@
 // External.
-import { is } from '@angular-package/type';
+import { is, ResultCallback, guard } from '@angular-package/type';
 // Classes.
 import { NamePrefix } from './name-prefix.class';
 import { NameSuffix } from './name-suffix.class';
@@ -29,54 +29,48 @@ export abstract class CommonNames {
   }
 
   // Name.
-  #name;
+  #name = '';
   // Private namespace for prefix.
   #prefix: NamePrefix = new NamePrefix();
   // Private namespace for suffix.
   #suffix: NameSuffix = new NameSuffix();
 
   /**
-   * Creates instance.
-   * @param config An optional `ConfigName` type `prefix` or `suffix` for the name.
+   * Default method to create an instance.
+   * @param configName An optional `ConfigName` type value to set initially prefix and suffix.
+   * @param name A `string` type value for the readonly name.
    */
-  constructor(config?: ConfigName, name = '') {
+  constructor(configName?: ConfigName, name = '') {
     this.#name = name;
-    if (is.object<ConfigName>(config)) {
-      this.#prefix.set(config.prefix);
-      this.#suffix.set(config.suffix);
+    if (is.object<ConfigName>(configName)) {
+      if (is.string(configName.prefix)) {
+        this.#prefix.set(configName.prefix);
+      }
+      if (is.string(configName.suffix)) {
+        this.#suffix.set(configName.suffix);
+      }
     }
-  }
-
-  /**
-   * Set prefix or suffix for the name.
-   * @param config A `ConfigName` type value.
-   * @returns this.
-   */
-  public config(config: ConfigName): this {
-    if (is.object<ConfigName>(config)) {
-      this.#prefix.set(config.prefix);
-      this.#suffix.set(config.suffix);
-    }
-    return this;
   }
 
   /**
    * Set prefix for the name.
    * @param prefix A `string` type value as prefix.
+   * @param callback A `ResultCallback` function to handle the result of the check if the prefix is a `string`.
    * @returns this.
    */
-  public prefix(prefix: string): this {
-    this.#prefix.set(prefix);
+  public prefix(prefix: string, callback?: ResultCallback): this {
+    this.#prefix.set(prefix, callback);
     return this;
   }
 
   /**
    * Set suffix for the name.
    * @param suffix A `string` type value as suffix.
+   * @param callback A `ResultCallback` function to handle the result of the check if the suffix is a `string`.
    * @returns this.
    */
-  public suffix(suffix: string): this {
-    this.#suffix.set(suffix);
+  public suffix(suffix: string, callback?: ResultCallback): this {
+    this.#suffix.set(suffix, callback);
     return this;
   }
 }
