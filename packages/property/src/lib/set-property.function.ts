@@ -9,10 +9,7 @@ import { SetProperty } from '../type/set-property.type';
  * @param value 
  */
 export const setProperty: SetProperty =
-  <Obj extends object, Key extends keyof Obj>(object: Obj, key: Key, value: Obj[Key]): Obj[Key] | undefined => {
-  if (guard.is.objectKey<Obj, Key>(object, key)) {
-    Object.assign<Obj, { [index: string]: Obj[Key] }>(object, { [key]: value });
-    return object[key];
-  }
-  return;
+  <Obj extends object, Key extends keyof Obj>(object: Obj, key: Key, value: Obj[Key], ): Obj[Key] => {
+  object = { ...object, ...{ [key]: value }};
+  return object[key];
 };
