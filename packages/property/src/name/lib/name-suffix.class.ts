@@ -37,8 +37,8 @@ export class NameSuffix {
   /**
    * Set suffix for the name.
    * @param suffix A `string` type value.
-   * @param callback A `ResultCallback` function to handle the result of the check if the suffix is a `string`.
-   * @returns this.
+   * @param callback A `ResultCallback` function to handle the result of the check whether or not the suffix is a `string`.
+   * @returns A `NameSuffix` instance.
    */
   public set(suffix: string, callback: ResultCallback = this.callback): this {
     if (guard.is.string(suffix, callback)) {

@@ -36,8 +36,8 @@ export class NamePrefix {
   /**
    * Set prefix for the name.
    * @param prefix A `string` type value.
-   * @param callback A `ResultCallback` function to handle the result of the check if the prefix is a `string`.
-   * @returns this.
+   * @param callback A `ResultCallback` function to handle the result of the check whether or not the prefix is a `string`.
+   * @returns A `NamePrefix` instance.
    */
   public set(prefix: string, callback: ResultCallback = this.callback): this {
     if (guard.is.string(prefix, callback)) {
