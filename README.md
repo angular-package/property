@@ -95,6 +95,36 @@ Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance
 
 ----
 
+##### AccessorDescriptors callback
+
+Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance and an optionally set accessor descriptor.
+
+```typescript
+  ...
+  public callback: ResultCallback = (result: boolean, value: any): boolean => {
+    if (result === false) {
+       throw new Error(`Accessor descriptor must be an \`AccessorThisDescriptor<Value, Obj>\` type, got value ${value}`);
+    }
+    return result;
+  }
+  ...
+```
+
+| Parameter | Type                                               | Description                              |
+| :-------- | :------------------------------------------------: | :--------------------------------------- |
+| result    | `boolean`                                          | Callback function for the `set()` method to check the inputted descriptor   |
+| value     | [`AccessorDescriptor<Value>`][accessor-descriptor] | The `value` to display when error throws                                    |
+
+| Throws |
+| :----- |
+| An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type |
+
+| Return value |
+| :----------- |
+| The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type. |
+
+----
+
 ##### AccessorDescriptors set method
 
 Strictly set with default values and store privately accessor descriptor that contains `get` and `set` properties. Strictly means method `set()` picks only accessor descriptor `configurable`, `enumerable`, `get`, `set` properties.
@@ -118,13 +148,13 @@ Strictly set with default values and store privately accessor descriptor that co
 | descriptor | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | A [`AccessorDescriptor`][accessor-descriptor] type value |
 | callback   | [`ResultCallback`][resultcallback]=[`this.callback`][callback]  | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` |
 
-| **Throws** |
+| Throws |
 | :----- |
 | An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type |
 
-| **Return value** |
-| :----- |
-| The return value is a [`AccessorDescriptors`](#accessordescriptors) instance |
+| Return value |
+| :----------- |
+| The return value is an [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance |
 
 ----
 
