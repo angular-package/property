@@ -2,6 +2,7 @@ import { NamePrefix } from '../lib/name-prefix.class';
 
 describe(NamePrefix.name, () => {
   let namePrefix: NamePrefix;
+
   beforeEach(() => namePrefix = new NamePrefix());
 
   it('is DEFINED', () => expect(namePrefix).toBeDefined());
