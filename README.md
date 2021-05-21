@@ -2,34 +2,37 @@
 
 Useful packages based on the [angular.io](https://angular.io/).
 
-| Package          | Description                                                                              | Status        | Readme      |
-|------------------|------------------------------------------------------------------------------------------|---------------|-------------|
-| change-detection | Improve application performance.                                                         | *In Progress* | [Readme][cd-readme-github] |
-| prism            | `Prism` highlighter module.                                                              | *In Progress* | [Readme][prism-readme-github] |
-| property         | Features to handle properties.                                                           | *In Progress* | [Readme][property-readme-github] |
-| ui               | User interface based on **[Spectre.css](https://github.com/picturepan2/spectre)**.       | *In Progress* | [Github][ui-readme-github] |
-| type             | Common types, type guards and checkers.                                                  | [![npm version][type-npm-svg]][type-npm-badge] | [Github][type-readme-github] \| [npm][type-readme-npm] |
+| Package          | Description                                   | Status        | Readme      |
+| :--------------- | :-------------------------------------------- | :-----------: | :---------- |
+| change-detection | Improve application performance.              | *In Progress* | [Readme][cd-readme-github] |
+| prism            | `Prism` highlighter module.                   | *In Progress* | [Readme][prism-readme-github] |
+| property         | Features to handle properties.                | *In Progress* | [Readme][property-readme-github] |
+| ui               | User interface.                               | *In Progress* | [Github][ui-readme-github] |
+| type             | Common types, type guards and type checkers.  | [![npm version][type-npm-svg]][type-npm-badge] | [Github][type-readme-github] \| [npm][type-readme-npm] |
 
-# angular-package/property
+## angular-package/property
+
 Features to handle properties.
 
-[![npm version](https://badge.fury.io/js/%40angular-package%property.svg)](https://badge.fury.io/js/%40angular-package%property)
-[![GitHub issues](https://img.shields.io/github/issues/angular-package/property)](https://github.com/angular-package/property/issues)
-[![GitHub forks](https://img.shields.io/github/forks/angular-package/property)](https://github.com/angular-package/property/network)
-[![GitHub stars](https://img.shields.io/github/stars/angular-package/property)](https://github.com/angular-package/property/stargazers)
-[![GitHub license](https://img.shields.io/github/license/angular-package/property)](https://github.com/angular-package/property/blob/main/LICENSE)
+[![npm version][property-npm-svg]][property-npm-badge]
+[![GitHub issues](https://img.shields.io/github/issues/angular-package/property)][issues]
+[![GitHub forks](https://img.shields.io/github/forks/angular-package/property)][forks]
+[![GitHub stars](https://img.shields.io/github/stars/angular-package/property)][stars]
+[![GitHub license](https://img.shields.io/github/license/angular-package/property)][license]
 
 ```typescript
 // Main features.
-export { getProperty, PropertyClass, setProperty, StoreOriginalClass } from '@angular-package/property';
+import { getProperty, PropertyClass, setProperty, StoreOriginalClass } from '@angular-package/property';
 ```
+
 ```typescript
 // Bind decorators.
-export { BindParam, BindProperties } from '@angular-package/property';
+import { BindParam, BindProperties } from '@angular-package/property';
 ```
+
 ```typescript
 // Types.
-export { GetterCallback, SetterCallback } from '@angular-package/property';
+import { GetterCallback, SetterCallback } from '@angular-package/property';
 ```
 
 ----
@@ -50,16 +53,19 @@ Install `@angular-package/property` package with command:
 npm i --save @angular-package/property
 ```
 
+----
+
 ## GIT
+
 ### Commit
 
-* [AngularJS Git Commit Message Conventions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)
-* [Karma Git Commit Msg](http://karma-runner.github.io/0.10/dev/git-commit-msg.html)
-* [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+* [AngularJS Git Commit Message Conventions][angular-commit]
+* [Karma Git Commit Msg][karma-commit]
+* [Conventional Commits][conventional-commit]
 
 ### Versioning
 
-[Semantic Versioning 2.0.0](http://semver.org/)
+[Semantic Versioning 2.0.0][semver]
 
 **Given a version number MAJOR.MINOR.PATCH, increment the:**
 
@@ -79,19 +85,44 @@ How do I know when to release 1.0.0?
 
 ## License
 
-MIT © angular-package ([license](https://github.com/angular-package/property/blob/main/LICENSE))
+MIT © angular-package ([license][license])
 
-[new]: https://img.shields.io/badge/-new-red
+----
 
-[cd-readme-github]: https://github.com/angular-package/change-detection#readme
+<!-- Changes -->
+[new]: https://img.shields.io/badge/-new-green
+[update]: https://img.shields.io/badge/-update-red
 
-[prism-readme-github]: https://github.com/angular-package/prism#readme
+<!-- Badges -->
+[forks]: https://github.com/angular-package/property/network
+[issues]: https://github.com/angular-package/property/issues
+[license]: https://github.com/angular-package/property/blob/main/LICENSE
+[stars]: https://github.com/angular-package/property/stargazers
 
+<!-- Package: property -->
+[property-npm-svg]: https://badge.fury.io/js/%40angular-package%property.svg
+[property-npm-badge]: https://badge.fury.io/js/%40angular-package%property
 [property-readme-github]: https://github.com/angular-package/property#readme
+[property-readme-npm]: https://www.npmjs.com/package/@angular-package/property#readme
 
-[ui-readme-github]: https://github.com/angular-package/ui#readme
-
+<!-- Package: type -->
 [type-npm-svg]: https://badge.fury.io/js/%40angular-package%2Ftype.svg
 [type-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftype
 [type-readme-github]: https://github.com/angular-package/type#readme
 [type-readme-npm]: https://www.npmjs.com/package/@angular-package/type#readme
+
+<!-- Other packages -->
+[cd-readme-github]: https://github.com/angular-package/change-detection#readme
+[prism-readme-github]: https://github.com/angular-package/prism#readme
+[ui-readme-github]: https://github.com/angular-package/ui#readme
+
+<!-- GIT -->
+[angular-commit]: https://gist.github.com/stephenparish/9941e89d80e2bc58a153
+[karma-commit]: http://karma-runner.github.io/0.10/dev/git-commit-msg.html
+[conventional-commit]: https://www.conventionalcommits.org/en/v1.0.0/
+[semver]: http://semver.org/
+
+<!-- GIT: commit -->
+[git-commit-angular]: https://gist.github.com/stephenparish/9941e89d80e2bc58a153
+[git-commit-karma]: http://karma-runner.github.io/0.10/dev/git-commit-msg.html
+[git-commit-conventional]: https://www.conventionalcommits.org/en/v1.0.0/
