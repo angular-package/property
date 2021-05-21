@@ -20,21 +20,6 @@ Features to handle properties.
 [![GitHub stars](https://img.shields.io/github/stars/angular-package/property)][stars]
 [![GitHub license](https://img.shields.io/github/license/angular-package/property)][license]
 
-```typescript
-// Main features.
-import { getProperty, PropertyClass, setProperty, StoreOriginalClass } from '@angular-package/property';
-```
-
-```typescript
-// Bind decorators.
-import { BindParam, BindProperties } from '@angular-package/property';
-```
-
-```typescript
-// Types.
-import { GetterCallback, SetterCallback } from '@angular-package/property';
-```
-
 ----
 
 * [Installation](#installation)
@@ -61,9 +46,39 @@ npm i --save @angular-package/property
 
 ### Descriptor
 
+Descriptor features to import
+
+```typescript
+// Class.
+import {
+  AccessorDescriptors,
+  DataDescriptors,
+  Descriptor,
+  GetOwnDescriptor
+} from '@angular-package/property';
+```
+
+```typescript
+// Interface.
+import {
+  AccessorDescriptor,
+  DataDescriptor,
+} from '@angular-package/property';
+```
+
+```typescript
+// Type.
+import {
+  AnyDescriptor,
+  AccessorThisDescriptor,
+  ObjectPropertyDescriptors
+} from '@angular-package/property';
+
+```
+
 #### AccessorDescriptors
 
-Class to strictly define and store privately accessor descriptor.
+Class to strictly set and store privately accessor descriptor.
 
 ```typescript
 import { AccessorDescriptors } from '@angular-package/type';
@@ -110,10 +125,10 @@ Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance
   ...
 ```
 
-| Parameter | Type                                               | Description                              |
-| :-------- | :------------------------------------------------: | :--------------------------------------- |
-| result    | `boolean`                                          | Callback function for the `set()` method to check the inputted descriptor   |
-| value     | [`AccessorDescriptor<Value>`][accessor-descriptor] | The `value` to display when error throws                                    |
+| Parameter | Type      | Description                                                                 |
+| :-------- | :-------: | :-------------------------------------------------------------------------- |
+| result    | `boolean` | Callback function for the `set()` method to check the inputted descriptor   |
+| value     | `any`     | The `value` to display when error throws                                    |
 
 | Throws |
 | :----- |
