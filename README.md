@@ -22,6 +22,12 @@ Features to handle properties.
 
 ----
 
+| Feature    | Description                             | Status        | Readme      |
+| :--------- | :-------------------------------------  | :-----------: | :---------- |
+| descriptor | Features to handle property descriptors | *In Progress* |  |
+
+----
+
 * [Installation](#installation)
 * [Descriptor](#descriptor)
   * [Accessor](#accessordescriptors)
