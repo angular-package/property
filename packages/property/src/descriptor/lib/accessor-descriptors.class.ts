@@ -7,12 +7,12 @@ import { ACCESSOR_DESCRIPTOR } from './accessor-descriptor.const';
 // Interface.
 import { AccessorThisDescriptor } from '../type/accessor-this-descriptor.type';
 /**
- * Class to strictly define and store privately accessor descriptor.
+ * Class to strictly define and store privately single accessor descriptor.
  */
 export class AccessorDescriptors<Value, Obj = any> {
   // Accessor descriptor properties.
   #pick: (keyof AccessorThisDescriptor<Value, Obj>)[] = ['configurable', 'enumerable', 'get', 'set'];
-  // Private accessor descriptor.
+  // Single private accessor descriptor.
   #descriptor: AccessorThisDescriptor<Value, Obj> = ACCESSOR_DESCRIPTOR;
 
   /**
@@ -46,7 +46,7 @@ export class AccessorDescriptors<Value, Obj = any> {
   }
 
   /**
-   * Strictly set with default values and store privately accessor descriptor that contains `get` and `set` properties.
+   * Strictly set with default values and store privately single accessor descriptor that contains `get` and `set` properties.
    * Strictly means method `set()` picks only accessor descriptor `configurable`, `enumerable`, `get`, `set` properties.
    * @param descriptor A `AccessorDescriptor` type value.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`.
@@ -55,7 +55,7 @@ export class AccessorDescriptors<Value, Obj = any> {
    * @returns A `this` instance.
    */
   public set(descriptor: AccessorThisDescriptor<Value, Obj>, callback: ResultCallback = this.callback): this {
-    if (guard.is.object(descriptor, callback)) {
+    if (guard.is.objectKey(descriptor, 'get', callback)) {
         this.#descriptor = {
           ...this.#descriptor,
           ...pickProperty(descriptor, this.#pick),
