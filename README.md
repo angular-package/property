@@ -22,12 +22,6 @@ Features to handle properties.
 
 ----
 
-| Feature    | Description                             | Status        | Readme      |
-| :--------- | :-------------------------------------  | :-----------: | :---------- |
-| descriptor | Features to handle property descriptors | *In Progress* |  |
-
-----
-
 * [Installation](#installation)
 * [Descriptor](#descriptor)
   * [Accessor](#accessordescriptors)
@@ -82,8 +76,6 @@ import {
 
 ```
 
-----
-
 #### AccessorDescriptors
 
 Class to strictly set and store privately accessor descriptor.
@@ -112,6 +104,8 @@ Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance
   ...
 ```
 
+**Parameters:**
+
 | Parameter   | Type                                                            | Description          |
 | :---------- | :-------------------------------------------------------------: | :------------------- |
 | descriptor? | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | An optional [`AccessorDescriptor<Value>`][accessor-descriptor] type value to initially set |
@@ -133,18 +127,20 @@ Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance
   ...
 ```
 
+**Parameters:**
+
 | Parameter | Type      | Description                                                                 |
 | :-------- | :-------: | :-------------------------------------------------------------------------- |
 | result    | `boolean` | Callback function for the `set()` method to check the inputted descriptor   |
 | value     | `any`     | The `value` to display when error throws                                    |
 
-| Throws |
-| :----- |
-| An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type |
+**Throws:**
 
-| Return value |
-| :----------- |
-| The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type. |
+An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type.
+
+**Returns:**
+
+The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type.
 
 ----
 
@@ -166,18 +162,20 @@ Strictly set with default values and store privately accessor descriptor that co
   ...
 ```
 
+**Parameters:**
+
 | Parameter  | Type                                                            | Description          |
 | :--------- | :-------------------------------------------------------------: | :------------------- |
 | descriptor | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | A [`AccessorDescriptor`][accessor-descriptor] type value |
 | callback   | [`ResultCallback`][resultcallback]=[`this.callback`][callback]  | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` |
 
-| Throws |
-| :----- |
-| An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type |
+**Throws:**
 
-| Return value |
-| :----------- |
-| The return value is an [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance |
+An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type.
+
+**Returns:**
+
+The **return value** is an `this` instance.
 
 ----
 
@@ -192,6 +190,8 @@ Get privately stored accessor descriptor defined by [`set()`](#accessordescripto
   }
   ...
 ```
+
+**Returns:**
 
 The **return value** is [`AccessorThisDescriptor`](#accessorthisdescriptor) defined by [`set()`](#accessordescriptors-set-method) method.
 
