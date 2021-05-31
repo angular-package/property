@@ -1,5 +1,7 @@
+// Function.
 export { getProperty } from './get-property.function';
-export { PrefixSuffixClass } from './prefixsuffix.class';
-export { PropertyClass } from './property.class';
+export { pickProperty } from './pick-property.function';
 export { setProperty } from './set-property.function';
-export { StoreOriginalClass } from './store-original.class';
+// Class.
+export { PropertyName } from './property-name.class';
+export { Property } from './property.class';

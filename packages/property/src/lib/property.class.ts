@@ -13,7 +13,7 @@ import { setProperty } from './set-property.function';
 /**
  * Methods to handle object properties.
  */
-export default class Property<Value> {
+export class Property<Value> {
 
   check = {
     object: false,
