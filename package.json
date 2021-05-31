@@ -1,15 +1,18 @@
 {
   "name": "@angular-package/property",
   "version": "0.0.1",
-  "description": "Features to handle properties.",
+  "description": "Features to handle object properties.",
   "author": "Angular Package <angular-package@wvvw.dev> (https://wvvw.dev)",
   "homepage": "https://github.com/angular-package/property#readme",
   "peerDependencies": {
-    "@angular-package/type": "^4.0.1",
+    "@angular-package/type": "^4.1.1",
     "@angular/core": "^11.0.9"
   },
   "dependencies": {
     "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@angular-package/type": "^4.1.1"
   },
   "publishConfig": {
     "access": "public",
@@ -21,7 +24,12 @@
     "Property",
     "Properties",
     "Bind",
-    "Wrap"
+    "Wrap",
+    "getProperty",
+    "setProperty",
+    "pickProperty",
+    "property name",
+    "property descriptor"
   ],
   "repository": {
     "type": "git",
