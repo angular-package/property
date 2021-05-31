@@ -1,5 +1,5 @@
 // External.
-import { is, ResultCallback, guard } from '@angular-package/type';
+import { is, ResultCallback } from '@angular-package/type';
 // Classes.
 import { NamePrefix } from './name-prefix.class';
 import { NameSuffix } from './name-suffix.class';
