@@ -4,7 +4,7 @@ import { guard, is, ResultCallback } from '@angular-package/type';
 import { pickProperty } from '../../lib/pick-property.function';
 // Constant.
 import { ACCESSOR_DESCRIPTOR } from './accessor-descriptor.const';
-// Interface.
+// Type.
 import { AccessorThisDescriptor } from '../type/accessor-this-descriptor.type';
 /**
  * Class to strictly define and store privately single accessor descriptor.
@@ -50,12 +50,11 @@ export class AccessorDescriptors<Value, Obj = any> {
    * Strictly means method `set()` picks only accessor descriptor `configurable`, `enumerable`, `get`, `set` properties.
    * @param descriptor A `AccessorDescriptor` type value.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`.
-   * @callback `this.callback()`
    * @throws Throws an error if the descriptor is not an `AccessorThisDescriptor<Value, Obj>` type.
-   * @returns A `this` instance.
+   * @returns A `AccessorDescriptors` instance.
    */
   public set(descriptor: AccessorThisDescriptor<Value, Obj>, callback: ResultCallback = this.callback): this {
-    if (guard.is.objectKey(descriptor, 'get', callback)) {
+    if (guard.is.objectKey(descriptor, 'get', callback) || guard.is.objectKey(descriptor, 'set', callback)) {
         this.#descriptor = {
           ...this.#descriptor,
           ...pickProperty(descriptor, this.#pick),
