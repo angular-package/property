@@ -50,9 +50,8 @@ export class DataDescriptors<Value> {
    * Strictly means method `set()` picks only data descriptor `configurable`, `enumerable`, `writable`, `value` properties.
    * @param descriptor A `DataDescriptor` type value.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`.
-   * @callback `this.callback()`
    * @throws Throws an error if the descriptor is not an `DataDescriptors<Value>` type.
-   * @returns this.
+   * @returns A `DataDescriptors` instance.
    */
   public set(descriptor: DataDescriptor<Value>, callback: ResultCallback = this.callback): this {
     if (guard.is.objectKey(descriptor, 'value', callback)) {
