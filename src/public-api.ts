@@ -10,16 +10,12 @@ export {
   AccessorDescriptors,
   DataDescriptors,
   Descriptor,
-  GetOwnDescriptor
+  GetOwnDescriptor,
 } from './descriptor';
-// Interface.
-export {
-  AccessorDescriptor,
-  DataDescriptor,
-} from './descriptor/interface';
 // Type.
 export {
+  AccessorDescriptor,
   AnyDescriptor,
-  AccessorThisDescriptor,
-  ObjectPropertyDescriptors
+  DataDescriptor,
+  ObjectPropertyDescriptors,
 } from './descriptor/type';
