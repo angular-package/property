@@ -105,9 +105,9 @@ Creates an instance and optionally sets an accessor descriptor of [`AccessorDesc
 
 **Parameters:**
 
-| Name: `type`                                  | Description                                                                                |
-| :-------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| descriptor?: `AccessorDescriptor<Value, Obj>` | An optional [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type value to initially set |
+| Name: `type`                                  | Description                                                                                                         |
+| :-------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| descriptor?: `AccessorDescriptor<Value, Obj>` | An optional [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type value to initially set accessor descriptor |
 
 #### AccessorDescriptors callback
 
@@ -129,14 +129,14 @@ Callback function for the `define()` and `set()` method.
 
 **Parameters:**
 
-| Parameter | Type      | Description     |
-| :-------- | :-------: | :-------------- |
-| result    | `boolean` |                 |
-| value     | `any`     |                 |
+| Name: `type`      | Description                            |
+| :---------------- | :------------------------------------- |
+| result: `boolean` | A `boolean` type `result` of the check |
+| value: `any`      | Any type `value` from the check        |
 
 **Throws:**
 
-Throws an error if the `result` is equal to `false`.
+Throws an [`Error`][error] if the `result` of the check is equal to `false`.
 
 **Returns:**
 
@@ -171,7 +171,7 @@ Strictly means method picks `configurable`, `enumerable`, `get`, `set` propertie
 
 **Throws:**
 
-Throws an error if the descriptor is not an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type, .
+Throws an [`Error`][error] if the descriptor is not an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 **Returns:**
 
@@ -332,6 +332,8 @@ MIT © angular-package ([license][license])
 
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 [booleanconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean/Boolean
+
+[error]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
 
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
 
