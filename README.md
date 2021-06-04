@@ -27,6 +27,7 @@ Features to handle properties.
   * [Accessor](#accessordescriptors)
   * [Data](#data-descriptors)
   * [Interface](#descriptor)
+  * [Type](#type)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -54,31 +55,31 @@ import {
   AccessorDescriptors,
   DataDescriptors,
   Descriptor,
-  GetOwnDescriptor
+  GetOwnDescriptor,
 } from '@angular-package/property';
 ```
 
 ```typescript
 // Interface.
-import {
-  AccessorDescriptor,
-  DataDescriptor,
-} from '@angular-package/property';
+import { PickDescriptor } from '@angular-package/property';
 ```
 
 ```typescript
 // Type.
 import {
+  AccessorDescriptor,
   AnyDescriptor,
-  AccessorThisDescriptor,
-  ObjectPropertyDescriptors
+  DataDescriptor,
+  ObjectPropertyDescriptors,
 } from '@angular-package/property';
 
 ```
 
+----
+
 #### AccessorDescriptors
 
-Class to strictly set and store privately accessor descriptor.
+Class to strictly define and store privately single accessor descriptor of [`AccessorDescriptor`][accessor-descriptor] type.
 
 ```typescript
 import { AccessorDescriptors } from '@angular-package/type';
@@ -92,12 +93,12 @@ class AccessorDescriptors<Value, Obj = any> { ... }
 
 ##### AccessorDescriptors constructor
 
-Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance and an optionally set accessor descriptor.
+Creates an instance and optionally sets an accessor descriptor of [`AccessorDescriptor`][accessor-descriptor] type.
 
 ```typescript
   ...
-  constructor(descriptor?: AccessorThisDescriptor<Value, Obj>) {
-    if (is.object<AccessorThisDescriptor<Value, Obj>>(descriptor)) {
+  constructor(descriptor?: AccessorDescriptor<Value, Obj>) {
+    if (is.object<AccessorDescriptor<Value, Obj>>(descriptor)) {
       this.set(descriptor);
     }
   }
@@ -106,21 +107,24 @@ Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance
 
 **Parameters:**
 
-| Parameter   | Type                                                            | Description          |
-| :---------- | :-------------------------------------------------------------: | :------------------- |
-| descriptor? | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | An optional [`AccessorDescriptor<Value>`][accessor-descriptor] type value to initially set |
+| Name: `type`                                  | Description                                                                                |
+| :-------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| descriptor?: `AccessorDescriptor<Value, Obj>` | An optional [`AccessorDescriptor`][accessor-descriptor] type value to initially set |
 
 ----
 
 ##### AccessorDescriptors callback
 
-Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance and an optionally set accessor descriptor.
+Callback function for the `define()` and `set()` method.
 
 ```typescript
   ...
   public callback: ResultCallback = (result: boolean, value: any): boolean => {
     if (result === false) {
-       throw new Error(`Accessor descriptor must be an \`AccessorThisDescriptor<Value, Obj>\` type, got value ${value}`);
+      value = is.object(value) ? JSON.stringify(value) : value;
+      throw new Error(
+        `Accessor descriptor must be an \`AccessorDescriptor<Value, Obj>\` type, got value ${value}`
+      );
     }
     return result;
   }
@@ -129,34 +133,36 @@ Creates [`AccessorDescriptors<Value, Obj = any>`](#accessordescriptors) instance
 
 **Parameters:**
 
-| Parameter | Type      | Description                                                                 |
-| :-------- | :-------: | :-------------------------------------------------------------------------- |
-| result    | `boolean` | Callback function for the `set()` method to check the inputted descriptor   |
-| value     | `any`     | The `value` to display when error throws                                    |
+| Parameter | Type      | Description     |
+| :-------- | :-------: | :-------------- |
+| result    | `boolean` |                 |
+| value     | `any`     |                 |
 
 **Throws:**
 
-An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type.
+Throws an error if the `result` is equal to `false`.
 
 **Returns:**
 
-The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type.
+The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 ----
 
 ##### AccessorDescriptors set method
 
-Strictly set with default values and store privately accessor descriptor that contains `get` and `set` properties. Strictly means method `set()` picks only accessor descriptor `configurable`, `enumerable`, `get`, `set` properties.
+Strictly set with the default values and store privately single accessor descriptor.
+Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
 
 ```typescript
   ...
-  public set(descriptor: AccessorThisDescriptor<Value, Obj>, callback: ResultCallback = this.callback): this {
-    if (guard.is.object(descriptor, callback)) {
-        this.#descriptor = {
-          ...this.#descriptor,
-          ...pickProperty(descriptor, this.#pick),
-        };
-    }
+  public set(
+    descriptor: AccessorDescriptor<Value, Obj>,
+    callback: ResultCallback = this.callback
+  ): this {
+    this.#descriptor = {
+      ...this.#descriptor,
+      ...this.define(descriptor, callback),
+    };
     return this;
   }
   ...
@@ -164,68 +170,44 @@ Strictly set with default values and store privately accessor descriptor that co
 
 **Parameters:**
 
-| Parameter  | Type                                                            | Description          |
-| :--------- | :-------------------------------------------------------------: | :------------------- |
-| descriptor | [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) | A [`AccessorDescriptor`][accessor-descriptor] type value |
-| callback   | [`ResultCallback`][resultcallback]=[`this.callback`][callback]  | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` |
+| Name: `type`                                 | Description                                              |
+| :------------------------------------------- | :------------------------------------------------------- |
+| descriptor: `AccessorDescriptor<Value, Obj>` | A [`AccessorDescriptor`][accessor-descriptor] type value |
+| callback: `ResultCallback`                   | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not a `descriptor` is an `object` containing the `get` or `set` key |
 
 **Throws:**
 
-An error if the descriptor is not an [`AccessorThisDescriptor<Value, Obj>`](#accessorthisdescriptor) type.
+Throws an error if the descriptor is not an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type, .
 
 **Returns:**
 
-The **return value** is an `this` instance.
+The **return value** is `this` instance.
 
 ----
 
 ##### AccessorDescriptors get property
 
-Get privately stored accessor descriptor defined by [`set()`](#accessordescriptors-set-method) method.
+Get privately stored [`AccessorDescriptor`][accessor-descriptor] defined by [`set()`](#accessordescriptors-set-method) method.
 
 ```typescript
   ...
-  get get(): AccessorThisDescriptor<Value, Obj> {
+  get get(): AccessorDescriptor<Value, Obj> {
     return this.#descriptor;
   }
   ...
 ```
 
-**Returns:**
-
-The **return value** is [`AccessorThisDescriptor`](#accessorthisdescriptor) defined by [`set()`](#accessordescriptors-set-method) method.
-
 ----
 
 ## Interface
 
-### AccessorDescriptor
-
-Accessor descriptor with its unique `get()` and `set()` attributes and theirs generic `Value` type.
+Pick `accessor`, `data` descriptor or 'get own' class to get descriptor in `own`.
 
 ```typescript
-interface AccessorDescriptor<Value> extends CommonDescriptor {
-  get: (() => Value) | undefined;
-  set: ((value: Value) => void) | undefined;
-}
-```
-
-### CommonDescriptor
-
-Common `configurable` and `enumerable` of a `boolean` type attributes picked from default `PropertyDescriptor` for accessor and data descriptor.
-
-```typescript
-interface CommonDescriptor extends Pick<PropertyDescriptor, 'configurable' | 'enumerable'> {}
-```
-
-### DataDescriptor
-
-Data descriptor with its unique `writable`, `value` attributes, and a generic `Value` type for the `value`.
-
-```typescript
-interface DataDescriptor<Value> extends CommonDescriptor {
-  writable: boolean;
-  value: Value;
+interface PickDescriptor<Value, Obj extends object> {
+  accessor: AccessorDescriptor<Value>;
+  data: DataDescriptor<Value>;
+  own: GetOwnDescriptor<Obj>;
 }
 ```
 
@@ -233,12 +215,34 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 
 ## Type
 
-### AccessorThisDescriptor
+### AccessorDescriptor
 
-Accessor descriptor structure with the `Value`, `Obj` type extended with `ThisType<Obj>` object to use `this` properly in its unique attributes.
+Descriptor with its unique optional `get` and `set` keys of a function type, with the specified `Value` type.
 
 ```typescript
-type AccessorThisDescriptor<Value, Obj = any> = AccessorDescriptor<Value> & ThisType<Obj>;
+type AccessorDescriptor<Value, Obj = any> = CommonDescriptor & {
+  get?: () => Value;
+  set?: (value: Value) => void;
+} & ThisType<Obj>;
+```
+
+### CommonDescriptor
+
+Common keys `configurable` and `enumerable` of a `boolean` type for accessor and data descriptor, picked from the default `PropertyDescriptor`.
+
+```typescript
+interface CommonDescriptor extends Pick<PropertyDescriptor, 'configurable' | 'enumerable'> {}
+```
+
+### DataDescriptor
+
+Descriptor with its unique optional keys, `writable` of a `boolean` type and `value` of a generic `Value` type.
+
+```typescript
+interface DataDescriptor<Value> extends CommonDescriptor {
+  writable?: boolean;
+  value?: Value;
+}
 ```
 
 ----
