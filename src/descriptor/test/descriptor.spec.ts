@@ -14,20 +14,26 @@ describe(Descriptor.name, () => {
   describe(`Descriptor<number, ObjectOne>(AccessorDescriptor)`, () => {
     let numberAccessorDescriptor: Descriptor<number, ObjectOne>;
     // Before.
-    beforeEach(() => numberAccessorDescriptor = new Descriptor<number, ObjectOne>({
-      get(): number {
-        return this.x;
-      },
-      set(value: number): void {
-        this.x = value;
-      }
-    }));
+    beforeEach(
+      () =>
+        (numberAccessorDescriptor = new Descriptor<number, ObjectOne>({
+          get(): number {
+            return this.x;
+          },
+          set(value: number): void {
+            this.x = value;
+          },
+        }))
+    );
 
     it(`is properly initialized with AccessorDescriptor`, () => {
       expect(numberAccessorDescriptor.get.accessor.configurable).toBe(TRUE);
       expect(numberAccessorDescriptor.get.accessor.enumerable).toBe(TRUE);
-      const newObject: { prop: number } & ObjectOne = Object.defineProperty({ ...{}, ...OBJECT_ONE }, 'prop',
-        numberAccessorDescriptor.get.accessor);
+      const newObject: { prop: number } & ObjectOne = Object.defineProperty(
+        { ...{}, ...OBJECT_ONE },
+        'prop',
+        numberAccessorDescriptor.get.accessor
+      );
       expect(newObject.prop).toEqual(OBJECT_ONE.x);
     });
   });
@@ -35,13 +41,18 @@ describe(Descriptor.name, () => {
   describe(`Descriptor<number, ObjectOne>(DataAccessor)`, () => {
     let numberDataDescriptor: Descriptor<number, ObjectOne>;
     // Before.
-    beforeEach(() => numberDataDescriptor = new Descriptor<number, ObjectOne>({
-      writable: false,
-      value: 5
-    }));
+    beforeEach(
+      () =>
+        (numberDataDescriptor = new Descriptor<number, ObjectOne>({
+          configurable: false,
+          enumerable: false,
+          writable: false,
+          value: 5,
+        }))
+    );
 
     it(`is properly initialized with DataAccessor`, () => {
-      expect(numberDataDescriptor.get.data.configurable).toBe(TRUE);
+      expect(numberDataDescriptor.get.data.configurable).toBe(FALSE);
       expect(numberDataDescriptor.get.data.enumerable).toBe(FALSE);
       expect(numberDataDescriptor.get.data.writable).toBe(FALSE);
       expect(numberDataDescriptor.get.data.value).toEqual(5);
@@ -52,7 +63,9 @@ describe(Descriptor.name, () => {
     let numberDataDescriptor: Descriptor<number, ObjectOne>;
 
     // Before.
-    beforeEach(() => numberDataDescriptor = new Descriptor<number, ObjectOne>());
+    beforeEach(
+      () => (numberDataDescriptor = new Descriptor<number, ObjectOne>())
+    );
     it('is defined', () => expect(numberDataDescriptor).toBeDefined());
 
     it(`accessor(AccessorDescriptor)`, () => {
@@ -62,22 +75,25 @@ describe(Descriptor.name, () => {
         },
         set(value: number): void {
           this.x = value;
-        }
+        },
       });
       expect(numberDataDescriptor.get.accessor.configurable).toBe(TRUE);
       expect(numberDataDescriptor.get.accessor.enumerable).toBe(TRUE);
-      const newObject: { prop: number } & ObjectOne = Object.defineProperty({ ...{}, ...OBJECT_ONE }, 'prop',
-        numberDataDescriptor.get.accessor);
+      const newObject: { prop: number } & ObjectOne = Object.defineProperty(
+        { ...{}, ...OBJECT_ONE },
+        'prop',
+        numberDataDescriptor.get.accessor
+      );
       expect(newObject.prop).toEqual(OBJECT_ONE.x);
     });
 
     it(`data(DataDescriptor)`, () => {
       numberDataDescriptor.data({
         writable: true,
-        value: 5
+        value: 5,
       });
       expect(numberDataDescriptor.get.data.configurable).toBe(TRUE);
-      expect(numberDataDescriptor.get.data.enumerable).toBe(FALSE);
+      expect(numberDataDescriptor.get.data.enumerable).toBe(TRUE);
       expect(numberDataDescriptor.get.data.writable).toBe(TRUE);
       expect(numberDataDescriptor.get.data.value).toEqual(5);
     });
@@ -89,12 +105,15 @@ describe(Descriptor.name, () => {
         },
         set(value: number): void {
           this.x = value;
-        }
+        },
       });
       expect(numberDataDescriptor.get.accessor.configurable).toBe(TRUE);
       expect(numberDataDescriptor.get.accessor.enumerable).toBe(TRUE);
-      const newObject: { prop: number } & ObjectOne = Object.defineProperty({ ...{}, ...OBJECT_ONE }, 'prop',
-        numberDataDescriptor.get.accessor);
+      const newObject: { prop: number } & ObjectOne = Object.defineProperty(
+        { ...{}, ...OBJECT_ONE },
+        'prop',
+        numberDataDescriptor.get.accessor
+      );
       expect(newObject.prop).toEqual(OBJECT_ONE.x);
     });
   });
@@ -103,7 +122,7 @@ describe(Descriptor.name, () => {
     // Variables.
     let stringDescriptor: Descriptor<string, ObjectOne>;
     // Before.
-    beforeEach(() => stringDescriptor = new Descriptor());
+    beforeEach(() => (stringDescriptor = new Descriptor()));
 
     it('defined', () => expect(stringDescriptor).toBeDefined());
 
@@ -114,12 +133,15 @@ describe(Descriptor.name, () => {
         },
         set(value: string): void {
           this.test = value;
-        }
+        },
       });
       expect(stringDescriptor.get.accessor.configurable).toBe(TRUE);
       expect(stringDescriptor.get.accessor.enumerable).toBe(TRUE);
-      const newObject: { prop: string } & ObjectOne = Object.defineProperty({ ...{}, ...OBJECT_ONE }, 'prop',
-        stringDescriptor.get.accessor);
+      const newObject: { prop: string } & ObjectOne = Object.defineProperty(
+        { ...{}, ...OBJECT_ONE },
+        'prop',
+        stringDescriptor.get.accessor
+      );
       expect(newObject.prop).toEqual(OBJECT_ONE.test);
     });
 
@@ -127,10 +149,10 @@ describe(Descriptor.name, () => {
       it(`(DataDescriptor)`, () => {
         stringDescriptor.set({
           writable: true,
-          value: 'Bla'
+          value: 'Bla',
         });
         expect(stringDescriptor.get.data.configurable).toBe(TRUE);
-        expect(stringDescriptor.get.data.enumerable).toBe(FALSE);
+        expect(stringDescriptor.get.data.enumerable).toBe(TRUE);
         expect(stringDescriptor.get.data.writable).toBe(TRUE);
         expect(stringDescriptor.get.data.value).toEqual('Bla');
       });
@@ -139,7 +161,8 @@ describe(Descriptor.name, () => {
     describe(`object`, () => {
       let anyDescriptor: Descriptor<any, ObjectOne>;
       it(`(OBJECT_ONE)`, () => {
-        const getObjectDescriptors = stringDescriptor.get.own.object(OBJECT_ONE);
+        const getObjectDescriptors =
+          stringDescriptor.get.own.object(OBJECT_ONE);
         expect(getObjectDescriptors).toBeDefined();
         // if (getObjectDescriptors) {
         //   expect(getObjectDescriptors.configurable).toBe(TRUE);
@@ -152,7 +175,10 @@ describe(Descriptor.name, () => {
 
     describe(`property`, () => {
       it(`(OBJECT_ONE, 'test')`, () => {
-        const getDescriptor = stringDescriptor.get.own.property('test', OBJECT_ONE);
+        const getDescriptor = stringDescriptor.get.own.property(
+          'test',
+          OBJECT_ONE
+        );
         expect(getDescriptor).toBeDefined();
         if (getDescriptor) {
           expect(getDescriptor.configurable).toBe(TRUE);
@@ -163,7 +189,10 @@ describe(Descriptor.name, () => {
       });
 
       it(`(OBJECT_ONE, SYMBOL_NUMBER)`, () => {
-        const getDescriptor = stringDescriptor.get.own.property(SYMBOL_NUMBER, OBJECT_ONE);
+        const getDescriptor = stringDescriptor.get.own.property(
+          SYMBOL_NUMBER,
+          OBJECT_ONE
+        );
         expect(getDescriptor).toBeDefined();
         if (getDescriptor) {
           expect(getDescriptor.configurable).toBe(TRUE);
@@ -174,7 +203,10 @@ describe(Descriptor.name, () => {
       });
 
       it(`(OBJECT_ONE, NUMBER)`, () => {
-        const getDescriptor = stringDescriptor.get.own.property(NUMBER, OBJECT_ONE);
+        const getDescriptor = stringDescriptor.get.own.property(
+          NUMBER,
+          OBJECT_ONE
+        );
         expect(getDescriptor).toBeDefined();
         if (getDescriptor) {
           expect(getDescriptor.configurable).toBe(TRUE);
@@ -185,6 +217,4 @@ describe(Descriptor.name, () => {
       });
     });
   });
-
 });
-
