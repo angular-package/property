@@ -112,7 +112,7 @@ Creates an instance and optionally sets an accessor descriptor of [`AccessorDesc
 
 #### AccessorDescriptors callback()
 
-Callback function for the `define()` and `set()` methods.
+Callback function for the [`define()`](#accessordescriptors-define) and [`set()`](#accessordescriptors-set) methods.
 
 ```typescript
   ...
@@ -147,7 +147,7 @@ The **return value** is a `boolean` indicating whether or not the descriptor is 
 
 #### AccessorDescriptors define()
 
-Callback function for the [`define()`](#accessordescriptors-define\(\)) and `set()` methods.
+
 
 ```typescript
   ...
