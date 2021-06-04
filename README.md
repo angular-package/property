@@ -45,7 +45,7 @@ npm i --save @angular-package/property
 
 ----
 
-### Descriptor
+## Descriptor
 
 Descriptor features to import
 
@@ -77,9 +77,9 @@ import {
 
 ----
 
-#### AccessorDescriptors
+### AccessorDescriptors
 
-Class to strictly define and store privately single accessor descriptor of [`AccessorDescriptor`][accessor-descriptor] type.
+Class to strictly define and store privately single accessor descriptor of [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 ```typescript
 import { AccessorDescriptors } from '@angular-package/type';
@@ -89,11 +89,9 @@ import { AccessorDescriptors } from '@angular-package/type';
 class AccessorDescriptors<Value, Obj = any> { ... }
 ```
 
-----
+#### AccessorDescriptors constructor
 
-##### AccessorDescriptors constructor
-
-Creates an instance and optionally sets an accessor descriptor of [`AccessorDescriptor`][accessor-descriptor] type.
+Creates an instance and optionally sets an accessor descriptor of [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 ```typescript
   ...
@@ -109,11 +107,9 @@ Creates an instance and optionally sets an accessor descriptor of [`AccessorDesc
 
 | Name: `type`                                  | Description                                                                                |
 | :-------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| descriptor?: `AccessorDescriptor<Value, Obj>` | An optional [`AccessorDescriptor`][accessor-descriptor] type value to initially set |
+| descriptor?: `AccessorDescriptor<Value, Obj>` | An optional [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type value to initially set |
 
-----
-
-##### AccessorDescriptors callback
+#### AccessorDescriptors callback
 
 Callback function for the `define()` and `set()` method.
 
@@ -146,9 +142,7 @@ Throws an error if the `result` is equal to `false`.
 
 The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
-----
-
-##### AccessorDescriptors set method
+#### AccessorDescriptors set method
 
 Strictly set with the default values and store privately single accessor descriptor.
 Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
@@ -170,9 +164,9 @@ Strictly means method picks `configurable`, `enumerable`, `get`, `set` propertie
 
 **Parameters:**
 
-| Name: `type`                                 | Description                                              |
-| :------------------------------------------- | :------------------------------------------------------- |
-| descriptor: `AccessorDescriptor<Value, Obj>` | A [`AccessorDescriptor`][accessor-descriptor] type value |
+| Name: `type`                                 | Description                                                          |
+| :------------------------------------------- | :------------------------------------------------------------------- |
+| descriptor: `AccessorDescriptor<Value, Obj>` | A [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type value |
 | callback: `ResultCallback`                   | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not a `descriptor` is an `object` containing the `get` or `set` key |
 
 **Throws:**
@@ -183,11 +177,9 @@ Throws an error if the descriptor is not an [`AccessorDescriptor<Value, Obj>`][a
 
 The **return value** is `this` instance.
 
-----
+#### AccessorDescriptors get property
 
-##### AccessorDescriptors get property
-
-Get privately stored [`AccessorDescriptor`][accessor-descriptor] defined by [`set()`](#accessordescriptors-set-method) method.
+Get privately stored [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] defined by [`set()`](#accessordescriptors-set-method) method.
 
 ```typescript
   ...
@@ -195,6 +187,13 @@ Get privately stored [`AccessorDescriptor`][accessor-descriptor] defined by [`se
     return this.#descriptor;
   }
   ...
+```
+
+**Usage:**
+
+```typescript
+// Example usage.
+
 ```
 
 ----
