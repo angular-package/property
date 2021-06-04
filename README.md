@@ -61,7 +61,6 @@ import {
 
 ```typescript
 // Interface.
-import { PickDescriptor } from '@angular-package/property';
 ```
 
 ```typescript
@@ -113,7 +112,7 @@ Creates an instance and optionally sets an accessor descriptor of [`AccessorDesc
 
 #### AccessorDescriptors callback()
 
-Callback function for the `define()` and `set()` method.
+Callback function for the `define()` and `set()` methods.
 
 ```typescript
   ...
@@ -146,6 +145,47 @@ The **return value** is a `boolean` indicating whether or not the descriptor is 
 
 ----
 
+#### AccessorDescriptors define()
+
+Callback function for the [`define()`](#accessordescriptors-define\(\)) and `set()` methods.
+
+```typescript
+  ...
+  public define(
+    descriptor: AccessorDescriptor<Value, Obj>,
+    callback: ResultCallback = this.callback
+  ): AccessorDescriptor<Value, Obj> {
+    if (
+      guard.is.objectKey(descriptor, 'get', callback) ||
+      guard.is.objectKey(descriptor, 'set', callback)
+    ) {
+      return {
+        ...this.#descriptor,
+        ...pickProperty(descriptor, this.#pick),
+      };
+    }
+    return this.#descriptor;
+  }
+  ...
+```
+
+**Parameters:**
+
+| Name: `type`                                 | Description                                                                                                                               |
+| :------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `AccessorDescriptor<Value, Obj>` | The value of a [`AccessorDescriptor`][accessor-descriptor] type to merge with the default descriptor                                      |
+| callback: `ResultCallback`                   | A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property |
+
+**Throws:**
+
+Throws an [`Error`][error] if the `descriptor` is not an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
+
+**Returns:**
+
+The **return value** is an `object` of a [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
+
+----
+
 #### AccessorDescriptors set()
 
 Strictly set with the default values and store privately single accessor descriptor.
@@ -175,7 +215,7 @@ Strictly means method picks `configurable`, `enumerable`, `get`, `set` propertie
 
 **Throws:**
 
-Throws an [`Error`][error] if the descriptor is not an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
+Throws an [`Error`][error] if the `descriptor` is not an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 **Returns:**
 
