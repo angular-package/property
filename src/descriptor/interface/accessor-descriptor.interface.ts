@@ -1,8 +1,8 @@
 import { CommonDescriptor } from './common-descriptor.interface';
 /**
- * Accessor descriptor with its unique `get` and `set` attributes and theirs generic `Value` type.
+ * Descriptor with its unique optional `get` and `set` keys of a function type, with the specified `Value` type.
  */
-export interface AccessorDescriptor<Value> extends CommonDescriptor {
-  get: (() => Value) | undefined;
-  set: ((value: Value) => void) | undefined;
-}
+export type AccessorDescriptor<Value, Obj = any> = CommonDescriptor & {
+  get?: () => Value;
+  set?: (value: Value) => void;
+} & ThisType<Obj>;

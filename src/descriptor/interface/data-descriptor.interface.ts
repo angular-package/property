@@ -1,8 +1,8 @@
 import { CommonDescriptor } from './common-descriptor.interface';
 /**
- * Data descriptor with its unique `writable`, `value` attributes, and a generic `Value` type for the `value`.
+ * Descriptor with its unique optional keys, `writable` of a `boolean` type and `value` of a generic `Value` type.
  */
-export interface DataDescriptor<Value> extends CommonDescriptor {
-  writable: boolean;
-  value: Value;
-}
+export type DataDescriptor<Value> = CommonDescriptor & {
+  writable?: boolean;
+  value?: Value;
+};
