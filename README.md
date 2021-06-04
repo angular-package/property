@@ -90,7 +90,7 @@ class AccessorDescriptors<Value, Obj = any> { ... }
 
 #### AccessorDescriptors constructor()
 
-Creates an instance and optionally sets an accessor descriptor of [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
+Creates an instance and optionally sets an accessor descriptor of an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 ```typescript
   ...
@@ -141,13 +141,13 @@ Throws an [`Error`][error] if the `result` of the check is equal to `false`.
 
 **Returns:**
 
-The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
+The **return value** is a `boolean` indicating whether or not the `value` is an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 ----
 
 #### AccessorDescriptors define()
 
-
+Returns strictly defined accessor descriptor of an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type, when `get` or `set` property is detected.
 
 ```typescript
   ...
@@ -173,7 +173,7 @@ The **return value** is a `boolean` indicating whether or not the descriptor is 
 
 | Name: `type`                                 | Description                                                                                                                               |
 | :------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `AccessorDescriptor<Value, Obj>` | The value of a [`AccessorDescriptor`][accessor-descriptor] type to merge with the default descriptor                                      |
+| descriptor: `AccessorDescriptor<Value, Obj>` | The value of an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type to merge with the default descriptor                                     |
 | callback: `ResultCallback`                   | A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property |
 
 **Throws:**
@@ -182,13 +182,13 @@ Throws an [`Error`][error] if the `descriptor` is not an [`AccessorDescriptor<Va
 
 **Returns:**
 
-The **return value** is an `object` of a [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
+The **return value** is an `object` of an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
 ----
 
 #### AccessorDescriptors set()
 
-Strictly set with the default values and store privately single accessor descriptor.
+Strictly set with the default values and store privately single accessor descriptor of an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
 
 ```typescript
@@ -208,9 +208,9 @@ Strictly means method picks `configurable`, `enumerable`, `get`, `set` propertie
 
 **Parameters:**
 
-| Name: `type`                                 | Description                                                          |
-| :------------------------------------------- | :------------------------------------------------------------------- |
-| descriptor: `AccessorDescriptor<Value, Obj>` | A [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type value |
+| Name: `type`                                 | Description                                                                                      |
+| :------------------------------------------- | :----------------------------------------------------------------------------------------------- |
+| descriptor: `AccessorDescriptor<Value, Obj>` | An [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type value to set and store privately |
 | callback: `ResultCallback`                   | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not a `descriptor` is an `object` containing the `get` or `set` key |
 
 **Throws:**
