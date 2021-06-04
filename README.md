@@ -89,7 +89,7 @@ import { AccessorDescriptors } from '@angular-package/type';
 class AccessorDescriptors<Value, Obj = any> { ... }
 ```
 
-#### AccessorDescriptors constructor
+#### AccessorDescriptors constructor()
 
 Creates an instance and optionally sets an accessor descriptor of [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
@@ -109,7 +109,7 @@ Creates an instance and optionally sets an accessor descriptor of [`AccessorDesc
 | :-------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
 | descriptor?: `AccessorDescriptor<Value, Obj>` | An optional [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type value to initially set accessor descriptor |
 
-#### AccessorDescriptors callback
+#### AccessorDescriptors callback()
 
 Callback function for the `define()` and `set()` method.
 
@@ -142,7 +142,7 @@ Throws an [`Error`][error] if the `result` of the check is equal to `false`.
 
 The **return value** is a `boolean` indicating whether or not the descriptor is an [`AccessorDescriptor<Value, Obj>`][accessor-descriptor] type.
 
-#### AccessorDescriptors set method
+#### AccessorDescriptors set()
 
 Strictly set with the default values and store privately single accessor descriptor.
 Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
@@ -175,7 +175,7 @@ Throws an [`Error`][error] if the descriptor is not an [`AccessorDescriptor<Valu
 
 **Returns:**
 
-The **return value** is `this` instance.
+The **return value** is the [`AccessorDescriptors`](#accessordescriptors) instance for the chaining.
 
 #### AccessorDescriptors get property
 
