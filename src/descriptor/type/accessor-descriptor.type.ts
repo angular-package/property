@@ -1,4 +1,4 @@
-import { CommonDescriptor } from './common-descriptor.interface';
+import { CommonDescriptor } from './common-descriptor.type';
 /**
  * Descriptor with its unique optional `get` and `set` keys of a function type, with the specified `Value` type.
  */

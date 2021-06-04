@@ -1,8 +1,8 @@
 // Class.
 import { GetOwnDescriptor } from '../lib/get-own-descriptor.class';
 // Interface.
-import { AccessorDescriptor } from './accessor-descriptor.interface';
-import { DataDescriptor } from './data-descriptor.interface';
+import { AccessorDescriptor } from '../type/accessor-descriptor.type';
+import { DataDescriptor } from '../type/data-descriptor.type';
 /**
  * Pick `accessor`, `data` descriptor or 'get own' class to get descriptor in `own`.
  */
