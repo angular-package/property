@@ -1,8 +1,8 @@
-import { NameSuffix } from '../lib/name-suffix.class';
+import { Suffix } from '../lib/suffix.class';
 import { ResultCallback } from '@angular-package/type';
 
-describe(NameSuffix.name, () => {
-  let nameSuffix: NameSuffix;
+describe(Suffix.name, () => {
+  let nameSuffix: Suffix;
 
   const customCallback: ResultCallback = (result: boolean, value: any): boolean => {
     if (result === true) {
@@ -11,7 +11,7 @@ describe(NameSuffix.name, () => {
     return result;
   };
 
-  beforeEach(() => nameSuffix = new NameSuffix());
+  beforeEach(() => nameSuffix = new Suffix());
 
   it('is DEFINED', () => expect(nameSuffix).toBeDefined());
   it('has default callback', () => {
@@ -28,6 +28,6 @@ describe(NameSuffix.name, () => {
       expect(e.message).toEqual('Result is string');
     }
   });
-  it('initially set prefix to $$', () => expect(new NameSuffix('$$').get).toEqual('$$'));
+  it('initially set prefix to $$', () => expect(new Suffix('$$').get).toEqual('$$'));
   it('set prefix to $$', () => expect(nameSuffix.set('$$').get).toEqual('$$'));
 });
