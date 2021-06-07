@@ -1,11 +1,13 @@
 // External.
 import { guard, is, ResultCallback } from '@angular-package/type';
 // Class.
-import { CommonNames } from './common-names.class';
+import { CommonName } from './common-names.class';
 // Interface.
 import { GenericConfigName } from '../interface/generic-config-name.interface';
-
-export class GenericNames extends CommonNames {
+/**
+ * 
+ */
+export class Name extends CommonName {
   // Get name.
   public get get(): string {
     return this.#name;
