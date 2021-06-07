@@ -29,15 +29,15 @@ export class Prefix {
    * @param prefix An optional initial `string` type value as prefix.
    */
   constructor(prefix?: string) {
-    if (is.string(prefix)) {
+    if (is.defined(prefix)) {
       this.#prefix = Prefix.define(prefix);
     }
   }
 
   /**
-   * Define the
-   * @param value
-   * @returns
+   * Define prefix for the name.
+   * @param value A `string` type value.
+   * @returns The return value is a `string` type prefix.
    */
    static define(
     value: string,
@@ -48,8 +48,8 @@ export class Prefix {
   }
 
   /**
-   * Sets and stores privately prefix for the name.
-   * @param prefix A `string` type filtered value.
+   * Sets and stores privately prefix of a string type for the name.
+   * @param prefix A `string` type value.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the prefix is a `string`.
    * @returns The return value is a `Prefix` instance for the chaining.
    */
