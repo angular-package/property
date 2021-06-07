@@ -1,13 +1,13 @@
 // Class.
-import { GetOwnDescriptor } from '../lib/get-own-descriptor.class';
-// Interface.
+import { OwnDescriptor } from '../lib/get-own-descriptor.class';
+// Type.
 import { AccessorDescriptor } from '../type/accessor-descriptor.type';
 import { DataDescriptor } from '../type/data-descriptor.type';
 /**
- * Pick `accessor`, `data` descriptor or 'get own' class to get descriptor in `own`.
+ * Get accessor or data descriptor, or `own` as `GetOwnDescriptor` class to get descriptor.
  */
-export interface PickDescriptor<Value, Obj extends object> {
+export interface GetDescriptor<Value, Obj extends object> {
   accessor: AccessorDescriptor<Value>;
   data: DataDescriptor<Value>;
-  own: GetOwnDescriptor<Obj>;
+  own: OwnDescriptor<Obj>;
 }
