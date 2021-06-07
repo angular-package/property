@@ -1,13 +1,13 @@
 // Object.
 import { guard } from '@angular-package/type';
 // Class.
-import { CommonNames } from './common-names.class';
+import { CommonName } from './common-names.class';
 // Interface.
 import { ConfigName } from '../interface/config-name.interface';
 /**
  * Create a constant name with a changeable prefix and suffix.
  */
-export class ConstantNames extends CommonNames {
+export class ConstantName extends CommonName {
   /**
    * Creates an instance for the constant/readonly name.
    * @param name A `string` type value for the readonly `name`.
