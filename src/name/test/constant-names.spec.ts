@@ -1,15 +1,15 @@
-import { ConstantNames } from '../lib/constant-names.class';
+import { ConstantName } from '../lib/constant-names.class';
 
-describe(ConstantNames.name, () => {
+describe(ConstantName.name, () => {
   const name = 'Ścibor';
   const prefix = '$$';
   const newPrefix = '___';
   const newSuffix = '$$$';
   const suffix = '__';
 
-  let constantNames: ConstantNames;
+  let constantNames: ConstantName;
 
-  beforeEach(() => constantNames = new ConstantNames(name, { prefix, suffix }));
+  beforeEach(() => constantNames = new ConstantName(name, { prefix, suffix }));
 
   it(`is DEFINED`, () => expect(constantNames).toBeDefined());
 

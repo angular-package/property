@@ -1,8 +1,6 @@
-import { GenericNames } from '../lib/generic-names.class';
-import { NamePrefix } from '../lib/name-prefix.class';
-import { NameSuffix } from '../lib/name-suffix.class';
+import { Name } from '../lib/name.class';
 
-describe(GenericNames.name, () => {
+describe(Name.name, () => {
   const name = 'Ścibor';
   const newName = 'robicŚ';
   const prefix = '$$';
@@ -10,8 +8,8 @@ describe(GenericNames.name, () => {
   const newSuffix = '$$$';
   const suffix = '__';
   // Define.
-  let genericNames: GenericNames;
-  beforeEach(() => genericNames = new GenericNames({ name, prefix, suffix }));
+  let genericNames: Name;
+  beforeEach(() => genericNames = new Name({ name, prefix, suffix }));
   // Defined.
   it(`is DEFINED`, () => expect(genericNames).toBeDefined());
   // Test.
