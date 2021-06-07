@@ -1,13 +1,13 @@
 // External.
 import { is, ResultCallback } from '@angular-package/type';
 // Classes.
-import { NamePrefix } from './name-prefix.class';
-import { NameSuffix } from './name-suffix.class';
+import { Prefix } from './prefix.class';
+import { Suffix } from './suffix.class';
 // Interfaces.
 import { ConfigName } from '../interface/config-name.interface';
 import { PickName } from '../interface/pick-name.interface';
 
-export abstract class CommonNames {
+export abstract class CommonName {
   // Get name.
   public get get(): string {
     return this.#name;
@@ -31,9 +31,9 @@ export abstract class CommonNames {
   // Name.
   #name = '';
   // Private namespace for prefix.
-  #prefix: NamePrefix = new NamePrefix();
+  #prefix: Prefix = new Prefix();
   // Private namespace for suffix.
-  #suffix: NameSuffix = new NameSuffix();
+  #suffix: Suffix = new Suffix();
 
   /**
    * Default method to create an instance.
