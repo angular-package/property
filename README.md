@@ -108,7 +108,7 @@ AccessorDescriptors<Value, Obj = any> { ... }
 
 ### AccessorDescriptors static methods
 
-#### AccessorDescriptors.define()
+#### `AccessorDescriptors.define()`
 
 **Description:**
 
@@ -176,7 +176,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ----
 
-### AccessorDescriptors() Constructor
+### `AccessorDescriptors()` Constructor
 
 **Description:**
 
@@ -229,7 +229,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>({
 
 ### AccessorDescriptors instance methods
 
-#### AccessorDescriptors set()
+#### AccessorDescriptors `set()`
 
 **Description:**
 
@@ -296,7 +296,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 
 ### AccessorDescriptors instance properties
 
-#### AccessorDescriptors get property
+#### AccessorDescriptors `get` property
 
 **Description:**
 
@@ -377,7 +377,7 @@ DataDescriptors<Value> { ... }
 
 ### DataDescriptors static methods
 
-#### DataDescriptors.define()
+#### `DataDescriptors.define()`
 
 **Description:**
 
@@ -445,7 +445,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ----
 
-### DataDescriptors() Constructor
+### `DataDescriptors()` Constructor
 
 **Description:**
 
