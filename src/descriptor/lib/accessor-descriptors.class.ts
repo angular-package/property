@@ -28,15 +28,15 @@ export class AccessorDescriptors<Value, Obj = any> {
   };
 
   /**
-   * Get privately stored accessor descriptor defined by `set()` method.
+   * Get privately stored accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type defined by the `set()` method.
    */
   get get(): ThisAccessorDescriptor<Value, Obj> {
     return this.#descriptor;
   }
 
   /**
-   * Creates an instance and optionally sets an accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
-   * @param descriptor An optional `ThisAccessorDescriptor<Value, Obj>` type value to initially set.
+   * Creates an instance, and optionally sets an accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
+   * @param descriptor An optional `object` of a `ThisAccessorDescriptor<Value, Obj>` type to initially set accessor descriptor.
    */
   constructor(descriptor?: ThisAccessorDescriptor<Value, Obj>) {
     if (is.object<ThisAccessorDescriptor<Value, Obj>>(descriptor)) {
@@ -45,14 +45,16 @@ export class AccessorDescriptors<Value, Obj = any> {
   }
 
   /**
-   * Returns strictly defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type when `get` or `set` property is detected.
-   * @param descriptor The value of a `ThisAccessorDescriptor<Value, Obj>` type to merge with the default descriptor.
+   * Returns strictly defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type on `get` or `set` property detected.
+   * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to merge with the default descriptor.
    * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`
    * with `get` or `set` property.
-   * @returns The return value is an `object` of a `ThisAccessorDescriptor<Value, Obj>`.
+   * @throws Throws an error if the descriptor is not an object of a `ThisAccessorDescriptor<Value, Obj>` type, which means it
+   * doesn't contain `get` or `set` property.
+   * @returns The return value is an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
    */
   static define<Value, Obj>(
-    descriptor: ThisAccessorDescriptor<Value, Obj> & ThisType<Obj>,
+    descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback: ResultCallback = errorCallback
   ): ThisAccessorDescriptor<Value, Obj> {
     if (
@@ -74,12 +76,13 @@ export class AccessorDescriptors<Value, Obj = any> {
   }
 
   /**
-   * Strictly set with the default values and store privately single accessor descriptor.
+   * Strictly set with the default values, and store privately single accessor descriptor.
    * Strictly means method `set()` picks only `configurable`, `enumerable`, `get`, `set` properties.
-   * @param descriptor A `ThisAccessorDescriptor<Value, Obj>` type value.
-   * @param callback A `ResultCallback` function to handle the result of the check whether or not a descriptor is an object
-   * containing the `get` or `set` key.
-   * @throws Throws an error if the descriptor is not a `ThisAccessorDescriptor<Value, Obj>` type.
+   * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type to set and store privately.
+   * @param callback A `ResultCallback` function to handle the result of the check whether or not the descriptor is an `object`
+   * containing the `get` or `set` property.
+   * @throws Throws an error if the descriptor is not an object of a `ThisAccessorDescriptor<Value, Obj>` type, which means it
+   * doesn't contain `get` or `set` property.
    * @returns The return value is the `AccessorDescriptors` instance for the chaining.
    */
   public set(
