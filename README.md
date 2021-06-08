@@ -176,11 +176,13 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ----
 
-### AccessorDescriptors()
+### AccessorDescriptors() Constructor
 
-**Constructor:**
+**Description:**
 
 Creates an instance and optionally sets an accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+
+**Syntax:**
 
 ```typescript
 AccessorDescriptors(descriptor?: ThisAccessorDescriptor<Value, Obj>)
@@ -297,7 +299,11 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 
 #### AccessorDescriptors get property
 
+**Description:**
+
 Get privately stored [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] defined by the [`set()`](#accessordescriptors-set-method) method.
+
+**Syntax:**
 
 ```typescript
 get get(): ThisAccessorDescriptor<Value, Obj> { ... }
@@ -346,6 +352,8 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 ### AccessorDescriptor
 
+**Description:**
+
 Descriptor with its unique optional `get()` and `set()` functions, of the `Value` type. For the accessor descriptor with also the object type, please use the type [`ThisAccessorDescriptor<Value, Obj>`](#thisaccessordescriptor). More about property descriptors [here][js-object-define-property].
 
 ```typescript
@@ -357,7 +365,11 @@ interface AccessorDescriptor<Value> extends CommonDescriptor {
 
 ### CommonDescriptor
 
+**Description:**
+
 Common keys `configurable` and `enumerable` of a `boolean` type for [accessor][this-accessor-descriptor] and [data descriptor][data-descriptor], picked from the default `PropertyDescriptor`. More about property descriptors [here][js-object-define-property].
+
+**Syntax:**
 
 ```typescript
 interface CommonDescriptor
@@ -366,7 +378,11 @@ interface CommonDescriptor
 
 ### DataDescriptor
 
+**Description:**
+
 Descriptor with its unique optional keys, `writable` of a `boolean` type and `value` of a generic `Value` type. More about property descriptors [here][js-object-define-property].
+
+**Syntax:**
 
 ```typescript
 interface DataDescriptor<Value> extends CommonDescriptor {
@@ -379,7 +395,11 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 
 ### ThisAccessorDescriptor
 
+**Description:**
+
 [`AccessorDescriptor`][accessor-descriptor] interface as a type cause of ease of use `this` of an `Obj` type in the `get()` and `set()` functions. More about property descriptors [here][js-object-define-property].
+
+**Syntax:**
 
 ```typescript
 type ThisAccessorDescriptor<Value, Obj> = AccessorDescriptor<Value> &
