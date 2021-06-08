@@ -1,3 +1,3 @@
-export interface GenericObject<T> {
-  [name: string]: T;
-}
+export type GenericObject<Type> = {
+  [name: string]: Type
+};
