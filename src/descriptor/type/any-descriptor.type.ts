@@ -1,6 +1,4 @@
-import { AccessorDescriptor } from './accessor-descriptor.type';
-import { DataDescriptor } from './data-descriptor.type';
-/**
- * 
- */
-export type AnyDescriptor<Value, Obj = any> = AccessorDescriptor<Value, Obj> | DataDescriptor<Value>;
+import { DataDescriptor } from '../interface/data-descriptor.interface';
+import { ThisAccessorDescriptor } from './this-accessor-descriptor.type';
+// Accessor or data descriptor.
+export type AnyDescriptor<Value, Obj = any> = ThisAccessorDescriptor<Value, Obj> | DataDescriptor<Value>;
