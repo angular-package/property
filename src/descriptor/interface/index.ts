@@ -1,1 +1,1 @@
-export { PickDescriptor } from './pick-descriptor.interface';
+export { GetDescriptor } from './get-descriptor.interface';
