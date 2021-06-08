@@ -26,8 +26,8 @@ Features to handle properties.
 * [Descriptor](#descriptor)
   * [Accessor](#accessordescriptors)
   * [Data](#data-descriptors)
-  * [Interface](#descriptor)
-  * [Type](#type)
+  * [Interface](#descriptor-interface)
+  * [Type](#descriptor-type)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -348,7 +348,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 ----
 
-## Interface
+## Descriptor interface
 
 ### AccessorDescriptor
 
@@ -391,9 +391,11 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 }
 ```
 
-## Type
+## Descriptor type
 
 ### ThisAccessorDescriptor
+
+**Description:**
 
 [`AccessorDescriptor`][accessor-descriptor] interface as a type cause of ease of use `this` of an `Obj` type in the `get()` and `set()` functions. More about property descriptors [here][js-object-define-property].
 
@@ -436,7 +438,7 @@ How do I know when to release 1.0.0?
 
 ## License
 
-MIT © angular-package ([license][property-license])
+MIT © angular-package ([license][property-badge-license])
 
 ----
 
@@ -450,7 +452,7 @@ MIT © angular-package ([license][property-license])
 <!-- Property: badges -->
 [property-badge-forks]: https://github.com/angular-package/property/network
 [property-badge-issues]: https://github.com/angular-package/property/issues
-[property-badge-license]: https://github.com/angular-package/property/blob/main/LICENSE
+[property-badge-license]: https://github.com/angular-package/property/blob/master/LICENSE
 [property-badge-stars]: https://github.com/angular-package/property/stargazers
 
 <!-- Package: property -->
