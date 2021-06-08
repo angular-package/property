@@ -1,65 +1,96 @@
 // Object.
 import { is, guard, ResultCallback } from '@angular-package/type';
 // Function.
+import { callbackErrorMessage } from '../../lib/callback-error-message.function';
 import { pickProperty } from '../../lib/pick-property.function';
-// Constant.
-import { DATA_DESCRIPTOR } from './data-descriptor.const';
 // Interface.
 import { DataDescriptor } from '../interface/data-descriptor.interface';
+// Constant.
+const errorCallback: ResultCallback = callbackErrorMessage(
+  `Data descriptor must be an \`DataDescriptors<Value>\` type`
+);
 /**
- * Strictly set and store privately single data descriptor.
+ * Strictly define, set and store privately single property data descriptor of a `DataDescriptor<Value>` interface.
+ * Features:
+ * + The `value` property is of a generic `Value` type.
+ * + Strictly define data descriptor.
+ * + Strictly set and store at the same time single property data descriptor.
+ * + `set()` and `define()` method picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
+ * + Get privately stored data descriptor defined by the `set()` method.
  */
 export class DataDescriptors<Value> {
-  // Data descriptor properties of `Value` type.
-  #pick: (keyof DataDescriptor<Value>)[] = ['configurable', 'enumerable', 'writable', 'value'];
-  // Single private data descriptor.
-  #descriptor: DataDescriptor<Value> = DATA_DESCRIPTOR;
+  // Defaults to data descriptor.
+  #descriptor: DataDescriptor<Value> = {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: undefined,
+  };
 
   /**
-   * Get privately stored accessor descriptor defined by `set()` method.
+   * Get privately stored data descriptor defined by the `set()` method.
    */
   get get(): DataDescriptor<Value> {
     return this.#descriptor;
   }
 
   /**
-   * Creates `DataDescriptors<Value>` instance and an optionally set data descriptor.
-   * @param descriptor A `DataDescriptor` type value.
+   * Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
+   * @param descriptor An optional `object` of a `DataDescriptor<Value>` interface to initially set.
    */
   constructor(descriptor?: DataDescriptor<Value>) {
-    if (is.objectKey<DataDescriptor<Value>>(descriptor, 'value')) {
+    if (is.defined(descriptor)) {
       this.set(descriptor);
     }
   }
 
   /**
-   * Callback function for the `set()` method to check the inputted descriptor.
-   * @param result A `boolean` type `result` of the check.
-   * @param value Any type `value` from the check.
-   * @returns A `boolean` indicating whether or not the descriptor is an `DataDescriptors<Value>` type.
+   * Returns strictly defined data descriptor of a `DataDescriptor<Value>` interface on `writable` or `value` property detected.
+   * Strictly means, method picks `configurable`, `enumerable`, `writable`, `value` properties to define.
+   * @param descriptor An object of a `DataDescriptor<Value>` interface to merge with the default descriptor.
+   * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`
+   * with `writable` or `value` property.
+   * @returns The return value is an `object` of a `DataDescriptor<Value>` interface.
    */
-   public callback: ResultCallback = (result: boolean, value: any): boolean => {
-    if (result === false) {
-       throw new Error(`Accessor descriptor must be an \`DataDescriptors<Value>\` type, got value ${value}`);
+  static define<Value>(
+    descriptor: DataDescriptor<Value>,
+    callback: ResultCallback = errorCallback
+  ): DataDescriptor<Value> {
+    if (
+      guard.is.objectKey(descriptor, 'writable', callback) ||
+      guard.is.objectKey(descriptor, 'value', callback)
+    ) {
+      return pickProperty(
+        {
+          ...{
+            configurable: true,
+            enumerable: true,
+          },
+          ...descriptor,
+        },
+        ['configurable', 'enumerable', 'writable', 'value']
+      );
     }
-    return result;
+    return {};
   }
 
   /**
-   * Strictly set with default values and store privately single data descriptor that contains `writable` and `value` properties.
-   * Strictly means method `set()` picks only data descriptor `configurable`, `enumerable`, `writable`, `value` properties.
-   * @param descriptor A `DataDescriptor` type value.
+   * Strictly set with the default values, and store privately single data descriptor of a `DataDescriptor<Value>` interface.
+   * Strictly means method `set()` picks `configurable`, `enumerable`, `writable`, `value` properties.
+   * @param descriptor An object of a `DataDescriptor` with the `value` property of a `Value` type.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`.
-   * @throws Throws an error if the descriptor is not an `DataDescriptors<Value>` type.
-   * @returns A `DataDescriptors` instance.
+   * @throws Throws an error if the descriptor is not an object of a `DataDescriptor<Value>` interface, which means doesn't
+   * contain `writable` or `value` property.
+   * @returns The return value is a `DataDescriptors` instance.
    */
-  public set(descriptor: DataDescriptor<Value>, callback: ResultCallback = this.callback): this {
-    if (guard.is.objectKey(descriptor, 'value', callback)) {
-      this.#descriptor = {
-        ...this.#descriptor,
-        ...pickProperty(descriptor, this.#pick),
-      };
-    }
+  public set(
+    descriptor: DataDescriptor<Value>,
+    callback: ResultCallback = errorCallback
+  ): this {
+    this.#descriptor = {
+      ...this.#descriptor,
+      ...DataDescriptors.define(descriptor, callback),
+    };
     return this;
   }
 }
