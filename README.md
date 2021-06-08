@@ -169,7 +169,7 @@ const firstNameDescriptor = AccessorDescriptors.define<string, Person>({
   },
 });
 
-// Define property `firstName` in the `person` object is linked with the same property in the `people` object.
+// Define the property `firstName` in the `person` object to link with the same property in the `people` object.
 // Changes to the property `firstName` in the `person` object affect the property `firstName` in the `people` object.
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
@@ -239,7 +239,7 @@ Strictly means method picks `configurable`, `enumerable`, `get`, `set` propertie
 **Syntax:**
 
 ```typescript
-public set(
+set(
   descriptor: ThisAccessorDescriptor<Value, Obj>,
   callback: ResultCallback = errorCallback
 ): this { ... }
@@ -341,7 +341,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
   },
 });
 
-// Define property `firstName` in the `person` object to have linked with the same property in the `people` object.
+// Define the property `firstName` in the `person` object to link with the same property in the `people` object.
 // Changes to the property `firstName` in the `person` object affect the property `firstName` in the `people` object.
 Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 ```
@@ -394,8 +394,6 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 ## Type
 
 ### ThisAccessorDescriptor
-
-**Description:**
 
 [`AccessorDescriptor`][accessor-descriptor] interface as a type cause of ease of use `this` of an `Obj` type in the `get()` and `set()` functions. More about property descriptors [here][js-object-define-property].
 
