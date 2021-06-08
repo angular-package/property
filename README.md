@@ -112,28 +112,28 @@ AccessorDescriptors<Value, Obj = any> { ... }
 
 **Description:**
 
-Returns **strictly** defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, when `get` or `set` property is detected.
+Returns **strictly** defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
 Strictly means, method picks `configurable`, `enumerable`, `get`, `set` properties to define.
 
 **Syntax:**
 
 ```typescript
 static define<Value, Obj>(
-  descriptor: ThisAccessorDescriptor<Value, Obj> & ThisType<Obj>,
+  descriptor: ThisAccessorDescriptor<Value, Obj>,
   callback: ResultCallback = errorCallback
 ): ThisAccessorDescriptor<Value, Obj> { ... }
 ```
 
 **Parameters:**
 
-| Name: `type`                                     | Description                                                                                                                               |
-| :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `ThisAccessorDescriptor<Value, Obj>` | The value of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to merge with the default descriptor                         |
-| callback: `ResultCallback`                       | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property |
+| Name: `type`                                     | Description                                                                                                                                                           |
+| :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to merge with the default descriptor                                           |
+| callback: `ResultCallback`                       | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property |
 
 **Throws:**
 
-Throws an [`Error`][js-error] if the `descriptor` is not a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, which means doesn't contain `get` or `set` key.
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, which means it doesn't contain `get` or `set` property.
 
 **Returns:**
 
@@ -180,7 +180,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 **Description:**
 
-Creates an instance and optionally sets an accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+Creates an instance, and optionally sets an accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
 **Syntax:**
 
@@ -190,9 +190,9 @@ AccessorDescriptors(descriptor?: ThisAccessorDescriptor<Value, Obj>)
 
 **Parameters:**
 
-| Name: `type`                                      | Description                                                                                                         |
-| :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------ |
-| descriptor?: `ThisAccessorDescriptor<Value, Obj>` | An optional [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type value to initially set accessor descriptor |
+| Name: `type`                                      | Description                                                                                                                                |
+| :------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor?: `ThisAccessorDescriptor<Value, Obj>` | An optional `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type value to initially set accessor descriptor |
 
 **Usage:**
 
@@ -233,8 +233,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>({
 
 **Description:**
 
-Strictly set with the default values and store privately single accessor descriptor of an [`AccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
-Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
+Strictly set with the default values, and store privately single accessor descriptor of an [`AccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type. Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
 
 **Syntax:**
 
@@ -247,14 +246,14 @@ set(
 
 **Parameters:**
 
-| Name: `type`                                     | Description                                                                                      |
-| :----------------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| descriptor: `ThisAccessorDescriptor<Value, Obj>` | A [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type value to set and store privately |
-| callback: `ResultCallback`                       | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not a `descriptor` is an `object` containing the `get` or `set` key |
+| Name: `type`                                     | Description                                                                                                                                                           |
+| :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to set and store privately                                                     |
+| callback: `ResultCallback`                       | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `get` or `set` property |
 
 **Throws:**
 
-Throws an [`Error`][js-error] if the `descriptor` is not an [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, which means doesn't contain `get` or `set` key.
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, which means doesn't contain `get` or `set` property.
 
 **Returns:**
 
@@ -301,7 +300,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 
 **Description:**
 
-Get privately stored [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] defined by the [`set()`](#accessordescriptors-set-method) method.
+Get privately stored accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type defined by the [`set()`](#accessordescriptors-set-method) method.
 
 **Syntax:**
 
