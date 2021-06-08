@@ -128,7 +128,7 @@ static define<Value, Obj>(
 
 | Name: `type`                                     | Description                                                                                                                               |
 | :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `ThisAccessorDescriptor<Value, Obj>` | The value of an [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to merge with the default descriptor                         |
+| descriptor: `ThisAccessorDescriptor<Value, Obj>` | The value of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to merge with the default descriptor                         |
 | callback: `ResultCallback`                       | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property |
 
 **Throws:**
@@ -137,7 +137,7 @@ Throws an [`Error`][js-error] if the `descriptor` is not a [`ThisAccessorDescrip
 
 **Returns:**
 
-The **return value** is an `object` of an [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+The **return value** is an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
 **Usage:**
 
@@ -192,6 +192,37 @@ AccessorDescriptors(descriptor?: ThisAccessorDescriptor<Value, Obj>)
 | :------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------ |
 | descriptor?: `ThisAccessorDescriptor<Value, Obj>` | An optional [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type value to initially set accessor descriptor |
 
+**Usage:**
+
+```typescript
+// Example usage.
+import { AccessorDescriptors } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = new AccessorDescriptors<string, Person>({
+  get(): string {
+    return people.firstName;
+  },
+  set(value: string): void {
+    people.firstName = value;
+  },
+});
+```
+
 ----
 
 ### AccessorDescriptors instance methods
@@ -216,7 +247,7 @@ public set(
 
 | Name: `type`                                     | Description                                                                                      |
 | :----------------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| descriptor: `ThisAccessorDescriptor<Value, Obj>` | An [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type value to set and store privately |
+| descriptor: `ThisAccessorDescriptor<Value, Obj>` | A [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type value to set and store privately |
 | callback: `ResultCallback`                       | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not a `descriptor` is an `object` containing the `get` or `set` key |
 
 **Throws:**
