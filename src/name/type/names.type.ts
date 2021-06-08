@@ -1,3 +1,3 @@
-import { GenericNames } from '../lib/generic-names.class';
-import { ConstantNames } from '../lib/constant-names.class';
-export type Names = ConstantNames | GenericNames;
+import { Name } from '../lib/name.class';
+import { ConstantName } from '../lib/constant-names.class';
+export type Names = ConstantName | Name;
