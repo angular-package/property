@@ -80,7 +80,7 @@ import {
 
 **Description:**
 
-Class to strictly define, set and store privately single accessor descriptor of [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+Strictly define, set and store privately single accessor descriptor of [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
 **Features:**
 
@@ -190,9 +190,9 @@ AccessorDescriptors(descriptor?: ThisAccessorDescriptor<Value, Obj>)
 
 **Parameters:**
 
-| Name: `type`                                      | Description                                                                                                                                |
-| :------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor?: `ThisAccessorDescriptor<Value, Obj>` | An optional `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type value to initially set accessor descriptor |
+| Name: `type`                                      | Description                                                                                                                          |
+| :------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor?: `ThisAccessorDescriptor<Value, Obj>` | An optional `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to initially set accessor descriptor |
 
 **Usage:**
 
@@ -233,7 +233,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>({
 
 **Description:**
 
-Strictly set with the default values, and store privately single accessor descriptor of an [`AccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type. Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
+Strictly set with the default values, and store privately single accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type. Strictly means method picks `configurable`, `enumerable`, `get`, `set` properties.
 
 **Syntax:**
 
@@ -343,6 +343,151 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 // Define the property `firstName` in the `person` object to link with the same property in the `people` object.
 // Changes to the property `firstName` in the `person` object affect the property `firstName` in the `people` object.
 Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
+```
+
+----
+
+### DataDescriptors
+
+**Description:**
+
+Strictly define, set and store privately single property data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
+
+**Features:**
+
+* The `value` property is of a generic `Value` type.
+* Strictly define property data descriptor.
+* Strictly set and store at the same time single property data descriptor.
+* `set()` and `define()` method picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
+* Get privately stored data descriptor defined by the `set()` method.
+
+**Import:**
+
+```typescript
+import { DataDescriptors } from '@angular-package/type';
+```
+
+**Syntax:**
+
+```typescript
+DataDescriptors<Value> { ... }
+```
+
+----
+
+### DataDescriptors static methods
+
+#### DataDescriptors.define()
+
+**Description:**
+
+Returns **strictly** defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface, on `writable` or `value` property detected.
+Strictly means, method picks `configurable`, `enumerable`, `writable`, `value` properties to define.
+
+**Syntax:**
+
+```typescript
+static define<Value>(
+  descriptor: DataDescriptor<Value>,
+  callback: ResultCallback = errorCallback
+): DataDescriptor<Value> { ... }
+```
+
+**Parameters:**
+
+| Name: `type`                        | Description                                                                                                                                                                  |
+| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] interface to merge with the default descriptor                                                                   |
+| callback: `ResultCallback`          | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property |
+
+**Throws:**
+
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] interface, which means it doesn't contain `writable` or `value` property.
+
+**Returns:**
+
+The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] type.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { DataDescriptors } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = DataDescriptor.define<string, Person>({
+  get(): string {
+    return people.firstName;
+  },
+  set(value: string): void {
+    people.firstName = value;
+  },
+});
+
+// Define the property `firstName` in the `person` object to link with the same property in the `people` object.
+// Changes to the property `firstName` in the `person` object affect the property `firstName` in the `people` object.
+Object.defineProperty(person, 'firstName', firstNameDescriptor);
+```
+
+----
+
+### DataDescriptors() Constructor
+
+**Description:**
+
+Creates an instance, and optionally sets a data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
+
+**Syntax:**
+
+```typescript
+DataDescriptors(descriptor?: DataDescriptor<Value>)
+```
+
+**Parameters:**
+
+| Name: `type`                         | Description                                                                                                     |
+| :----------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| descriptor?: `DataDescriptor<Value>` | An optional `object` of a [`DataDescriptor<Value>`][data-descriptor] interface to initially set data descriptor |
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { DataDescriptors } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = new DataDescriptors<string>({
+  writable: false,
+  value: 'not writable'
+});
 ```
 
 ----
