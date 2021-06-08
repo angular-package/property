@@ -7,5 +7,4 @@ export { OwnDescriptor } from './lib/get-own-descriptor.class';
 export { AccessorDescriptor } from './interface/accessor-descriptor.interface';
 export { DataDescriptor } from './interface/data-descriptor.interface';
 // Type.
-export { AnyDescriptor } from './type/any-descriptor.type';
-export { ObjectPropertyDescriptors } from './type/object-property-descriptors.type';
+export { ThisAccessorDescriptor } from './type/this-accessor-descriptor.type';
