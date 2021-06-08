@@ -1,7 +1,6 @@
 /*
  * Public API Surface of property
  */
-
 /**
  * Descriptor
  */
@@ -12,10 +11,12 @@ export {
   Descriptor,
   OwnDescriptor,
 } from './descriptor';
-// Type.
+// Interface.
 export {
   AccessorDescriptor,
-  AnyDescriptor,
-  DataDescriptor,
-  ObjectPropertyDescriptors,
+  DataDescriptor
+} from './descriptor/interface';
+// Type.
+export {
+  ThisAccessorDescriptor
 } from './descriptor/type';
