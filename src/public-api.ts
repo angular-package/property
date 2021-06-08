@@ -10,7 +10,7 @@ export {
   AccessorDescriptors,
   DataDescriptors,
   Descriptor,
-  GetOwnDescriptor,
+  OwnDescriptor,
 } from './descriptor';
 // Type.
 export {
