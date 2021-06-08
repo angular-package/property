@@ -1,1 +1,2 @@
-export { GetDescriptor } from './get-descriptor.interface';
+export { AccessorDescriptor } from './accessor-descriptor.interface';
+export { DataDescriptor } from './data-descriptor.interface';
