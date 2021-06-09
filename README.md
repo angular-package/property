@@ -95,7 +95,7 @@ Strictly define, set and store privately single accessor descriptor of [`ThisAcc
 **Import:**
 
 ```typescript
-import { AccessorDescriptors } from '@angular-package/type';
+import { AccessorDescriptors } from '@angular-package/property';
 ```
 
 **Syntax:**
@@ -259,7 +259,7 @@ Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`This
 
 **Returns:**
 
-The **return value** is the [`ThisAccessorDescriptor`](#accessordescriptors) instance for the chaining.
+The **return value** is the [`AccessorDescriptors`](#accessordescriptors) instance for the chaining.
 
 **Usage:**
 
@@ -366,7 +366,7 @@ Strictly define, set and store privately single property data descriptor of a [`
 **Import:**
 
 ```typescript
-import { DataDescriptors } from '@angular-package/type';
+import { DataDescriptors } from '@angular-package/property';
 ```
 
 **Syntax:**
