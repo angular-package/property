@@ -1,5 +1,5 @@
 import { isObject, ResultCallback } from '@angular-package/type';
-import { GetObject } from '../type/get-object.type';
+import { GetObject } from '../../type/get-object.type';
 /**
  * 
  * @param object 
