@@ -5,20 +5,24 @@ import { callbackErrorMessage } from '../../lib/callback-error-message.function'
 import { pickProperty } from '../../lib/pick-property.function';
 // Type.
 import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
-// Constant.
-const errorCallback: ResultCallback = callbackErrorMessage(
+/**
+ * The default callback function for the `AccessorDescriptors.guard` static method that's used to guard inputted value.
+ */
+export const accessorCallback: ResultCallback = callbackErrorMessage(
   `Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`
 );
 /**
- * Strictly define, set and store privately single property accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
+ * Strictly defines, sets, and stores privately single property accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
  * Features:
- * + The return value of the `get()` function is of a `Value` type.
- * + The parameter of the `set()` function is of a `Value` type.
- * + Use `this` of an `Obj` type in both `get()` and `set()` functions.
- * + Strictly define property accessor descriptor.
- * + Strictly set and store at the same time single property accessor descriptor.
- * + `set()` and `define()` method picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
- * + Get privately stored accessor descriptor defined by the `set()` method.
+ * + Guarded process of defining the object descriptor, but properties are not being checked against proper values.
+ * + Strictly defines property accessor descriptor.
+ * + Strictly sets, and stores at the same time single property accessor descriptor.
+ * + Accessor descriptor is of a `ThisAccessorDescriptor<Value, Obj>` type:
+ *    - The return value of the `get()` function is of a generic `Value` type.
+ *    - The parameter of the `set()` function is of a generic `Value` type.
+ *    - Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
+ * Methods `set()` and `define()` picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
+ * Get privately stored accessor descriptor defined by the `set()` method.
  */
 export class AccessorDescriptors<Value, Obj = any> {
   // Single private accessor descriptor.
@@ -39,28 +43,26 @@ export class AccessorDescriptors<Value, Obj = any> {
    * @param descriptor An optional `object` of a `ThisAccessorDescriptor<Value, Obj>` type to initially set accessor descriptor.
    */
   constructor(descriptor?: ThisAccessorDescriptor<Value, Obj>) {
-    if (is.object<ThisAccessorDescriptor<Value, Obj>>(descriptor)) {
+    if (is.defined(descriptor)) {
       this.set(descriptor);
     }
   }
 
   /**
    * Returns strictly defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type on `get` or `set` property detected.
-   * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to merge with the default descriptor.
-   * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`
-   * with `get` or `set` property.
+   * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to define with the default values of the
+   * `CommonDescriptor`.
+   * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`
+   * with `get` or `set` property, by default it uses `accessorCallback()` function.
    * @throws Throws an error if the descriptor is not an object of a `ThisAccessorDescriptor<Value, Obj>` type, which means it
    * doesn't contain `get` or `set` property.
    * @returns The return value is an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
    */
   static define<Value, Obj>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback: ResultCallback = errorCallback
+    callback?: ResultCallback
   ): ThisAccessorDescriptor<Value, Obj> {
-    if (
-      guard.is.objectKey(descriptor, 'get', callback) ||
-      guard.is.objectKey(descriptor, 'set', callback)
-    ) {
+    if (AccessorDescriptors.guard(descriptor, callback)) {
       return pickProperty(
         {
           ...{
@@ -76,23 +78,46 @@ export class AccessorDescriptors<Value, Obj = any> {
   }
 
   /**
-   * Strictly set with the default values, and store privately single accessor descriptor.
-   * Strictly means method `set()` picks only `configurable`, `enumerable`, `get`, `set` properties.
-   * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type to set and store privately.
+   * Guards the `descriptor` to be an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
+   * @param descriptor The object of a `ThisAccessorDescriptor<Value, Obj>` type to guard.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the descriptor is an `object`
    * containing the `get` or `set` property.
+   * @throws Throws an error if the descriptor is not an object of a `ThisAccessorDescriptor<Value, Obj>` type, which means it
+   * doesn't contain `get` or `set` property.
+   * @returns The return value is a boolean indicating whether the `descriptor` is an `object` with the `get` or `set` property.
+   */
+  static guard<Value, Obj>(
+    descriptor: ThisAccessorDescriptor<Value, Obj>,
+    callback: ResultCallback = accessorCallback
+  ): descriptor is ThisAccessorDescriptor<Value, Obj> {
+    return callback(guard.is.objectKeys(descriptor, 'get', 'set'), descriptor);
+  }
+
+  /**
+   * Strictly sets with the last saved descriptor values, and stores privately single accessor descriptor.
+   * Strictly means, method picks `configurable`, `enumerable`, `get`, `set` properties from the `descriptor` to set.
+   * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to set with the last saved descriptor.
+   * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the descriptor is an `object`
+   * containing the `get` or `set` property, by default it uses `accessorCallback()` from the static `guard()` method.
    * @throws Throws an error if the descriptor is not an object of a `ThisAccessorDescriptor<Value, Obj>` type, which means it
    * doesn't contain `get` or `set` property.
    * @returns The return value is the `AccessorDescriptors` instance for the chaining.
    */
   public set(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback: ResultCallback = errorCallback
+    callback?: ResultCallback
   ): this {
-    this.#descriptor = AccessorDescriptors.define<Value, Obj>(
-      descriptor,
-      callback
-    );
+    if (AccessorDescriptors.guard(descriptor, callback)) {
+      this.#descriptor = {
+        ...this.#descriptor,
+        ...pickProperty(descriptor, [
+          'configurable',
+          'enumerable',
+          'get',
+          'set',
+        ]),
+      };
+    }
     return this;
   }
 }
