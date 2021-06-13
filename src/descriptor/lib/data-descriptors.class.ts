@@ -5,18 +5,21 @@ import { callbackErrorMessage } from '../../lib/callback-error-message.function'
 import { pickProperty } from '../../lib/pick-property.function';
 // Interface.
 import { DataDescriptor } from '../interface/data-descriptor.interface';
-// Constant.
-const errorCallback: ResultCallback = callbackErrorMessage(
+// Callback.
+export const dataCallback: ResultCallback = callbackErrorMessage(
   `Data descriptor must be an \`DataDescriptors<Value>\` type`
 );
 /**
- * Strictly define, set and store privately single property data descriptor of a `DataDescriptor<Value>` interface.
+ * Strictly defines, sets, and stores privately property data descriptor of a `DataDescriptor<Value>` interface.
  * Features:
- * + The `value` property is of a generic `Value` type.
- * + Strictly define data descriptor.
- * + Strictly set and store at the same time single property data descriptor.
- * + `set()` and `define()` method picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
- * + Get privately stored data descriptor defined by the `set()` method.
+ * + Data descriptor is of a `DataDescriptor<Value>` interface:
+ *     - The `value` property is of a generic `Value` type.
+ * + Guarded process of defining the object descriptor, but properties are not being checked against proper values.
+ * + Strictly defines property data descriptor.
+ * + Strictly sets, and stores at the same time property data descriptor.
+ * + Method `set()` of the instance and static `define()` picks `configurable`, `enumerable`, `writable`, `value` properties from the
+ * provided data.
+ * + Get privately stored data descriptor defined by the `set()` method of the instance.
  */
 export class DataDescriptors<Value> {
   // Defaults to data descriptor.
@@ -28,7 +31,7 @@ export class DataDescriptors<Value> {
   };
 
   /**
-   * Get privately stored data descriptor defined by the `set()` method.
+   * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
    */
   get get(): DataDescriptor<Value> {
     return this.#descriptor;
@@ -46,20 +49,19 @@ export class DataDescriptors<Value> {
 
   /**
    * Returns strictly defined data descriptor of a `DataDescriptor<Value>` interface on `writable` or `value` property detected.
-   * Strictly means, method picks `configurable`, `enumerable`, `writable`, `value` properties to define.
-   * @param descriptor An object of a `DataDescriptor<Value>` interface to merge with the default descriptor.
+   * Strictly means, parameter `descriptor` is type guarded and method picks `configurable`, `enumerable`, `writable`, `value`
+   * properties from the provided `descriptor` object.
+   * @param descriptor An `object` of a `DataDescriptor<Value>` interface, to set with the default values of the
+   * `CommonDescriptor`.
    * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`
-   * with `writable` or `value` property.
+   * with the `writable` or `value` property, by default it uses `dataCallback()` function from the static `guard()` method.
    * @returns The return value is an `object` of a `DataDescriptor<Value>` interface.
    */
   static define<Value>(
     descriptor: DataDescriptor<Value>,
-    callback: ResultCallback = errorCallback
+    callback?: ResultCallback
   ): DataDescriptor<Value> {
-    if (
-      guard.is.objectKey(descriptor, 'writable', callback) ||
-      guard.is.objectKey(descriptor, 'value', callback)
-    ) {
+    if (DataDescriptors.guard(descriptor, callback)) {
       return pickProperty(
         {
           ...{
@@ -75,17 +77,38 @@ export class DataDescriptors<Value> {
   }
 
   /**
-   * Strictly set with the default values, and store privately single data descriptor of a `DataDescriptor<Value>` interface.
-   * Strictly means method `set()` picks `configurable`, `enumerable`, `writable`, `value` properties.
-   * @param descriptor An object of a `DataDescriptor` with the `value` property of a `Value` type.
-   * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`.
-   * @throws Throws an error if the descriptor is not an object of a `DataDescriptor<Value>` interface, which means doesn't
+   * Guards the `descriptor` to be an `object` of a `DataDescriptor<Value>` interface.
+   * @param descriptor Object of a `DataDescriptor<Value>` interface to guard.
+   * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor`
+   * is an `object` with the `writable` or `value` property, by default it uses `dataCallback()` function.
+   * @throws Throws an error if the `descriptor` is not an `object` of a `DataDescriptor<Value>` interface, which means doesn't
+   * contain `writable` or `value` property.
+   * @returns The return value is a `boolean` indicating whether the `descriptor` is an `object` with the `writable` or `value` property.
+   */
+  static guard<Value>(
+    descriptor: DataDescriptor<Value>,
+    callback: ResultCallback = dataCallback
+  ): descriptor is DataDescriptor<Value> {
+    return callback(
+      guard.is.objectKeys(descriptor, 'writable', 'value'),
+      descriptor
+    );
+  }
+
+  /**
+   * Strictly sets with the last saved descriptor values, and stores privately data descriptor of a `DataDescriptor<Value>`
+   * interface. Strictly means, parameter `descriptor` is type guarded and method picks `configurable`, `enumerable`, `writable`, `value`
+   * properties from the provided `descriptor` object.
+   * @param descriptor An `object` of a `DataDescriptor<Value>` interface, to set with the last saved descriptor.
+   * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`
+   * with the `writable` or `value` property, by default it uses `dataCallback()` function from the static `guard()` method.
+   * @throws Throws an error if the `descriptor` is not an `object` of a `DataDescriptor<Value>` interface, which means doesn't
    * contain `writable` or `value` property.
    * @returns The return value is a `DataDescriptors` instance.
    */
   public set(
     descriptor: DataDescriptor<Value>,
-    callback: ResultCallback = errorCallback
+    callback?: ResultCallback
   ): this {
     this.#descriptor = {
       ...this.#descriptor,
