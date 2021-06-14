@@ -1,7 +1,7 @@
 // Object.
 import { is, guard, ResultCallback } from '@angular-package/type';
 // Function.
-import { pickProperty } from '../../lib/pick-property.function';
+import { pickProperties } from '../../lib/pick-property.function';
 // Interface.
 import { DataDescriptor } from '../interface/data-descriptor.interface';
 // Callback.
@@ -59,7 +59,7 @@ export class DataDescriptors<Value> {
     callback?: ResultCallback
   ): DataDescriptor<Value> {
     if (DataDescriptors.guard(descriptor, callback)) {
-      return pickProperty(
+      return pickProperties(
         {
           ...{
             configurable: true,
