@@ -6,7 +6,7 @@ import { GetProperty } from '../type/get-property.type';
  * from.
  * @param key A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the
  * property that the `object` contains.
- * @returns The return value is an undefined or a property value from the `object`.
+ * @returns The return value is a property value from the `object`.
  */
 export const getProperty: GetProperty = <
   Obj extends object,
