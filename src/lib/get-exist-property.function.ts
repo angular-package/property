@@ -1,8 +1,11 @@
 // @angular-package/type
 import { guard, ResultCallback } from '@angular-package/type';
-// Type.
-import { GetProperty } from '../type/get-property.type';
+// Function.
 import { getProperty } from './get-property.function';
+// Type.
+import { GetExistProperty } from '../type/get-exist-property.type';
+// Callback.
+import { callbacks } from '../callback/src/callback.object';
 /**
  * Returns the value of the existing specified property from the `object`.
  * @param object An `object` of a generic `Obj` type, by default of the type captured from the provided `object`,
@@ -11,13 +14,13 @@ import { getProperty } from './get-property.function';
  * as the name of the property that the `object` contains. The value is being checked against existence the property in the `object`.
  * @returns The return value is a property value from the `object`.
  */
-export const getExistProperty: GetProperty = <
+export const getExistProperty: GetExistProperty = <
   Obj extends object,
   Key extends keyof Obj
 >(
   object: Obj,
   key: Key,
-  callback?: ResultCallback
+  callback: ResultCallback = callbacks.getExistProperty
 ): Obj[Key] =>
   guard.is.objectKey(object, key, callback)
     ? getProperty(object, key)
