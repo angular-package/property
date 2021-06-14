@@ -126,10 +126,7 @@ build
 dist
 graphics
 fonts
+*.ignore*
 
-# Packages
-packages/change-detection
-packages/component-loader
-packages/core
-# packages/property
-packages/type
+# demos
+demo
