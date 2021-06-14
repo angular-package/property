@@ -61,6 +61,12 @@ npm i --save @angular-package/property
 
 Returns the value of the existing specified property from the `object`.
 
+**Import:**
+
+```typescript
+import { getExistProperty } from '@angular-package/property';
+```
+
 **Syntax:**
 
 ```typescript
@@ -107,6 +113,12 @@ The **return value** is a property value from the `object`.
 
 Returns the value of the specified property from the `object`.
 
+**Import:**
+
+```typescript
+import { getProperty } from '@angular-package/property';
+```
+
 **Syntax:**
 
 ```typescript
@@ -148,6 +160,12 @@ The **return value** is  a property value from the `object`.
 **Description:**
 
 Picks specified properties from the `object`.
+
+**Import:**
+
+```typescript
+import { pickProperty } from '@angular-package/property';
+```
 
 **Syntax:**
 
@@ -192,6 +210,12 @@ The **return value** is an `object` with specified properties.
 **Description:**
 
 Sets the value of indicated property by its name in the `object`.
+
+**Import:**
+
+```typescript
+import { setProperty } from '@angular-package/property';
+```
 
 **Syntax:**
 
