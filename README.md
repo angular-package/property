@@ -23,13 +23,19 @@ Features to handle properties.
 ----
 
 * [Installation](#installation)
+* [Function](#function)
+  * [`getExistProperty()`](#getexistproperty)
+  * [`getProperty()`](#getproperty)
+  * [`pickProperty()`](#pickproperty)
+  * [`setProperty()`](#setproperty)
 * [Callback](#callback)
-* [Descriptor sub package](#descriptor-sub-package)
-  * [`Descriptor`](#descriptor)
-  * [`Accessor`](#accessordescriptors)
-  * [`Data`](#data-descriptors)
-  * [`Interface`](#descriptor-interface)
-  * [`Type`](#descriptor-type)
+* [Package](#package)
+  * [Descriptor](#descriptor-sub-package)
+    * [`Descriptor`](#descriptor)
+    * [`Accessor`](#accessordescriptors)
+    * [`Data`](#datadescriptors)
+    * [`Interface`](#descriptor-interface)
+    * [`Type`](#descriptor-type)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -43,6 +49,186 @@ Install `@angular-package/property` package with command:
 
 ```bash
 npm i --save @angular-package/property
+```
+
+----
+
+## Function
+
+### `getExistProperty()`
+
+**Description:**
+
+Returns the value of the existing specified property from the `object`.
+
+**Syntax:**
+
+```typescript
+const getExistProperty: GetProperty = <
+  Obj extends object,
+  Key extends keyof Obj
+>(
+  object: Obj,
+  key: Key,
+  callback?: ResultCallback
+): Obj[Key] =>
+  guard.is.objectKey(object, key, callback)
+    ? getProperty(object, key)
+    : getProperty(object, key);
+```
+
+**Generic type variables:**
+
+| Name                    | Description |
+| :---------------------- | :---------- |
+| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
+| `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
+
+**Parameters:**
+
+| Name: `type`  | Description                                                                                                    |
+| :------------ | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from. The value is being checked against the proper `object` type |
+| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against existence the property in the `object` |
+
+**Returns:**
+
+The **return value** is a property value from the `object`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+```
+
+### `getProperty()`
+
+**Description:**
+
+Returns the value of the specified property from the `object`.
+
+**Syntax:**
+
+```typescript
+const getProperty: GetProperty = <
+  Obj extends object,
+  Key extends keyof Obj
+>(
+  object: Obj,
+  key: Key
+): Obj[Key] => object[key];
+```
+
+**Generic type variables:**
+
+| Name                    | Description |
+| :---------------------- | :---------- |
+| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
+| `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
+
+**Parameters:**
+
+| Name: `type`  | Description                                                                                                    |
+| :------------ | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get property value from. The value is not being checked against the proper `object` type |
+| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. |
+
+**Returns:**
+
+The **return value** is  a property value from the `object`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+```
+
+### `pickProperty()`
+
+**Description:**
+
+Picks specified properties from the `object`.
+
+**Syntax:**
+
+```typescript
+const pickProperty: PickProperty = <Obj extends object>(
+  obj: Obj,
+  keys: (keyof Obj)[]
+): { [P in keyof Obj]: Obj[P] } =>
+  Object.assign(
+    {},
+    ...keys.map((key) =>
+      !is.undefined(obj[key]) ? { [key]: obj[key] } : undefined
+    )
+  );
+```
+
+**Generic type variables:**
+
+| Name                 | Description |
+| :------------------- | :---------- |
+| `Obj extends object` | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `{ [P in keyof Obj]: Obj[P] }` |
+
+**Parameters:**
+
+| Name: `type`          | Description                                                                                                    |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj`         | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to pick the `keys` from. The value is not being checked against the proper `object` type |
+| `keys: (keyof Obj)[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the name of the properties that the `object` contains |
+
+**Returns:**
+
+The **return value** is an `object` with specified properties.
+
+**Usage:**
+
+```typescript
+// Example usage.
+```
+
+### `setProperty()`
+
+**Description:**
+
+Sets the value of indicated property by its name in the `object`.
+
+**Syntax:**
+
+```typescript
+const setProperty: SetProperty = <
+  Obj extends object,
+  Key extends keyof Obj
+>(
+  object: Obj,
+  key: Key,
+  value: Obj[Key]
+): Obj[Key] => (object[key] = value);
+```
+
+**Generic type variables:**
+
+| Name                    | Description |
+| :---------------------- | :---------- |
+| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
+| `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
+
+**Parameters:**
+
+| Name: `type`      | Description                                                                                                    |
+| :---------------- | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj`     | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to set the value with the indicated `key` as its property name. The value is not checked against the proper `object` type |
+| `keys: Key`       | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains |
+| `value: Obj[Key]` | The `value` of the type captured from the provided `key` in the provided `object`. The `value` is not checked against the proper type |
+
+**Returns:**
+
+The **return value** is from the property of the specified `object`.
+
+**Usage:**
+
+```typescript
+// Example usage.
 ```
 
 ----
@@ -105,14 +291,14 @@ import {
 
 **Description:**
 
-Object property descriptor.
+Handle object property descriptor.
 
 **Features:**
 
-* Strictly defines accessor and data descriptor with static `defineAccessor()` and `defineData()` methods.
-* Strictly sets, and stores accessor and data descriptor with the `Descriptor` instance respectively `set.accessor()` and `set.data()` methods.
-* Get privately stored accessor descriptor defined by the `set.accessor()` method by using `get.accessor` property.
-* Get privately stored data descriptor defined by the `set.data()` method by using `get.data` property.
+* Strictly defines accessor and data descriptor with the static [`defineAccessor()`][descriptor-defineaccessor] and [`defineData()`][descriptor-definedata] static methods.
+* Strictly sets, and stores accessor and data descriptor with the `Descriptor` instance respectively `set.accessor()` and `set.data()` methods of the instance.
+* Get privately stored accessor descriptor defined by the `set.accessor()` method by using `get.accessor` property of the instance.
+* Get privately stored data descriptor defined by the `set.data()` method by using `get.data` property of the instance.
 
 > Strictly means, it guards inputted descriptor by checking it against its unique keys and by picking only properties that belong to the appropriate descriptor.
 
@@ -130,7 +316,7 @@ Descriptor<Value, Obj = any> { ... }
 
 ### Descriptor static methods
 
-#### `Descriptor.defineAccessor<Value, Obj>()`
+#### `Descriptor.defineAccessor()`
 
 **Description:**
 
@@ -149,7 +335,7 @@ static defineAccessor<Value, Obj>(
 
 | Name    | Description |
 | :------ | :---------- |
-| `Value` | Guards the value type of the `get()` and `set()` methods of the `descriptor` object, and it's used in the return type `ThisAccessorDescriptor<Value, Obj>` |
+| `Value` | Guards the value type of the `get()` and `set()` methods of the `descriptor` object, and in the return type `ThisAccessorDescriptor<Value, Obj>` |
 | `Obj`   | Gives the possibility to use the `this` keyword that refers to the `Obj` variable inside the `get()` and `set()` methods of the `descriptor` object, and in the return type `ThisAccessorDescriptor<Value, Obj>` |
 
 **Parameters:**
@@ -157,7 +343,7 @@ static defineAccessor<Value, Obj>(
 | Name: `type`                                     | Description                                                                                                                                                             |
 | :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to define with the default values of the [`CommonDescriptor`][common-descriptor] |
-| callback: `ResultCallback`                       | A [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`](#accessorcallback) function |
+| callback?: `ResultCallback`                      | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
 
 **Throws:**
 
@@ -170,7 +356,106 @@ The **return value** is an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][
 **Usage:**
 
 ```typescript
+// Example usage.
+import { Descriptor } from '@angular-package/property';
 
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = Descriptor.defineAccessor<string, Person>({
+  configurable: false,
+  enumerable: false,
+  get(): string {
+    return people.firstName;
+  },
+  set(value: string): void {
+    people.firstName = value;
+  },
+});
+
+// Define the property `firstName` in the `person` object to link with the same property in the `people` object.
+// Changes to the property `firstName` in the `person` object affect the property `firstName` in the `people` object.
+Object.defineProperty(person, 'firstName', firstNameDescriptor);
+```
+
+#### `Descriptor.defineData()`
+
+**Description:**
+
+Returns defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
+
+**Syntax:**
+
+```typescript
+static defineData<Value>(
+  descriptor: DataDescriptor<Value>,
+  callback: ResultCallback = dataCallback
+): DataDescriptor<Value> { ... }
+```
+
+**Generic type variables:**
+
+| Name    | Description |
+| :------ | :---------- |
+| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
+
+**Parameters:**
+
+| Name: `type`                        | Description                                                                                                                                                            |
+| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] to define with the default values of the [`CommonDescriptor`][common-descriptor] |
+| callback?: `ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function |
+
+**Throws:**
+
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] type, which means it doesn't contain `writable` or `value` property.
+
+**Returns:**
+
+The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Descriptor } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = Descriptor.defineData<string>({
+  configurable: false,
+  enumerable: false,
+  writable: false,
+  value: people.firstName
+});
+
+// Defines the property `firstName` of a type string in the `person` object with the same value as the property in the `people` object.
+Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
 ----
@@ -179,19 +464,21 @@ The **return value** is an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][
 
 **Description:**
 
-Strictly defines, sets, and stores privately single property accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+Strictly defines, sets, and stores privately property accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
 > Strictly means, methods picks `configurable`, `enumerable`, `get`, `set` properties from the provided `descriptor` object.
 
 **Features:**
 
-* The return value of the `get()` function is of a generic `Value` type.
-* The parameter of the `set()` function is of a generic `Value` type.
-* Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
+* Guarded process of defining the object descriptor, but properties are not being checked against proper values.
 * Strictly defines property accessor descriptor.
-* Strictly set, and store at the same time single property accessor descriptor.
-* Methods `set()` and `define()` picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
-* Get privately stored accessor descriptor defined by the `set()` method.
+* Strictly sets, and stores at the same time property accessor descriptor.
+* Accessor descriptor is of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type:
+  * The return value of the `get()` function is of a generic `Value` type.
+  * The parameter of the `set()` function is of a generic `Value` type.
+  * Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
+* Method [`set()`][accessordescriptors-prototype-set] of the instance and static [`define()`][accessordescriptors-define] picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
+* Get privately stored accessor descriptor defined by the [`set()`][accessordescriptors-prototype-set] method of the instance.
 
 **Import:**
 
@@ -209,7 +496,7 @@ AccessorDescriptors<Value, Obj = any> { ... }
 
 #### `accessorCallback()`
 
-The default callback function for the `AccessorDescriptors.guard` static method that's used to guard inputted value.
+The default callback function for the `AccessorDescriptors.guard()` static method that's used to guard inputted value.
 
 ```typescript
 const accessorCallback: ResultCallback = callbackErrorMessage(
@@ -238,15 +525,15 @@ static define<Value, Obj>(
 
 | Name    | Description |
 | :------ | :---------- |
-| `Value` | Guards the value type of the `get()` and `set()` methods of the `descriptor` object, and the return type `ThisAccessorDescriptor<Value, Obj>` |
-| `Obj`   | Gives the possibility to use the `this` keyword that refers to the `Obj` variable inside the `get()` and `set()` methods of the `descriptor` object, and in the return type `ThisAccessorDescriptor<Value, Obj>` |
+| `Value` | Guards the value type of the `get()` and `set()` functions of the `descriptor` object, and the return type [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] |
+| `Obj`   | Gives the possibility to use the `this` keyword that refers to the `Obj` variable inside the `get()` and `set()` functions of the `descriptor` object, and in the return type [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] |
 
 **Parameters:**
 
 | Name: `type`                                     | Description                                                                                                                                                                                                                                  |
 | :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to define with the default values of the [`CommonDescriptor`][common-descriptor]                                                                      |
-| callback: `ResultCallback`                       | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`](#accessorcallback) function |
+| `descriptor: ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to define with the default values of the [`CommonDescriptor`][common-descriptor]                                                                      |
+| `callback?: ResultCallback`                      | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
 
 **Throws:**
 
@@ -309,14 +596,14 @@ AccessorDescriptors<Value, Obj>(descriptor?: ThisAccessorDescriptor<Value, Obj>)
 
 | Name    | Description |
 | :------ | :---------- |
-| `Value` | Guards the value type of the `get()` and `set()` methods of the `descriptor` object |
-| `Obj`   | Gives the possibility to use the `this` keyword that refers to the `Obj` variable inside the `get()` and `set()` methods of the `descriptor` object |
+| `Value` | Guards the value type of the `get()` and `set()` functions of the `descriptor` object |
+| `Obj`   | Gives the possibility to use the `this` keyword that refers to the `Obj` variable inside the `get()` and `set()` functions of the `descriptor` object |
 
 **Parameters:**
 
 | Name: `type`                                      | Description                                                                                                                          |
 | :------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor?: `ThisAccessorDescriptor<Value, Obj>` | An optional `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to initially set accessor descriptor |
+| `descriptor?: ThisAccessorDescriptor<Value, Obj>` | An optional `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to initially set accessor descriptor |
 
 **Usage:**
 
@@ -355,7 +642,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>({
 
 **Description:**
 
-[Strictly](#accessordescriptors) sets with the last saved descriptor values, and stores privately single accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+[Strictly][accessordescriptors] sets with the last saved descriptor values, and stores privately accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
 **Syntax:**
 
@@ -368,10 +655,10 @@ set(
 
 **Parameters:**
 
-| Name: `type`                                     | Description                                                                                                                               |
-| :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] interface, to set with the last saved descriptor values |
-| callback?: `ResultCallback`                      | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `get` or `set` property, containing the `get` or `set` property, by default it uses [`accessorCallback()`](#accessorcallback) from the static `guard()` method |
+| Name: `type`                                     | Description                                                                                                                                               |
+| :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `descriptor: ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] [interface][ts-interface], to set with the last saved descriptor values |
+| `callback?: ResultCallback`                      | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] from the static `guard()` method |
 
 **Throws:**
 
@@ -379,7 +666,7 @@ Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`This
 
 **Returns:**
 
-The **return value** is the [`AccessorDescriptors`](#accessordescriptors) instance for the chaining.
+The **return value** is the [`AccessorDescriptors`][accessordescriptors] instance for the chaining.
 
 **Usage:**
 
@@ -420,7 +707,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 
 **Description:**
 
-Get privately stored accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type defined by the [`set()`](#accessordescriptors-set-method) method.
+Get privately stored accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type defined by the [`set()`][accessordescriptors-prototype-set] method.
 
 **Syntax:**
 
@@ -471,18 +758,19 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 **Description:**
 
-Strictly defines, sets, and stores privately single property data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
+Strictly defines, sets, and stores privately property data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
 
 > Strictly means, data descriptor of a [`DataDescriptor<Value>`][data-descriptor] is type guarded and methods picks `configurable`, `enumerable`, `writable`, `value` properties from the provided `descriptor` object.
 
 **Features:**
 
+* Data descriptor is of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface]:
+  * The `value` property is of a generic `Value` type.
 * Guarded process of defining the object descriptor, but properties are not being checked against proper values.
-* The `value` property is of a generic `Value` type.
-* Strictly define property data descriptor.
-* Strictly set, and store at the same time single property data descriptor.
-* Methods `set()` and `define()` picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
-* Get privately stored data descriptor defined by the `set()` method.
+* Strictly defines property data descriptor.
+* Strictly sets, and stores at the same time property data descriptor.
+* Method [`set()`][datadescriptors-prototype-set] of the instance and static [`define()`][datadescriptors-define] picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
+* Get privately stored data descriptor defined by the [`set()`][datadescriptors-prototype-set] method of the instance.
 
 **Import:**
 
@@ -502,7 +790,7 @@ DataDescriptors<Value> { ... }
 
 **Description:**
 
-Returns [**strictly**](#datadescriptors) defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface, on `writable` or `value` property detected.
+Returns [**strictly**][datadescriptors] defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
 
 **Syntax:**
 
@@ -517,22 +805,22 @@ static define<Value>(
 
 | Name    | Description |
 | :------ | :---------- |
-| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] interface |
+| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
 
 **Parameters:**
 
-| Name: `type`                        | Description                                                                                                                                                        |
-| :---------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] interface, to set with the default values of the [`CommonDescriptor`][common-descriptor]               |
-| callback?: `ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function from the static `guard()` method |
+| Name: `type`                        | Description                                                                                                                                                          |
+| :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], to set with the default values of the [`CommonDescriptor`][common-descriptor] |
+| callback?: `ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`][datadescriptors-datacallback] function from the static `guard()` method |
 
 **Throws:**
 
-Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] interface, which means it doesn't contain `writable` or `value` property.
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], which means it doesn't contain `writable` or `value` property.
 
 **Returns:**
 
-The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] interface.
+The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
 
 **Usage:**
 
@@ -575,7 +863,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 **Description:**
 
-Creates an instance, and optionally sets a data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
+Creates an instance, and optionally sets a data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
 
 **Syntax:**
 
@@ -591,9 +879,9 @@ DataDescriptors<Value>(descriptor?: DataDescriptor<Value>)
 
 **Parameters:**
 
-| Name: `type`                         | Description                                                                                                     |
-| :----------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| descriptor?: `DataDescriptor<Value>` | An optional `object` of a [`DataDescriptor<Value>`][data-descriptor] interface to initially set data descriptor |
+| Name: `type`                         | Description                                                                                                                     |
+| :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| `descriptor?: DataDescriptor<Value>` | An optional `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] to initially set data descriptor |
 
 **Usage:**
 
@@ -628,7 +916,7 @@ const firstNameDescriptor = new DataDescriptors<string>({ // Initialize
 
 **Description:**
 
-[Strictly](#datadescriptors) sets with the last saved descriptor values, and stores privately single data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
+[Strictly][datadescriptors] sets with the last saved descriptor values, and stores privately data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
 
 **Syntax:**
 
@@ -641,16 +929,16 @@ set(
 
 **Generic type variables:**
 
-| Name    | Description |
-| :------ | :---------- |
+| Name    | Description                                              |
+| :------ | :------------------------------------------------------- |
 | `Value` | Guards the `value` property from the `descriptor` object |
 
 **Parameters:**
 
-| Name: `type`                        | Description                                                                                                                                                                  |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] interface, to set with the last saved descriptor                                                                 |
-| callback?: `ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function from the static `guard()` method |
+| Name: `type`                        | Description                                                                                                                  |
+| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| `descriptor: DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], to set with the last saved descriptor |
+| `callback?: ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `writable` or `value` property, by default it uses [`dataCallback()`][datadescriptors-datacallback] function from the static `guard()` method |
 
 **Throws:**
 
@@ -658,7 +946,7 @@ Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`Data
 
 **Returns:**
 
-The **return value** is the [`DataDescriptors`](#datadescriptors) instance for the chaining.
+The **return value** is the [`DataDescriptors`][datadescriptors] instance for the chaining.
 
 **Usage:**
 
@@ -699,7 +987,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 **Description:**
 
-Get privately stored data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface defined by the [`set()`](#datadescriptors.prototype.set) method.
+Get privately stored data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] defined by the instance [`set()`][datadescriptors-prototype-set] method.
 
 **Syntax:**
 
@@ -795,7 +1083,7 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 
 **Description:**
 
-[`AccessorDescriptor`][accessor-descriptor] interface as a type cause of ease of use `this` of an `Obj` type in the `get()` and `set()` functions. More about property descriptors [here][js-object-define-property].
+[`AccessorDescriptor`][accessor-descriptor] [interface][ts-interface] as a type cause of ease of use `this` of an `Obj` type in the `get()` and `set()` functions. More about property descriptors [here][js-object-define-property].
 
 **Syntax:**
 
@@ -880,6 +1168,18 @@ MIT © angular-package ([license][property-badge-license])
 [common-descriptor]: #commondescriptor
 [data-descriptor]: #datadescriptor
 [this-accessor-descriptor]: #thisaccessordescriptor
+
+[accessordescriptors]: #accessordescriptors
+[accessordescriptors-accessorcallback]: #accessorcallback
+[accessordescriptors-define]: #accessordescriptorsdefine
+[accessordescriptors-prototype-set]: #accessordescriptorsprototypeset
+
+[datadescriptors]: #datadescriptors
+[datadescriptors-datacallback]: #datacallback
+[datadescriptors-prototype-set]: #datadescriptorsprototypeset
+
+[descriptor-defineaccessor]: #descriptordefineaccessor
+[descriptor-definedata]: #descriptordefinedata
 
 <!-- GIT -->
 [git-semver]: http://semver.org/
