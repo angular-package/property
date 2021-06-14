@@ -12,6 +12,9 @@ export interface GetSelectedDescriptor<Value, Obj extends object> {
   data: DataDescriptor<Value>;
   from: {
     object: (object: Obj) => ObjectPropertyDescriptors<Obj> | undefined;
-    property: (object: object | Func, key: keyof Obj) => PropertyDescriptor | undefined;
+    property: (
+      object: object | Func,
+      key: keyof Obj
+    ) => PropertyDescriptor | undefined;
   };
 }

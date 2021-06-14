@@ -9,6 +9,12 @@ import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
  * Select accessor or data descriptor instance to set.
  */
 export interface SetSelectedDescriptor<Value, Obj extends object> {
-  accessor: (descriptor: ThisAccessorDescriptor<Value, Obj>, callback?: ResultCallback) => Descriptor<Value, Obj>;
-  data: (descriptor: DataDescriptor<Value>, callback?: ResultCallback) => Descriptor<Value, Obj>;
+  accessor: (
+    descriptor: ThisAccessorDescriptor<Value, Obj>,
+    callback?: ResultCallback
+  ) => Descriptor<Value, Obj>;
+  data: (
+    descriptor: DataDescriptor<Value>,
+    callback?: ResultCallback
+  ) => Descriptor<Value, Obj>;
 }
