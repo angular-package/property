@@ -1,14 +1,11 @@
 // Object.
 import { is, guard, ResultCallback } from '@angular-package/type';
 // Function.
-import { callbackErrorMessage } from '../../lib/callback-error-message.function';
 import { pickProperty } from '../../lib/pick-property.function';
 // Interface.
 import { DataDescriptor } from '../interface/data-descriptor.interface';
 // Callback.
-export const dataCallback: ResultCallback = callbackErrorMessage(
-  `Data descriptor must be an \`DataDescriptors<Value>\` type`
-);
+import { callbacks } from '../../callback/src/callback.object';
 /**
  * Strictly defines, sets, and stores privately property data descriptor of a `DataDescriptor<Value>` interface.
  * Features:
@@ -87,7 +84,7 @@ export class DataDescriptors<Value> {
    */
   static guard<Value>(
     descriptor: DataDescriptor<Value>,
-    callback: ResultCallback = dataCallback
+    callback: ResultCallback = callbacks.data
   ): descriptor is DataDescriptor<Value> {
     return callback(
       guard.is.objectKeys(descriptor, 'writable', 'value'),

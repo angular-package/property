@@ -1,16 +1,11 @@
 // `is`, `guard` objects.
 import { guard, is, ResultCallback } from '@angular-package/type';
 // Function.
-import { callbackErrorMessage } from '../../lib/callback-error-message.function';
 import { pickProperty } from '../../lib/pick-property.function';
 // Type.
 import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
-/**
- * The default callback function for the `AccessorDescriptors.guard` static method that's used to guard inputted value.
- */
-export const accessorCallback: ResultCallback = callbackErrorMessage(
-  `Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`
-);
+// Callback.
+import { callbacks } from '../../callback/src/callback.object';
 /**
  * Strictly defines, sets, and stores privately single property accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
  * Features:
@@ -88,7 +83,7 @@ export class AccessorDescriptors<Value, Obj = any> {
    */
   static guard<Value, Obj>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback: ResultCallback = accessorCallback
+    callback: ResultCallback = callbacks.accessor
   ): descriptor is ThisAccessorDescriptor<Value, Obj> {
     return callback(guard.is.objectKeys(descriptor, 'get', 'set'), descriptor);
   }
