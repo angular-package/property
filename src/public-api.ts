@@ -2,14 +2,23 @@
  * Public API Surface of property
  */
 /**
- * Descriptor
+ * Function.
+ */
+export {
+  getExistProperty,
+  getProperty,
+  pickProperty,
+  setProperty
+} from './lib';
+
+/**
+ * Descriptor.
  */
 // Class.
 export {
   AccessorDescriptors,
   DataDescriptors,
-  Descriptor,
-  OwnDescriptor,
+  Descriptor
 } from './descriptor';
 // Interface.
 export {
