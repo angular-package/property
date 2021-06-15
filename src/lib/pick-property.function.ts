@@ -1,7 +1,7 @@
 // Object.
 import { is } from '@angular-package/type';
 // Type.
-import { PickProperty } from '../type/pick-property.type';
+import { PickProperties } from '../type/pick-property.type';
 /**
  * Picks specified properties from the `object`.
  * @param object An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to pick the `keys` from.
@@ -10,10 +10,13 @@ import { PickProperty } from '../type/pick-property.type';
  * array as the name of the properties that the `object` contains.
  * @returns The return value is an object with specified properties.
  */
-export const pickProperty: PickProperty = <Obj extends object>(
+export const pickProperties: PickProperties = <
+  Obj extends object,
+  Keys extends keyof Obj
+>(
   object: Obj,
-  keys: (keyof Obj)[]
-): { [P in keyof Obj]: Obj[P] } =>
+  keys: Keys[]
+): Pick<{ [P in keyof Obj]: Obj[P] }, Keys> =>
   Object.assign(
     {},
     ...keys.map((key) =>
