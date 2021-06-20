@@ -8,12 +8,12 @@ import { ConfigName } from '../interface/config-name.interface';
 import { PickName } from '../interface/pick-name.interface';
 
 export abstract class CommonName {
-  // Get name.
+  // Returns privately stored name.
   public get get(): string {
     return this.#name;
   }
 
-  // Generate a name with prefix and suffix.
+  // Generates the name with prefix and suffix.
   public get generate(): string {
     return `${this.#prefix.get}${this.get}${this.#suffix.get}`;
   }
@@ -36,7 +36,7 @@ export abstract class CommonName {
   #suffix: Suffix = new Suffix();
 
   /**
-   * Default method to create an instance.
+   * Creates an instance.
    * @param configName An optional `ConfigName` type value to set initially prefix and suffix.
    * @param name A `string` type value for the readonly name.
    */
