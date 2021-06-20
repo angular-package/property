@@ -4,10 +4,15 @@ import { Descriptor } from '../lib/descriptor.class';
 import { FALSE, TRUE } from '../../test/variables/boolean.const';
 import { NUMBER } from '../../test/variables/number.const';
 import { ObjectOne, OBJECT_ONE } from '../../test/variables/object.const';
-import { STRING } from '../../test/variables/string.const';
 import { SYMBOL_NUMBER } from '../../test/variables/symbol.const';
 
 describe(Descriptor.name, () => {
+
+  // Variables.
+  let OBJECT_ONE_CLONE: ObjectOne;
+
+  beforeEach(() => OBJECT_ONE_CLONE = { ...{}, ...OBJECT_ONE });
+
   // Defined.
   it('is defined', () => expect(Descriptor).toBeDefined());
 
@@ -30,7 +35,7 @@ describe(Descriptor.name, () => {
       expect(numberAccessorDescriptor.get.accessor.configurable).toBe(TRUE);
       expect(numberAccessorDescriptor.get.accessor.enumerable).toBe(TRUE);
       const newObject: { prop: number } & ObjectOne = Object.defineProperty(
-        { ...{}, ...OBJECT_ONE },
+        OBJECT_ONE_CLONE,
         'prop',
         numberAccessorDescriptor.get.accessor
       );
@@ -60,16 +65,16 @@ describe(Descriptor.name, () => {
   });
 
   describe(`Descriptor<number, ObjectOne>`, () => {
-    let numberDataDescriptor: Descriptor<number, ObjectOne>;
+    let numberDescriptor: Descriptor<number, ObjectOne>;
 
     // Before.
     beforeEach(
-      () => (numberDataDescriptor = new Descriptor<number, ObjectOne>())
+      () => (numberDescriptor = new Descriptor<number, ObjectOne>())
     );
-    it('is defined', () => expect(numberDataDescriptor).toBeDefined());
+    it('is defined', () => expect(numberDescriptor).toBeDefined());
 
     it(`accessor(AccessorDescriptor)`, () => {
-      numberDataDescriptor.accessor({
+      numberDescriptor.set.accessor({
         get(): number {
           return this.x;
         },
@@ -77,29 +82,29 @@ describe(Descriptor.name, () => {
           this.x = value;
         },
       });
-      expect(numberDataDescriptor.get.accessor.configurable).toBe(TRUE);
-      expect(numberDataDescriptor.get.accessor.enumerable).toBe(TRUE);
+      expect(numberDescriptor.get.accessor.configurable).toBe(TRUE);
+      expect(numberDescriptor.get.accessor.enumerable).toBe(TRUE);
       const newObject: { prop: number } & ObjectOne = Object.defineProperty(
-        { ...{}, ...OBJECT_ONE },
+        OBJECT_ONE_CLONE,
         'prop',
-        numberDataDescriptor.get.accessor
+        numberDescriptor.get.accessor
       );
       expect(newObject.prop).toEqual(OBJECT_ONE.x);
     });
 
     it(`data(DataDescriptor)`, () => {
-      numberDataDescriptor.data({
+      numberDescriptor.set.data({
         writable: true,
         value: 5,
       });
-      expect(numberDataDescriptor.get.data.configurable).toBe(TRUE);
-      expect(numberDataDescriptor.get.data.enumerable).toBe(TRUE);
-      expect(numberDataDescriptor.get.data.writable).toBe(TRUE);
-      expect(numberDataDescriptor.get.data.value).toEqual(5);
+      expect(numberDescriptor.get.data.configurable).toBe(TRUE);
+      expect(numberDescriptor.get.data.enumerable).toBe(TRUE);
+      expect(numberDescriptor.get.data.writable).toBe(TRUE);
+      expect(numberDescriptor.get.data.value).toEqual(5);
     });
 
     it(`set(AccessorDescriptor)`, () => {
-      numberDataDescriptor.set({
+      numberDescriptor.set.accessor({
         get(): number {
           return this.x;
         },
@@ -107,12 +112,12 @@ describe(Descriptor.name, () => {
           this.x = value;
         },
       });
-      expect(numberDataDescriptor.get.accessor.configurable).toBe(TRUE);
-      expect(numberDataDescriptor.get.accessor.enumerable).toBe(TRUE);
+      expect(numberDescriptor.get.accessor.configurable).toBe(TRUE);
+      expect(numberDescriptor.get.accessor.enumerable).toBe(TRUE);
       const newObject: { prop: number } & ObjectOne = Object.defineProperty(
-        { ...{}, ...OBJECT_ONE },
+        OBJECT_ONE_CLONE,
         'prop',
-        numberDataDescriptor.get.accessor
+        numberDescriptor.get.accessor
       );
       expect(newObject.prop).toEqual(OBJECT_ONE.x);
     });
@@ -127,7 +132,7 @@ describe(Descriptor.name, () => {
     it('defined', () => expect(stringDescriptor).toBeDefined());
 
     it('accessor(AccessorDescriptor)', () => {
-      stringDescriptor.accessor({
+      stringDescriptor.set.accessor({
         get(): string {
           return this.test;
         },
@@ -138,16 +143,16 @@ describe(Descriptor.name, () => {
       expect(stringDescriptor.get.accessor.configurable).toBe(TRUE);
       expect(stringDescriptor.get.accessor.enumerable).toBe(TRUE);
       const newObject: { prop: string } & ObjectOne = Object.defineProperty(
-        { ...{}, ...OBJECT_ONE },
+        OBJECT_ONE_CLONE,
         'prop',
         stringDescriptor.get.accessor
       );
-      expect(newObject.prop).toEqual(OBJECT_ONE.test);
+      expect(newObject.prop).toEqual(OBJECT_ONE_CLONE.test);
     });
 
     describe(`set`, () => {
       it(`(DataDescriptor)`, () => {
-        stringDescriptor.set({
+        stringDescriptor.set.data({
           writable: true,
           value: 'Bla',
         });
@@ -162,7 +167,7 @@ describe(Descriptor.name, () => {
       let anyDescriptor: Descriptor<any, ObjectOne>;
       it(`(OBJECT_ONE)`, () => {
         const getObjectDescriptors =
-          stringDescriptor.get.own.object(OBJECT_ONE);
+          stringDescriptor.get.from.object(OBJECT_ONE_CLONE);
         expect(getObjectDescriptors).toBeDefined();
         // if (getObjectDescriptors) {
         //   expect(getObjectDescriptors.configurable).toBe(TRUE);
@@ -175,9 +180,9 @@ describe(Descriptor.name, () => {
 
     describe(`property`, () => {
       it(`(OBJECT_ONE, 'test')`, () => {
-        const getDescriptor = stringDescriptor.get.own.property(
+        const getDescriptor = stringDescriptor.get.from.property(
+          OBJECT_ONE_CLONE,
           'test',
-          OBJECT_ONE
         );
         expect(getDescriptor).toBeDefined();
         if (getDescriptor) {
@@ -189,9 +194,9 @@ describe(Descriptor.name, () => {
       });
 
       it(`(OBJECT_ONE, SYMBOL_NUMBER)`, () => {
-        const getDescriptor = stringDescriptor.get.own.property(
-          SYMBOL_NUMBER,
-          OBJECT_ONE
+        const getDescriptor = stringDescriptor.get.from.property(
+          OBJECT_ONE_CLONE,
+          SYMBOL_NUMBER
         );
         expect(getDescriptor).toBeDefined();
         if (getDescriptor) {
@@ -203,9 +208,9 @@ describe(Descriptor.name, () => {
       });
 
       it(`(OBJECT_ONE, NUMBER)`, () => {
-        const getDescriptor = stringDescriptor.get.own.property(
-          NUMBER,
-          OBJECT_ONE
+        const getDescriptor = stringDescriptor.get.from.property(
+          OBJECT_ONE_CLONE,
+          NUMBER
         );
         expect(getDescriptor).toBeDefined();
         if (getDescriptor) {
