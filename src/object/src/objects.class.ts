@@ -24,11 +24,11 @@ export class Objects<Obj extends object> {
    * @param callback
    * @returns
    */
-  static get = <Obj extends object | Func>(
+  static get = <Obj extends object>(
     object: Obj,
     callback?: ResultCallback
   ): Obj => {
-    return is.class<Func>(object, callback)
+    return is.class(object, callback)
       ? Objects.getPrototype(object)
       : guard.is.object<Obj>(object, callback)
       ? object
