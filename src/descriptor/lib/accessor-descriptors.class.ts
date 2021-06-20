@@ -1,7 +1,7 @@
 // `is`, `guard` objects.
 import { guard, is, ResultCallback } from '@angular-package/type';
 // Function.
-import { pickProperties } from '../../lib/pick-property.function';
+import { getProperties } from '../../lib/get-properties.function';
 // Type.
 import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
 // Callback.
@@ -58,7 +58,7 @@ export class AccessorDescriptors<Value, Obj = any> {
     callback?: ResultCallback
   ): ThisAccessorDescriptor<Value, Obj> {
     if (AccessorDescriptors.guard(descriptor, callback)) {
-      return pickProperties(
+      return getProperties(
         {
           ...{
             configurable: true,
@@ -105,7 +105,7 @@ export class AccessorDescriptors<Value, Obj = any> {
     if (AccessorDescriptors.guard(descriptor, callback)) {
       this.#descriptor = {
         ...this.#descriptor,
-        ...pickProperties(descriptor, [
+        ...getProperties(descriptor, [
           'configurable',
           'enumerable',
           'get',
