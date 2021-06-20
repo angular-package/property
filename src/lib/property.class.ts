@@ -77,7 +77,7 @@ export class Property<Value> {
     key: K = this.#name.generate as K,
     callback?: ResultCallback
   ): Obj[K] | undefined {
-    return getProperty(object, key, callback);
+    return getProperty(object, key);
   }
 
   /**
