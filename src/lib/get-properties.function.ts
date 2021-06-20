@@ -15,8 +15,8 @@ export const getProperties: GetProperties = <
   Keys extends keyof Obj
 >(
   object: Obj,
-  keys: (Keys)[]
-): Pick<{ [P in keyof Obj]: Obj[P] }, Keys> =>
+  keys: Keys[]
+): Pick<Obj, Keys> =>
   Object.assign(
     {},
     ...keys.map((key) =>
