@@ -1,8 +1,8 @@
 // Object.
 import { is } from '@angular-package/type';
 // Class.
-import { ConstantNames } from '../name/lib/constant-names.class';
-import { GenericNames } from '../name/lib/generic-names.class';
+import { ConstantName } from '../name/lib/constant-names.class';
+import { Name } from '../name/lib/name.class';
 // Interface.
 import { ConfigName } from '../name/interface/config-name.interface';
 import { PickName } from '../name/interface/pick-name.interface';
@@ -29,12 +29,12 @@ export class PropertyName {
     return this.#constant || this.#generic;
   }
 
-  #constant?: ConstantNames;
-  #generic: GenericNames = new GenericNames();
+  #constant?: ConstantName;
+  #generic: Name = new Name();
 
   constructor(constantOrConfig?: string | GenericConfigName, config?: ConfigName) {
     if (is.string(constantOrConfig)) {
-      this.#constant = new ConstantNames(constantOrConfig, config);
+      this.#constant = new ConstantName(constantOrConfig, config);
     } else if (is.object<GenericConfigName>(constantOrConfig)) {
       this.config(constantOrConfig);
       if (is.objectKey<GenericConfigName>(constantOrConfig, ['name'])) {
@@ -58,7 +58,7 @@ export class PropertyName {
   }
 
   public set(name: string): this {
-    if (is.instance<ConstantNames>(this.#constant, ConstantNames)) {
+    if (is.instance(this.#constant, ConstantName)) {
       throw new Error(`Name ${this.#constant.get} is readonly`);
     }
     this.#generic.set(name);
