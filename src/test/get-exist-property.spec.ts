@@ -10,6 +10,8 @@ describe(getExistProperty.name, () => {
 
   let OBJECT_ONE_CLONE: ObjectOne;
 
+  beforeEach(() => OBJECT_ONE_CLONE = { ...{}, ...OBJECT_ONE });
+
   const property = 'test';
   function updateProperty(value: any, key: string): ObjectOne {
     value[key] = undefined;
@@ -28,10 +30,8 @@ describe(getExistProperty.name, () => {
 
     describe('from the OBJECT_ONE', () => {
 
-      beforeEach(() => OBJECT_ONE_CLONE = { ...{}, ...OBJECT_ONE });
-
       it('when OBJECT_ONE and its property exists', () => {
-        expect(getExistProperty(OBJECT_ONE, 'key as string')).toEqual(TRUE);
+        expect(getExistProperty(OBJECT_ONE_CLONE, 'key as string')).toEqual(TRUE);
         expect(getExistProperty(OBJECT_TWO, 'x')).toEqual('One Two Three');
       });
 
