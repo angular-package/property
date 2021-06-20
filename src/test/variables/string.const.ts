@@ -7,7 +7,7 @@
  * instanceof Object === false
  * instanceof String === false
  */
-export const STRING: any = '!@#$%^&*()abcdefghijklmnoprstuwyz';
+export const STRING = '!@#$%^&*()abcdefghijklmnoprstuwyz';
 
 /**
  * typeof === 'string'

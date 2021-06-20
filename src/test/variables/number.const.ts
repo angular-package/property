@@ -9,7 +9,7 @@
  * instanceof Number === false
  * instanceof Object === false
  */
-export const NUMBER: any = 10304050;
+export const NUMBER = 10304050;
 
 /**
  * typeof === 'number'

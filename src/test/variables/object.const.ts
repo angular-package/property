@@ -1,13 +1,16 @@
 import { NUMBER } from './number.const';
 import { STRING } from './string.const';
 import { SYMBOL_NUMBER, SYMBOL_STRING } from './symbol.const';
+
 export interface ObjectOne {
   test: string;
   'key as string'?: boolean;
   1030405027: string;
   5?: string;
-  [SYMBOL_NUMBER]?: string;
-  [SYMBOL_STRING]?: number;
+  [NUMBER]: string;
+  [STRING]: string;
+  [SYMBOL_NUMBER]: string;
+  [SYMBOL_STRING]: number;
   x: number;
 }
 export interface ObjectTwo { x: string; y: number; }
