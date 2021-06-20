@@ -7,6 +7,9 @@ import { TRUE } from './variables/boolean.const';
  * Test `getExistProperty()` function.
  */
 describe(getExistProperty.name, () => {
+
+  let OBJECT_ONE_CLONE: ObjectOne = OBJECT_ONE;
+
   const property = 'test';
   function updateProperty(value: any, key: string): ObjectOne {
     value[key] = undefined;
@@ -22,7 +25,10 @@ describe(getExistProperty.name, () => {
   it('is DEFINED', () => expect(getExistProperty).toBeDefined());
 
   describe('get property', () => {
+
     describe('from the OBJECT_ONE', () => {
+
+      beforeEach(() => OBJECT_ONE_CLONE = { ...{}, ...OBJECT_ONE });
 
       it('when OBJECT_ONE and its property exists', () => {
         expect(getExistProperty(OBJECT_ONE, 'key as string')).toEqual(TRUE);
@@ -30,18 +36,17 @@ describe(getExistProperty.name, () => {
       });
 
       it('when OBJECT_ONE does not exist and the default callback throws an error', () => {
-        const TEMP = { ...{}, ...OBJECT_ONE };
         try {
-          getExistProperty(removeObject(TEMP), property);
+          getExistProperty(removeObject(OBJECT_ONE_CLONE), property);
         } catch (error) {
           expect(error.message).toContain('Object with the specified key does not exist');
         }
       });
 
       it('when OBJECT_ONE property does not exists and the default callback throws an error', () => {
-        updateProperty(OBJECT_ONE, property);
+        updateProperty(OBJECT_ONE_CLONE, property);
         try {
-          const get = getExistProperty(OBJECT_ONE, property);
+          const get = getExistProperty(OBJECT_ONE_CLONE, property);
         } catch (error) {
           expect(error.message).toContain('Object with the specified key does not exist');
         }
@@ -49,8 +54,8 @@ describe(getExistProperty.name, () => {
     });
 
     it('when OBJECT_ONE exists but its property does not exist and custom callback does not throw an error', () => {
-      updateProperty(OBJECT_ONE, property);
-      getExistProperty(OBJECT_ONE, property, (result: boolean, value: any) => {
+      updateProperty(OBJECT_ONE_CLONE, property);
+      getExistProperty(OBJECT_ONE_CLONE, property, (result: boolean, value: any) => {
         expect(result).toBeFalse();
         expect(value[property]).toBeUndefined();
         return result;
