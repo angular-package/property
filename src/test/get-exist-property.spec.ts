@@ -8,7 +8,7 @@ import { TRUE } from './variables/boolean.const';
  */
 describe(getExistProperty.name, () => {
 
-  let OBJECT_ONE_CLONE: ObjectOne = OBJECT_ONE;
+  let OBJECT_ONE_CLONE: ObjectOne;
 
   const property = 'test';
   function updateProperty(value: any, key: string): ObjectOne {

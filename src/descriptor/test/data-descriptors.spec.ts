@@ -3,12 +3,17 @@ import { ObjectOne, OBJECT_ONE } from '../../test/variables/object.const';
 import { FALSE, TRUE } from '../../test/variables/boolean.const';
 
 describe(DataDescriptors.name, () => {
+  // Constants.
+  const STRING = 'Bla';
+
   // Variables.
   let dataDescriptors: DataDescriptors<string | undefined>;
-  const STRING = 'Bla';
+  let OBJECT_ONE_CLONE: ObjectOne;
 
   // Before.
   beforeEach(() => (dataDescriptors = new DataDescriptors()));
+  beforeEach(() => OBJECT_ONE_CLONE = { ...{}, ...OBJECT_ONE });
+
   // Defined.
   it('is defined', () => expect(dataDescriptors).toBeDefined());
 
@@ -50,7 +55,7 @@ describe(DataDescriptors.name, () => {
     expect(dataDescriptors.get.value).toBe(STRING);
 
     const newObject: { prop: string } & ObjectOne = Object.defineProperty(
-      { ...{}, ...OBJECT_ONE },
+      OBJECT_ONE_CLONE,
       'prop',
       dataDescriptors.get
     );
