@@ -1,2 +1,2 @@
 import { ResultCallback } from '@angular-package/type';
-export type GetObject = <Obj>(object: Obj, callback?: ResultCallback) => Obj | undefined;
+export type GetObject = <Obj extends object>(object: Obj, callback?: ResultCallback) => Obj;
