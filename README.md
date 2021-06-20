@@ -1,6 +1,6 @@
 # Packages
 
-Useful packages based on the [angular.io](https://angular.io/).
+Useful and simple to use packages based on the [angular.io][angulario].
 
 | Package          | Description                                  | Status                                         | Readme                                                 |
 | :--------------- | :------------------------------------------- | :--------------------------------------------: | :----------------------------------------------------- |
@@ -15,21 +15,24 @@ Useful packages based on the [angular.io](https://angular.io/).
 Features to handle properties.
 
 [![npm version][property-npm-svg]][property-npm-badge]
-[![GitHub issues](https://img.shields.io/github/issues/angular-package/property)][property-badge-issues]
-[![GitHub forks](https://img.shields.io/github/forks/angular-package/property)][property-badge-forks]
-[![GitHub stars](https://img.shields.io/github/stars/angular-package/property)][property-badge-stars]
-[![GitHub license](https://img.shields.io/github/license/angular-package/property)][property-badge-license]
+[![GitHub issues][property-badge-issues]][property-issues]
+[![GitHub forks][property-badge-forks]][property-forks]
+[![GitHub stars][property-badge-stars]][property-stars]
+[![GitHub license][property-badge-license]][property-license]
 
 ----
 
 * [Installation](#installation)
+* [Callback](#callback)
+* [Object](#object)
+  * [`callbacks`](#callbacks)
+  * [`get`](#get)
 * [Function](#function)
   * [`getExistProperty()`](#getexistproperty)
+  * [`getProperties()`](#getproperties)
   * [`getProperty()`](#getproperty)
-  * [`pickProperty()`](#pickproperty)
   * [`setProperty()`](#setproperty)
-* [Callback](#callback)
-* [Package](#package)
+* **Package**
   * [Descriptor](#descriptor-sub-package)
     * [`Descriptor`](#descriptor)
     * [`Accessor`](#accessordescriptors)
@@ -53,30 +56,105 @@ npm i --save @angular-package/property
 
 ----
 
+## Callback
+
+Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
+
+```typescript
+const errorCallback: ErrorCallback  = (
+  message: string,
+  on: boolean = false
+): ResultCallback => {
+  return (result: boolean, value: any): boolean => {
+    if (result === on) {
+      throw new Error(
+        `${message}, got value ${
+          is.object(value) ? JSON.stringify(value) : value
+        }`
+      );
+    }
+    return result;
+  };
+};
+```
+
+----
+
+## Object
+
+### `callbacks`
+
+**Description:**
+
+Object with all necessary callbacks for the `property` package.
+
+```typescript
+const callbacks: Callbacks = {
+  accessor: errorCallback(`Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`),
+  data: errorCallback(`Data descriptor must be an \`DataDescriptors<Value>\` type`),
+  descriptor: errorCallback(`Any kind of descriptor was not found`),
+  getExistProperty: errorCallback(`Object with the specified key does not exist`),
+};
+```
+
+**Interface:**
+
+```typescript
+interface Callbacks {
+  [index: string]: ResultCallback;
+}
+```
+
+### `get`
+
+**Description:**
+
+Get object with all prefixed with `get` functions.
+
+```typescript
+const get: Get = {
+  existProperty: getExistProperty,
+  object: getObject,
+  properties: getProperties,
+  property: getProperty
+};
+```
+
+----
+
 ## Function
 
 ### `getExistProperty()`
 
 **Description:**
 
-Returns the value of the existing specified property from the `object`.
+Use `getExistProperty()` or `get.existProperty()` to return the value of the existing specified property from the `object`.
+
+**Features:**
+
+* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
+* Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
+* Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
+* Uses custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
+* Returns the property value from the `object`.
 
 **Import:**
 
 ```typescript
-import { getExistProperty } from '@angular-package/property';
+import { get, getExistProperty } from '@angular-package/property';
 ```
 
 **Syntax:**
 
 ```typescript
-const getExistProperty: GetProperty = <
+const getExistProperty: GetExistProperty = <
   Obj extends object,
   Key extends keyof Obj
 >(
   object: Obj,
   key: Key,
-  callback?: ResultCallback
+  callback: ResultCallback = callbacks.getExistProperty
 ): Obj[Key] =>
   guard.is.objectKey(object, key, callback)
     ? getProperty(object, key)
@@ -87,7 +165,7 @@ const getExistProperty: GetProperty = <
 
 | Name                    | Description |
 | :---------------------- | :---------- |
-| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
+| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
 | `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
 
 **Parameters:**
@@ -95,7 +173,11 @@ const getExistProperty: GetProperty = <
 | Name: `type`  | Description                                                                                                    |
 | :------------ | :------------------------------------------------------------------------------------------------------------- |
 | `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from. The value is being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against existence the property in the `object` |
+| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against its existence in the `object` |
+
+**Throws:**
+
+By default throws an [`Error`][js-error] if the specified object does not exist or the object exists, but the key doesn't.
 
 **Returns:**
 
@@ -105,18 +187,124 @@ The **return value** is a property value from the `object`.
 
 ```typescript
 // Example usage.
+import { get, getExistProperty } from '@angular-package/type';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+getExistProperty(person, 'firstName'); // Returns 'first name'
+getExistProperty(people, 'age'); // Uncaught Error: Object with the specified key does not exist, got value {}
+// Custom callback.
+getExistProperty(people, 'age', (result: boolean, value: any) => {
+  console.log(result); // `result` of the check is equal to the `false`
+  console.log(value); // `value` is equal to `{}` - object is empty
+  return result;
+}); // Returns `undefined`, does not throws an Error cause of custom callback.
+```
+
+### `getProperties()`
+
+**Description:**
+
+Use `getProperties()` or `get.properties()` to get specified properties from the `object`.
+
+**Import:**
+
+```typescript
+import { get, getProperties } from '@angular-package/property';
+```
+
+**Syntax:**
+
+```typescript
+const getProperties: GetProperties = <
+  Obj extends object,
+  Keys extends keyof Obj
+>(
+  object: Obj,
+  keys: Keys[]
+): Pick<{ [P in keyof Obj]: Obj[P] }, Keys> =>
+  Object.assign(
+    {},
+    ...keys.map((key) =>
+      !is.undefined(object[key]) ? { [key]: object[key] } : undefined
+    )
+  );
+```
+
+**Generic type variables:**
+
+| Name                 | Description |
+| :------------------- | :---------- |
+| `Obj extends object` | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Pick<{ [P in keyof Obj]: Obj[P] }, Keys>` |
+
+**Parameters:**
+
+| Name: `type`   | Description                                                                                                    |
+| :------------- | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj`  | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the `keys` from. The value is not being checked against the proper `object` type |
+| `keys: Keys[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the name of the properties that the `object` contains |
+
+**Returns:**
+
+The **return value** is an `object` with specified properties.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { getProperties } from '@angular-package/type';
+
+interface PersonShape {
+  firstName: string;
+  age: number;
+  lastName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+  lastName = 'last name';
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+getProperties(person, ['age',  'firstName', 'lastName']);
+getProperties(people, ['age']);
+// Custom callback.
+getProperties(people, ['age']);
 ```
 
 ### `getProperty()`
 
 **Description:**
 
-Returns the value of the specified property from the `object`.
+Use `getProperty()` or `get.property()` to return the value of the specified property from the `object`.
 
 **Import:**
 
 ```typescript
-import { getProperty } from '@angular-package/property';
+import { get, getProperty } from '@angular-package/property';
 ```
 
 **Syntax:**
@@ -135,7 +323,7 @@ const getProperty: GetProperty = <
 
 | Name                    | Description |
 | :---------------------- | :---------- |
-| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
+| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
 | `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
 
 **Parameters:**
@@ -148,56 +336,6 @@ const getProperty: GetProperty = <
 **Returns:**
 
 The **return value** is  a property value from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-```
-
-### `pickProperty()`
-
-**Description:**
-
-Picks specified properties from the `object`.
-
-**Import:**
-
-```typescript
-import { pickProperty } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const pickProperty: PickProperty = <Obj extends object>(
-  obj: Obj,
-  keys: (keyof Obj)[]
-): { [P in keyof Obj]: Obj[P] } =>
-  Object.assign(
-    {},
-    ...keys.map((key) =>
-      !is.undefined(obj[key]) ? { [key]: obj[key] } : undefined
-    )
-  );
-```
-
-**Generic type variables:**
-
-| Name                 | Description |
-| :------------------- | :---------- |
-| `Obj extends object` | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `{ [P in keyof Obj]: Obj[P] }` |
-
-**Parameters:**
-
-| Name: `type`          | Description                                                                                                    |
-| :-------------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`         | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to pick the `keys` from. The value is not being checked against the proper `object` type |
-| `keys: (keyof Obj)[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the name of the properties that the `object` contains |
-
-**Returns:**
-
-The **return value** is an `object` with specified properties.
 
 **Usage:**
 
@@ -253,30 +391,6 @@ The **return value** is from the property of the specified `object`.
 
 ```typescript
 // Example usage.
-```
-
-----
-
-## Callback
-
-Wrapper for the [`ResultCallback`][resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
-
-```typescript
-const callbackErrorMessage = (
-  message: string,
-  on: boolean = false
-): ResultCallback => {
-  return (result: boolean, value: any): boolean => {
-    if (result === on) {
-      throw new Error(
-        `${message}, got value ${
-          is.object(value) ? JSON.stringify(value) : value
-        }`
-      );
-    }
-    return result;
-  };
-};
 ```
 
 ----
@@ -367,7 +481,7 @@ static defineAccessor<Value, Obj>(
 | Name: `type`                                     | Description                                                                                                                                                             |
 | :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to define with the default values of the [`CommonDescriptor`][common-descriptor] |
-| callback?: `ResultCallback`                      | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
+| callback?: `ResultCallback`                      | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
 
 **Throws:**
 
@@ -440,7 +554,7 @@ static defineData<Value>(
 | Name: `type`                        | Description                                                                                                                                                            |
 | :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] to define with the default values of the [`CommonDescriptor`][common-descriptor] |
-| callback?: `ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function |
+| callback?: `ResultCallback`         | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function |
 
 **Throws:**
 
@@ -557,7 +671,7 @@ static define<Value, Obj>(
 | Name: `type`                                     | Description                                                                                                                                                                                                                                  |
 | :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `descriptor: ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to define with the default values of the [`CommonDescriptor`][common-descriptor]                                                                      |
-| `callback?: ResultCallback`                      | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
+| `callback?: ResultCallback`                      | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
 
 **Throws:**
 
@@ -682,7 +796,7 @@ set(
 | Name: `type`                                     | Description                                                                                                                                               |
 | :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `descriptor: ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] [interface][ts-interface], to set with the last saved descriptor values |
-| `callback?: ResultCallback`                      | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] from the static `guard()` method |
+| `callback?: ResultCallback`                      | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] from the static `guard()` method |
 
 **Throws:**
 
@@ -836,7 +950,7 @@ static define<Value>(
 | Name: `type`                        | Description                                                                                                                                                          |
 | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], to set with the default values of the [`CommonDescriptor`][common-descriptor] |
-| callback?: `ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`][datadescriptors-datacallback] function from the static `guard()` method |
+| callback?: `ResultCallback`         | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`][datadescriptors-datacallback] function from the static `guard()` method |
 
 **Throws:**
 
@@ -962,7 +1076,7 @@ set(
 | Name: `type`                        | Description                                                                                                                  |
 | :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
 | `descriptor: DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], to set with the last saved descriptor |
-| `callback?: ResultCallback`         | An optional [`ResultCallback`][resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `writable` or `value` property, by default it uses [`dataCallback()`][datadescriptors-datacallback] function from the static `guard()` method |
+| `callback?: ResultCallback`         | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` containing the `writable` or `value` property, by default it uses [`dataCallback()`][datadescriptors-datacallback] function from the static `guard()` method |
 
 **Throws:**
 
@@ -1152,6 +1266,7 @@ MIT © angular-package ([license][property-badge-license])
 
 ----
 
+[angulario]: https://angular.io
 [skeleton]: https://github.com/angular-package/skeleton
 
 <!-- Update status -->
@@ -1160,10 +1275,16 @@ MIT © angular-package ([license][property-badge-license])
 [update]: https://img.shields.io/badge/-update-red
 
 <!-- Property: badges -->
-[property-badge-forks]: https://github.com/angular-package/property/network
-[property-badge-issues]: https://github.com/angular-package/property/issues
-[property-badge-license]: https://github.com/angular-package/property/blob/master/LICENSE
-[property-badge-stars]: https://github.com/angular-package/property/stargazers
+[property-badge-issues]: https://img.shields.io/github/issues/angular-package/property
+[property-badge-forks]: https://img.shields.io/github/forks/angular-package/property
+[property-badge-stars]: https://img.shields.io/github/stars/angular-package/property
+[property-badge-license]: https://img.shields.io/github/license/angular-package/property
+
+<!-- Property: github -->
+[property-issues]: https://github.com/angular-package/property/issues
+[property-forks]: https://github.com/angular-package/property/network
+[property-license]: https://github.com/angular-package/property/blob/master/LICENSE
+[property-stars]: https://github.com/angular-package/property/stargazers
 
 <!-- Package: property -->
 [property-npm-svg]: https://badge.fury.io/js/%40angular-package%property.svg
@@ -1177,6 +1298,9 @@ MIT © angular-package ([license][property-badge-license])
 [type-readme-github]: https://github.com/angular-package/type#readme
 [type-readme-npm]: https://www.npmjs.com/package/@angular-package/type#readme
 
+[package-type-resultcallback]: https://github.com/angular-package/type#resultcallback
+[package-type-key]: https://github.com/angular-package/type#key
+
 <!-- Package: change-detection -->
 [cd-readme-github]: https://github.com/angular-package/change-detection#readme
 
@@ -1187,7 +1311,6 @@ MIT © angular-package ([license][property-badge-license])
 [ui-readme-github]: https://github.com/angular-package/ui#readme
 
 <!-- Property: type -->
-[resultcallback]: https://github.com/angular-package/type#resultcallback
 [accessor-descriptor]: #accessordescriptor
 [common-descriptor]: #commondescriptor
 [data-descriptor]: #datadescriptor
