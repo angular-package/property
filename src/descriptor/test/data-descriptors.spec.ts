@@ -1,6 +1,6 @@
 import { DataDescriptors } from '../lib/data-descriptors.class';
-import { ObjectOne, OBJECT_ONE } from '../../test/variables/object.const';
-import { FALSE, TRUE } from '../../test/variables/boolean.const';
+import { ObjectOne, OBJECT_ONE } from '../../test/constants/object.const';
+import { FALSE, TRUE } from '../../test/constants/boolean.const';
 
 describe(DataDescriptors.name, () => {
   // Constants.

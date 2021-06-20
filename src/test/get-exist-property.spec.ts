@@ -1,8 +1,8 @@
 // Function to test.
 import { getExistProperty } from '../lib/get-exist-property.function';
 // Object.
-import { OBJECT_ONE, OBJECT_TWO, ObjectOne } from './variables/object.const';
-import { TRUE } from './variables/boolean.const';
+import { OBJECT_ONE, OBJECT_TWO, ObjectOne } from './constants/object.const';
+import { TRUE } from './constants/boolean.const';
 /**
  * Test `getExistProperty()` function.
  */

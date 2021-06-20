@@ -1,11 +1,11 @@
 // Function to test.
 import { getProperties } from '../lib/get-properties.function';
 // Constant.
-import { NUMBER } from './variables/number.const';
-import { OBJECT_ONE } from './variables/object.const';
-import { SYMBOL_NUMBER, SYMBOL_STRING } from './variables/symbol.const';
-import { CLASS } from './variables/class.const';
-import { STRING } from './variables/string.const';
+import { NUMBER } from './constants/number.const';
+import { OBJECT_ONE } from './constants/object.const';
+import { SYMBOL_NUMBER, SYMBOL_STRING } from './constants/symbol.const';
+import { CLASS } from './constants/class.const';
+import { STRING } from './constants/string.const';
 /**
  *
  */

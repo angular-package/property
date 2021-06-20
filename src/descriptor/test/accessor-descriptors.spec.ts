@@ -3,8 +3,8 @@ import { is } from '@angular-package/type';
 // Main class to test.
 import { AccessorDescriptors } from '../lib/accessor-descriptors.class';
 // Constant.
-import { ObjectOne, OBJECT_ONE } from '../../test/variables/object.const';
-import { TRUE } from '../../test/variables/boolean.const';
+import { ObjectOne, OBJECT_ONE } from '../../test/constants/object.const';
+import { TRUE } from '../../test/constants/boolean.const';
 
 describe(AccessorDescriptors.name, () => {
   // Variables.

@@ -1,10 +1,10 @@
 // Class.
 import { Descriptor } from '../lib/descriptor.class';
 // Variables.
-import { FALSE, TRUE } from '../../test/variables/boolean.const';
-import { NUMBER } from '../../test/variables/number.const';
-import { ObjectOne, OBJECT_ONE } from '../../test/variables/object.const';
-import { SYMBOL_NUMBER } from '../../test/variables/symbol.const';
+import { FALSE, TRUE } from '../../test/constants/boolean.const';
+import { NUMBER } from '../../test/constants/number.const';
+import { ObjectOne, OBJECT_ONE } from '../../test/constants/object.const';
+import { SYMBOL_NUMBER } from '../../test/constants/symbol.const';
 
 describe(Descriptor.name, () => {
 
