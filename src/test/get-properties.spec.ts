@@ -2,7 +2,7 @@
 import { getProperties } from '../lib/get-properties.function';
 // Constant.
 import { NUMBER } from './variables/number.const';
-import { ObjectOne, OBJECT_ONE } from './variables/object.const';
+import { OBJECT_ONE } from './variables/object.const';
 import { SYMBOL_NUMBER, SYMBOL_STRING } from './variables/symbol.const';
 import { CLASS } from './variables/class.const';
 import { STRING } from './variables/string.const';
