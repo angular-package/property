@@ -2,13 +2,20 @@
  * Public API Surface of property
  */
 /**
+ * Object.
+ */
+export {
+  get
+} from './lib';
+
+/**
  * Function.
  */
 export {
   getExistProperty,
+  getProperties,
   getProperty,
-  pickProperty,
-  setProperty
+  setProperty,
 } from './lib';
 
 /**
