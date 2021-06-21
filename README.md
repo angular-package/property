@@ -25,7 +25,6 @@ Features to handle properties.
 * [Installation](#installation)
 * [Callback](#callback)
 * [Object](#object)
-  * [`callbacks`](#callbacks)
   * [`get`](#get)
 * [Function](#function)
   * [`getExistProperty()`](#getexistproperty)
@@ -35,14 +34,25 @@ Features to handle properties.
 * **Package**
   * [Descriptor](#descriptor-sub-package)
     * [`Descriptor`](#descriptor)
-    * [`Accessor`](#accessordescriptors)
-    * [`Data`](#datadescriptors)
-    * [`Interface`](#descriptor-interface)
-    * [`Type`](#descriptor-type)
+    * [`AccessorDescriptors`](#accessordescriptors)
+    * [`DataDescriptors`](#datadescriptors)
+    * [Interface](#descriptor-interface)
+    * [Type](#descriptor-type)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
 * [License](#license)
+
+## How angular-package understands
+
+Check
+> Is to check the provided argument to be **the same** as **expected**.
+
+Type guard
+> Is to constrain the parameter type to **not let** input **unexpected** value in the **code editor**.
+
+Guard
+> Is a **combination** of both above to **guard type** in the **code editor** and in the provided argument by checking it.
 
 ----
 
@@ -82,29 +92,6 @@ const errorCallback: ErrorCallback  = (
 
 ## Object
 
-### `callbacks`
-
-**Description:**
-
-Object with all necessary callbacks for the `property` package.
-
-```typescript
-const callbacks: Callbacks = {
-  accessor: errorCallback(`Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`),
-  data: errorCallback(`Data descriptor must be an \`DataDescriptors<Value>\` type`),
-  descriptor: errorCallback(`Any kind of descriptor was not found`),
-  getExistProperty: errorCallback(`Object with the specified key does not exist`),
-};
-```
-
-**Interface:**
-
-```typescript
-interface Callbacks {
-  [index: string]: ResultCallback;
-}
-```
-
 ### `get`
 
 **Description:**
@@ -113,6 +100,8 @@ Get object with all prefixed with `get` functions.
 
 ```typescript
 const get: Get = {
+  descriptor: getDescriptor,
+  descriptors: getDescriptors,
   existProperty: getExistProperty,
   object: getObject,
   properties: getProperties,
@@ -123,6 +112,151 @@ const get: Get = {
 ----
 
 ## Function
+
+### `getDescriptor()`
+
+**Description:**
+
+Use `getDescriptor()` or `get.descriptor()` to return the value of the existing specified property from the `object`.
+
+**Features:**
+
+* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
+
+**Import:**
+
+```typescript
+import { get, getDescriptor } from '@angular-package/property';
+```
+
+**Syntax:**
+
+```typescript
+const getDescriptor: GetDescriptor = <Obj, Key extends keyof Obj>(
+  object: Obj,
+  key: Key
+): PropertyDescriptor | undefined;
+```
+
+**Generic type variables:**
+
+| Name                    | Description |
+| :---------------------- | :---------- |
+| `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `PropertyDescriptor | undefined` |
+| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `PropertyDescriptor | undefined` |
+
+**Parameters:**
+
+| Name: `type`  | Description                                                                                                    |
+| :------------ | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
+| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against its existence in the `object` |
+
+**Throws:**
+
+By default throws an [`Error`][js-error] if the specified object does not exist or the object exists, but its key doesn't.
+
+**Returns:**
+
+The **return value** is a property value from the `object`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { get, getDescriptor } from '@angular-package/type';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+getDescriptor(person, 'firstName'); // Returns {value: "first name", writable: true, enumerable: true, configurable: true}
+getDescriptor(people, 'age'); // Returns undefined
+```
+
+### `getDescriptors()`
+
+**Description:**
+
+Use `getDescriptors()` or `get.descriptors()` to return the value of the existing specified property from the `object`.
+
+**Features:**
+
+* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
+
+**Import:**
+
+```typescript
+import { get, getDescriptor } from '@angular-package/property';
+```
+
+**Syntax:**
+
+```typescript
+const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof Obj>(
+  object: Obj,
+  keys?: Keys[] // Not working in this version.
+): ObjectPropertyDescriptors<Obj> | undefined;
+```
+
+**Generic type variables:**
+
+| Name                     | Description |
+| :----------------------- | :---------- |
+| `Obj extends object`     | Constrained with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `ObjectPropertyDescriptors<Obj> | undefined` |
+
+**Parameters:**
+
+| Name: `type`  | Description                                                                                                    |
+| :------------ | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
+| `key: Key`    | **not working** |
+
+**Returns:**
+
+The **return value** is a property value from the `object`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { get, getDescriptors } from '@angular-package/type';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+console.log(getDescriptors(person)); // Returns {firstName: {…}, age: {…}}
+console.log(getDescriptors(people)); // Returns {}
+```
 
 ### `getExistProperty()`
 
@@ -136,8 +270,7 @@ Use `getExistProperty()` or `get.existProperty()` to return the value of the exi
 * Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
 * Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
 * Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
-* Uses custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
-* Returns the property value from the `object`.
+* Possibility to use custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
 
 **Import:**
 
@@ -172,12 +305,12 @@ const getExistProperty: GetExistProperty = <
 
 | Name: `type`  | Description                                                                                                    |
 | :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from. The value is being checked against the proper `object` type |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
 | `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against its existence in the `object` |
 
 **Throws:**
 
-By default throws an [`Error`][js-error] if the specified object does not exist or the object exists, but the key doesn't.
+By default throws an [`Error`][js-error] if the specified object does not exist or the object exists, but its key doesn't.
 
 **Returns:**
 
@@ -222,6 +355,15 @@ getExistProperty(people, 'age', (result: boolean, value: any) => {
 
 Use `getProperties()` or `get.properties()` to get specified properties from the `object`.
 
+**Features:**
+
+* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
+* Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
+* Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
+* Uses custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
+* Returns the property value from the `object`.
+
 **Import:**
 
 ```typescript
@@ -237,7 +379,7 @@ const getProperties: GetProperties = <
 >(
   object: Obj,
   keys: Keys[]
-): Pick<{ [P in keyof Obj]: Obj[P] }, Keys> =>
+): Pick<Obj, Keys> =>
   Object.assign(
     {},
     ...keys.map((key) =>
@@ -248,20 +390,25 @@ const getProperties: GetProperties = <
 
 **Generic type variables:**
 
-| Name                 | Description |
-| :------------------- | :---------- |
-| `Obj extends object` | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Pick<{ [P in keyof Obj]: Obj[P] }, Keys>` |
+| Name                     | Description |
+| :----------------------- | :---------- |
+| `Obj extends object`     | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the provided `object` that is linked with the return type `Pick<Obj, Keys>` |
+| `Keys extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a properties that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `Pick<Obj, Keys>` |
 
 **Parameters:**
 
 | Name: `type`   | Description                                                                                                    |
 | :------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`  | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the `keys` from. The value is not being checked against the proper `object` type |
-| `keys: Keys[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the name of the properties that the `object` contains |
+| `object: Obj`  | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the values of the specified `keys` from it. The value is not being checked against the proper `object` type |
+| `keys: Keys[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the names of the properties that the `object` contains. The value is not being checked against the proper `key` type |
 
 **Returns:**
 
-The **return value** is an `object` with specified properties.
+| Returns           | Type     | Description                                                                                  |
+| :---------------- | :------: | :------------------------------------------------------------------------------------------- |
+| `Pick<Obj, Keys>` | `object` | The **return type** is an `object` of a generic `Obj` type, by default of type captured from the provided `object` with picked properties from the `keys` |
+
+The **return value** is an `object` with the specified properties.
 
 **Usage:**
 
@@ -289,10 +436,8 @@ class People {
 const person: Person = new Person();
 const people: People = new People();
 
-getProperties(person, ['age',  'firstName', 'lastName']);
-getProperties(people, ['age']);
-// Custom callback.
-getProperties(people, ['age']);
+getProperties(person, ['age',  'firstName', 'lastName']); // returns {age: 5, firstName: "first name", lastName: "last name"}
+getProperties(people, ['age']); // returns {}
 ```
 
 ### `getProperty()`
@@ -323,15 +468,15 @@ const getProperty: GetProperty = <
 
 | Name                    | Description |
 | :---------------------- | :---------- |
-| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
+| `Obj extends object`    | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
+| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `Obj[Key]` |
 
 **Parameters:**
 
 | Name: `type`  | Description                                                                                                    |
 | :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get property value from. The value is not being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get property value from it. The value is not being checked against the proper `object` type |
+| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is not being checked against proper `key` type |
 
 **Returns:**
 
@@ -341,6 +486,30 @@ The **return value** is  a property value from the `object`.
 
 ```typescript
 // Example usage.
+import { getProperty } from '@angular-package/type';
+
+interface PersonShape {
+  firstName: string;
+  age: number;
+  lastName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+  lastName = 'last name';
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+getProperty(person, 'age'); // Returns 5
+getProperty(people, 'age'); // Returns undefined
 ```
 
 ### `setProperty()`
@@ -372,15 +541,15 @@ const setProperty: SetProperty = <
 
 | Name                    | Description |
 | :---------------------- | :---------- |
-| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
+| `Obj extends object`    | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
+| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
 
 **Parameters:**
 
 | Name: `type`      | Description                                                                                                    |
 | :---------------- | :------------------------------------------------------------------------------------------------------------- |
 | `object: Obj`     | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to set the value with the indicated `key` as its property name. The value is not checked against the proper `object` type |
-| `keys: Key`       | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains |
+| `key: Key`        | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains |
 | `value: Obj[Key]` | The `value` of the type captured from the provided `key` in the provided `object`. The `value` is not checked against the proper type |
 
 **Returns:**
@@ -391,6 +560,30 @@ The **return value** is from the property of the specified `object`.
 
 ```typescript
 // Example usage.
+import { setProperty } from '@angular-package/type';
+
+interface PersonShape {
+  firstName: string;
+  age: number;
+  lastName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+  lastName = 'last name';
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+setProperty(person, 'age', 7); // Returns 7
+setProperty(people, 'age', 27); // Returns 27
 ```
 
 ----
@@ -429,11 +622,11 @@ import {
 
 **Description:**
 
-Handle object property descriptor.
+Handles object property descriptor.
 
 **Features:**
 
-* Strictly defines accessor and data descriptor with the static [`defineAccessor()`][descriptor-defineaccessor] and [`defineData()`][descriptor-definedata] static methods.
+* Strictly defines accessor and data descriptor with the [`defineAccessor()`][descriptor-defineaccessor] and [`defineData()`][descriptor-definedata] static methods.
 * Strictly sets, and stores accessor and data descriptor with the `Descriptor` instance respectively `set.accessor()` and `set.data()` methods of the instance.
 * Get privately stored accessor descriptor defined by the `set.accessor()` method by using `get.accessor` property of the instance.
 * Get privately stored data descriptor defined by the `set.data()` method by using `get.data` property of the instance.
@@ -591,6 +784,130 @@ const firstNameDescriptor = Descriptor.defineData<string>({
   writable: false,
   value: people.firstName
 });
+
+// Defines the property `firstName` of a type string in the `person` object with the same value as the property in the `people` object.
+Object.defineProperty(person, 'firstName', firstNameDescriptor);
+```
+
+#### `Descriptor.fromObject()`
+
+**Description:**
+
+Returns property descriptors from the specified detected object.
+
+**Syntax:**
+
+```typescript
+static fromObject<Obj extends object>(
+  object: Obj
+): ObjectPropertyDescriptors<Obj> | undefined { ... }
+```
+
+**Generic type variables:**
+
+| Name    | Description |
+| :------ | :---------- |
+| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
+
+**Parameters:**
+
+| Name: `type`                        | Description                                                                                                                                                            |
+| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] to define with the default values of the [`CommonDescriptor`][common-descriptor] |
+| callback?: `ResultCallback`         | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function |
+
+**Throws:**
+
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] type, which means it doesn't contain `writable` or `value` property.
+
+**Returns:**
+
+The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Descriptor } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = Descriptor.fromObject();
+
+// Defines the property `firstName` of a type string in the `person` object with the same value as the property in the `people` object.
+Object.defineProperty(person, 'firstName', firstNameDescriptor);
+```
+
+#### `Descriptor.fromProperty()`
+
+**Description:**
+
+Returns property descriptors from the specified detected object.
+
+**Syntax:**
+
+```typescript
+static fromObject<Obj extends object>(
+  object: Obj
+): ObjectPropertyDescriptors<Obj> | undefined { ... }
+```
+
+**Generic type variables:**
+
+| Name    | Description |
+| :------ | :---------- |
+| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
+
+**Parameters:**
+
+| Name: `type`                        | Description                                                                                                                                                            |
+| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] to define with the default values of the [`CommonDescriptor`][common-descriptor] |
+| callback?: `ResultCallback`         | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function |
+
+**Throws:**
+
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] type, which means it doesn't contain `writable` or `value` property.
+
+**Returns:**
+
+The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Descriptor } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = Descriptor.fromObject();
 
 // Defines the property `firstName` of a type string in the `person` object with the same value as the property in the `people` object.
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
