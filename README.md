@@ -48,7 +48,7 @@ Features to handle properties.
 Check
 > Is to check the provided argument to be **the same** as **expected**.
 
-Type guard
+Type guard (constrain)
 > Is to constrain the parameter type to **not let** input **unexpected** value in the **code editor**.
 
 Guard
@@ -117,9 +117,13 @@ const get: Get = {
 
 **Description:**
 
-Use `getDescriptor()` or `get.descriptor()` to return the value of the existing specified property from the `object`.
+Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor]. Use `getDescriptor()` or `get.descriptor()` to return descriptor of the specified property from the specified object.
+
+> Gets the own property descriptor of the specified object. An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
 
 **Features:**
+
+Additional features instead of the default from the wrapped [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor] method.
 
 * Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
 * Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
@@ -133,7 +137,7 @@ import { get, getDescriptor } from '@angular-package/property';
 **Syntax:**
 
 ```typescript
-const getDescriptor: GetDescriptor = <Obj, Key extends keyof Obj>(
+const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>(
   object: Obj,
   key: Key
 ): PropertyDescriptor | undefined;
@@ -144,18 +148,18 @@ const getDescriptor: GetDescriptor = <Obj, Key extends keyof Obj>(
 | Name                    | Description |
 | :---------------------- | :---------- |
 | `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `PropertyDescriptor \| undefined` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `PropertyDescriptor \| undefined` |
+| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `PropertyDescriptor \| undefined` |
 
 **Parameters:**
 
 | Name: `type`  | Description                                                                                                    |
 | :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against its existence in the `object` |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the property descriptor from it. The value is **not** being checked against the proper `object` type |
+| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is **not** being checked against its existence in the `object` |
 
 **Throws:**
 
-By default throws an [`Error`][js-error] if the specified object does not exist or the object exists, but its key doesn't.
+Function throws nothing.
 
 **Returns:**
 
@@ -186,23 +190,34 @@ const people: People = new People();
 
 getDescriptor(person, 'firstName'); // Returns {value: "first name", writable: true, enumerable: true, configurable: true}
 getDescriptor(people, 'age'); // Returns undefined
+
+const noProperty: any = 'no property';
+const noObject: any = 'my string object';
+
+getDescriptor(person, noProperty); // Returns undefined,
+                                   // It won't give you any `Error`, it's like an object has property with undefined value.
+getDescriptor(noObject, 'age'); // Returns undefined
+                                // The same here.
 ```
 
 ### `getDescriptors()`
 
 **Description:**
 
-Use `getDescriptors()` or `get.descriptors()` to return the value of the existing specified property from the `object`.
+Wrapper function for the `Object` static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return the value of the existing specified property from the `object`.
+
+> Returns an object containing all own property descriptors of an object.
 
 **Features:**
 
+Additional features instead of the default from the wrapped [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors] method.
+
 * Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
 
 **Import:**
 
 ```typescript
-import { get, getDescriptor } from '@angular-package/property';
+import { get, getDescriptors } from '@angular-package/property';
 ```
 
 **Syntax:**
@@ -222,10 +237,10 @@ const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof O
 
 **Parameters:**
 
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
-| `key: Key`    | **not working** |
+| Name: `type`    | Description                                                                                                    |
+| :-------------- | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj`   | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
+| `keys?: Keys[]` | **not working** |
 
 **Returns:**
 
@@ -254,8 +269,8 @@ class People {
 const person: Person = new Person();
 const people: People = new People();
 
-console.log(getDescriptors(person)); // Returns {firstName: {…}, age: {…}}
-console.log(getDescriptors(people)); // Returns {}
+getDescriptors(person); // Returns {firstName: {…}, age: {…}}
+getDescriptors(people); // Returns {}
 ```
 
 ### `getExistProperty()`
@@ -1672,6 +1687,9 @@ MIT © angular-package ([license][property-badge-license])
 [function-rest-parameter]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
 
 [js-getter]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get
+[js-object-getownpropertydescriptor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor
+[js-object-getOwnpropertydescriptors]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors
+
 [js-setter]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set
 
 [js-hasownproperty]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
