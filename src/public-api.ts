@@ -32,6 +32,7 @@ export {
 // Interface.
 export {
   AccessorDescriptor,
+  CommonDescriptor,
   DataDescriptor
 } from './descriptor/interface';
 // Type.
