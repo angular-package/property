@@ -7,7 +7,7 @@ import { GetExistProperty } from '../type/get-exist-property.type';
 // Callback.
 import { callbacks } from '../callback/src/callback.object';
 /**
- * Returns the value of the existing specified property from the `object`.
+ * Returns the value of the existing specified property from the specified `object`.
  * @param object An `object` of a generic `Obj` type, by default of the type captured from the provided `object`,
  * to get the existing property value from it. The value is being checked against the proper `object` type.
  * @param key A `keyof` type property name from the existing `object`, by default of type captured from the provided `key`
