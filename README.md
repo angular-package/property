@@ -169,7 +169,7 @@ The **return value** is a property value from the `object`.
 
 ```typescript
 // Example usage.
-import { get, getDescriptor } from '@angular-package/type';
+import { get, getDescriptor } from '@angular-package/property';
 
 interface PersonShape {
   firstName: string;
@@ -233,7 +233,7 @@ const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof O
 
 | Name                     | Description |
 | :----------------------- | :---------- |
-| `Obj extends object`     | Constrained with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `ObjectPropertyDescriptors<Obj> \| undefined` |
+| `Obj extends object`     | Constrained with the `object` type, by default of the value from the captured type of the provided `object`  |
 
 **Parameters:**
 
@@ -250,7 +250,7 @@ The **return value** is a property value from the `object`.
 
 ```typescript
 // Example usage.
-import { get, getDescriptors } from '@angular-package/type';
+import { get, getDescriptors } from '@angular-package/property';
 
 interface PersonShape {
   firstName: string;
@@ -335,7 +335,7 @@ The **return value** is a property value from the `object`.
 
 ```typescript
 // Example usage.
-import { get, getExistProperty } from '@angular-package/type';
+import { get, getExistProperty } from '@angular-package/property';
 
 interface PersonShape {
   firstName: string;
@@ -429,7 +429,7 @@ The **return value** is an `object` with the specified properties.
 
 ```typescript
 // Example usage.
-import { getProperties } from '@angular-package/type';
+import { getProperties } from '@angular-package/property';
 
 interface PersonShape {
   firstName: string;
@@ -501,7 +501,7 @@ The **return value** is  a property value from the `object`.
 
 ```typescript
 // Example usage.
-import { getProperty } from '@angular-package/type';
+import { getProperty } from '@angular-package/property';
 
 interface PersonShape {
   firstName: string;
@@ -575,7 +575,7 @@ The **return value** is from the property of the specified `object`.
 
 ```typescript
 // Example usage.
-import { setProperty } from '@angular-package/type';
+import { setProperty } from '@angular-package/property';
 
 interface PersonShape {
   firstName: string;
