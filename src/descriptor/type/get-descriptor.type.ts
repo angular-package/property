@@ -1,1 +1,4 @@
-export type GetDescriptor = <Obj>(object: any, key: keyof Obj) => PropertyDescriptor | undefined;
+export type GetDescriptor = <Obj extends object, Key extends keyof Obj>(
+  object: Obj,
+  key: Key
+) => PropertyDescriptor | undefined;
