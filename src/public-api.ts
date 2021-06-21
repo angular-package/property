@@ -12,6 +12,8 @@ export {
  * Function.
  */
 export {
+  getDescriptor,
+  getDescriptors,
   getExistProperty,
   getProperties,
   getProperty,
