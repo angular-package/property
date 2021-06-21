@@ -76,6 +76,8 @@ import {
 * [Object](#object)
   * [`get`](#get)
 * [Function](#function)
+  * [`getDescriptor()`](#getdescriptor)
+  * [`getDescriptors()`](#getdescriptors)
   * [`getExistProperty()`](#getexistproperty)
   * [`getProperties()`](#getproperties)
   * [`getProperty()`](#getproperty)
