@@ -20,6 +20,55 @@ Features to handle properties.
 [![GitHub stars][property-badge-stars]][property-stars]
 [![GitHub license][property-badge-license]][property-license]
 
+```typescript
+/**
+ * Object.
+ */
+import {
+  get
+} from '@angular-package/property';
+```
+
+```typescript
+/**
+ * Function.
+ */
+import {
+  getDescriptor,
+  getDescriptors,
+  getExistProperty,
+  getProperties,
+  getProperty,
+  setProperty,
+} from '@angular-package/property';
+```
+
+```typescript
+/**
+ * Descriptor.
+ */
+// Class.
+import {
+  AccessorDescriptors,
+  DataDescriptors,
+  Descriptor
+} from '@angular-package/property';
+// Interface.
+import {
+  AccessorDescriptor,
+  CommonDescriptor,
+  DataDescriptor
+} from '@angular-package/property';
+```
+
+```typescript
+// Type.
+import {
+  ThisAccessorDescriptor
+} from '@angular-package/property';
+
+```
+
 ----
 
 * [Installation](#installation)
