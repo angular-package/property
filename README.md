@@ -167,7 +167,7 @@ Function throws nothing.
 | :-------------------------------- | :------: | :-------------------------------------------------------------------------------- |
 | `PropertyDescriptor \| undefined` | `object` | - |
 
-The **return value** is a property value from the `object`.
+The **return value** is a property descriptor from the `object`.
 
 **Usage:**
 
@@ -208,7 +208,7 @@ getDescriptor(noObject, 'age'); // Returns undefined
 
 **Description:**
 
-Wrapper function for the `Object` static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
+Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
 
 > Returns an object containing all own property descriptors of an object.
 
@@ -243,7 +243,7 @@ const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof O
 
 | Name: `type`    | Description                                                                                                    |
 | :-------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`   | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
+| `object: Obj`   | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get all property descriptors from it. The value is being checked against the proper `object` type |
 | `keys?: Keys[]` | **not working** |
 
 **Returns:**
@@ -289,10 +289,11 @@ Use `getExistProperty()` or `get.existProperty()` to return the value of the exi
 
 **Features:**
 
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-* Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
-* Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
+* Guards getting the object property value by:
+  * Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+  * Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
+  * Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
+  * Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
 * Possibility to use custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
 
 **Import:**
@@ -842,7 +843,7 @@ static fromObject<Obj extends object>(
 
 | Name    | Description |
 | :------ | :---------- |
-| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
+| `Value` | Constraints the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
 
 **Parameters:**
 
