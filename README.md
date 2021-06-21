@@ -155,13 +155,17 @@ const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>
 | Name: `type`  | Description                                                                                                    |
 | :------------ | :------------------------------------------------------------------------------------------------------------- |
 | `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the property descriptor from it. The value is **not** being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is **not** being checked against its existence in the `object` |
+| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is **not** being checked against its existence in the `object` |
 
 **Throws:**
 
 Function throws nothing.
 
 **Returns:**
+
+| Returns                           | Type     | Description                                                                       |
+| :-------------------------------- | :------: | :-------------------------------------------------------------------------------- |
+| `PropertyDescriptor \| undefined` | `object` | - |
 
 The **return value** is a property value from the `object`.
 
@@ -204,7 +208,7 @@ getDescriptor(noObject, 'age'); // Returns undefined
 
 **Description:**
 
-Wrapper function for the `Object` static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return the value of the existing specified property from the `object`.
+Wrapper function for the `Object` static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
 
 > Returns an object containing all own property descriptors of an object.
 
@@ -244,7 +248,11 @@ const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof O
 
 **Returns:**
 
-The **return value** is a property value from the `object`.
+| Returns                                       | Type     | Description                                                                       |
+| :-------------------------------------------- | :------: | :-------------------------------------------------------------------------------- |
+| `ObjectPropertyDescriptors<Obj> \| undefined` | `object` | - |
+
+The **return value** is an `object` with all property descriptors from the `object`.
 
 **Usage:**
 
@@ -277,7 +285,7 @@ getDescriptors(people); // Returns {}
 
 **Description:**
 
-Use `getExistProperty()` or `get.existProperty()` to return the value of the existing specified property from the `object`.
+Use `getExistProperty()` or `get.existProperty()` to return the value of the existing specified property from the specified `object`.
 
 **Features:**
 
@@ -329,6 +337,10 @@ By default throws an [`Error`][js-error] if the specified object does not exist 
 
 **Returns:**
 
+| Returns    | Type     | Description                                                                       |
+| :--------- | :------: | :-------------------------------------------------------------------------------- |
+| `Obj[Key]` | Captured | The **return type** is of type captured from the property value from the `object` |
+
 The **return value** is a property value from the `object`.
 
 **Usage:**
@@ -368,7 +380,7 @@ getExistProperty(people, 'age', (result: boolean, value: any) => {
 
 **Description:**
 
-Use `getProperties()` or `get.properties()` to get specified properties from the `object`.
+Use `getProperties()` or `get.properties()` to get specified properties from the specified `object`.
 
 **Features:**
 
@@ -377,7 +389,7 @@ Use `getProperties()` or `get.properties()` to get specified properties from the
 * Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
 * Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
 * Uses custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
-* Returns the property value from the `object`.
+* Returns an object with the specified properties from the specified `object`.
 
 **Import:**
 
@@ -414,8 +426,8 @@ const getProperties: GetProperties = <
 
 | Name: `type`   | Description                                                                                                    |
 | :------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`  | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the values of the specified `keys` from it. The value is not being checked against the proper `object` type |
-| `keys: Keys[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the names of the properties that the `object` contains. The value is not being checked against the proper `key` type |
+| `object: Obj`  | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the values of the specified `keys` from it. The value is **not** being checked against the proper `object` type |
+| `keys: Keys[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the names of the properties that the `object` contains. The value is **not** being checked against the proper `key` type |
 
 **Returns:**
 
@@ -495,6 +507,10 @@ const getProperty: GetProperty = <
 
 **Returns:**
 
+| Returns    | Type     | Description                                                                                       |
+| :--------- | :------: | :------------------------------------------------------------------------------------------------ |
+| `Obj[Key]` | Captured | The **return type** is of type captured from the property (`Key`) value from the `object` (`Obj`) |
+
 The **return value** is  a property value from the `object`.
 
 **Usage:**
@@ -569,7 +585,11 @@ const setProperty: SetProperty = <
 
 **Returns:**
 
-The **return value** is from the property of the specified `object`.
+| Returns    | Type     | Description                                                                                       |
+| :--------- | :------: | :------------------------------------------------------------------------------------------------ |
+| `Obj[Key]` | Captured | The **return type** is of type captured from the property (`Key`) value from the `object` (`Obj`) |
+
+The **return value** is the value from the property of the `object`.
 
 **Usage:**
 
@@ -646,7 +666,7 @@ Handles object property descriptor.
 * Get privately stored accessor descriptor defined by the `set.accessor()` method by using `get.accessor` property of the instance.
 * Get privately stored data descriptor defined by the `set.data()` method by using `get.data` property of the instance.
 
-> Strictly means, it guards inputted descriptor by checking it against its unique keys and by picking only properties that belong to the appropriate descriptor.
+> Strictly means, it guards provided descriptor by checking it against its unique keys and by picking only properties that belong to the appropriate descriptor.
 
 **Import:**
 
@@ -966,7 +986,7 @@ AccessorDescriptors<Value, Obj = any> { ... }
 
 #### `accessorCallback()`
 
-The default callback function for the `AccessorDescriptors.guard()` static method that's used to guard inputted value.
+The default callback function for the `AccessorDescriptors.guard()` static method that's used to guard provided value.
 
 ```typescript
 const accessorCallback: ResultCallback = callbackErrorMessage(
