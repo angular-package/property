@@ -2,13 +2,13 @@
 
 Useful and simple to use packages based on the [angular.io][angulario].
 
-| Package          | Description                                  | Status                                         | Readme                                                 |
-| :--------------- | :------------------------------------------- | :--------------------------------------------: | :----------------------------------------------------- |
-| change-detection | Improve application performance.             | *In Progress*                                  | [Readme][cd-readme-github]                             |
-| prism            | `Prism` highlighter module.                  | *In Progress*                                  | [Readme][prism-readme-github]                          |
-| property         | Features to handle object properties.        | *In Progress*                                  | [Readme][property-readme-github]                       |
-| ui               | User interface.                              | *In Progress*                                  | [Github][ui-readme-github]                             |
-| type             | Common types, type guards and type checkers. | [![npm version][type-npm-svg]][type-npm-badge] | [Github][type-readme-github] \| [npm][type-readme-npm] |
+| Package          | Description                                  | Status                                                 | Readme                                                 |
+| :--------------- | :------------------------------------------- | :----------------------------------------------------: | :----------------------------------------------------- |
+| change-detection | Improve application performance.             | *In Progress*                                          | [Readme][cd-readme-github]                             |
+| prism            | `Prism` highlighter module.                  | *In Progress*                                          | [Readme][prism-readme-github]                          |
+| property         | Features to handle object properties.        | [![npm version][property-npm-svg]][property-npm-badge] | [Readme][property-readme-github]                       |
+| ui               | User interface.                              | *In Progress*                                          | [Github][ui-readme-github]                             |
+| type             | Common types, type guards and type checkers. | [![npm version][type-npm-svg]][type-npm-badge]         | [Github][type-readme-github] \| [npm][type-readme-npm] |
 
 ## angular-package/property
 
@@ -1691,8 +1691,8 @@ MIT © angular-package ([license][property-badge-license])
 [property-stars]: https://github.com/angular-package/property/stargazers
 
 <!-- Package: property -->
-[property-npm-svg]: https://badge.fury.io/js/%40angular-package%property.svg
-[property-npm-badge]: https://badge.fury.io/js/%40angular-package%property
+[property-npm-svg]: https://badge.fury.io/js/%40angular-package%2Fproperty.svg
+[property-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fproperty
 [property-readme-github]: https://github.com/angular-package/property#readme
 [property-readme-npm]: https://www.npmjs.com/package/@angular-package/property#readme
 
