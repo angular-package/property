@@ -147,8 +147,8 @@ const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>
 
 | Name                    | Description |
 | :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `PropertyDescriptor \| undefined` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `PropertyDescriptor \| undefined` |
+| `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` |
+| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` |
 
 **Parameters:**
 
