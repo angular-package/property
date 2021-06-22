@@ -1,6 +1,6 @@
 // Class.
 export { CommonName } from './lib/common-name.class';
-export { ConstantName } from './lib/constant-names.class';
+export { ConstantName } from './lib/constant-name.class';
 export { Name } from './lib/name.class';
 export { Prefix } from './lib/prefix.class';
 export { Suffix } from './lib/suffix.class';

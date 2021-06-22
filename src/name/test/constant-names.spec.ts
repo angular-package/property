@@ -1,4 +1,4 @@
-import { ConstantName } from '../lib/constant-names.class';
+import { ConstantName } from '../lib/constant-name.class';
 
 describe(ConstantName.name, () => {
   const name = 'Ścibor';

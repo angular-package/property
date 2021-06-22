@@ -1,7 +1,7 @@
 // Object.
 import { is } from '@angular-package/type';
 // Class.
-import { ConstantName } from '../name/lib/constant-names.class';
+import { ConstantName } from '../name/lib/constant-name.class';
 import { Name } from '../name/lib/name.class';
 // Interface.
 import { ConfigName } from '../name/interface/config-name.interface';
