@@ -80,7 +80,7 @@ export class Descriptor<Value extends any, Obj extends object> {
    * Returns defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type, on `get` or `set` property detected.
    * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to define with the default values of the
    * `CommonDescriptor`.
-   * @callback callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an
+   * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an
    * `object` with `get` or `set` property, by default it uses  `accessorCallback()` function from the `guard`.
    * @throws Throws an `Error` if the `descriptor` is not an `object` of a `ThisAccessorDescriptor<Value, Obj>` type,
    * which means it doesn't contain `get` or `set` property.
