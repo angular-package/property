@@ -1,8 +1,11 @@
+// Import: Class.
 import { Name } from '../lib/name.class';
-
+/**
+ * Tests.
+ */
 describe(Name.name, () => {
-  const name = 'Ścibor';
-  const newName = 'robicŚ';
+  const name = 'firstName';
+  const newName = 'newName';
   const prefix = '$$';
   const newPrefix = '___';
   const newSuffix = '$$$';
