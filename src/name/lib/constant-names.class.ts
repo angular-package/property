@@ -1,7 +1,7 @@
 // Object.
 import { guard } from '@angular-package/type';
 // Class.
-import { CommonName } from './common-names.class';
+import { CommonName } from './common-name.class';
 // Interface.
 import { ConfigName } from '../interface/config-name.interface';
 /**
