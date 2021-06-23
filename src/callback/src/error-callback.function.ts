@@ -2,13 +2,13 @@
 import { ResultCallback, is } from '@angular-package/type';
 // Type.
 import { ErrorCallback } from '../type/error-callback.type';
-import { ErrorType } from '../type/error-type.type';
+import { ErrorType } from '../../error/type/error-type.type';
 /**
  * Wrapper for the `ResultCallback` type function to throw specified type of `Error` with the specified message
  * on the specified `false` or `true` state.
  * @param message The string type value, as a message for the `Error` instance.
- * @param on A `boolean` state on which an `Error` should be thrown.
- * @param type Type of error to throw - 'range, 'type', 'URI' and by default it's just an `Error`.
+ * @param type Type of error to throw - 'range, 'type', 'URI', by default it's just an `Error`.
+ * @param on A `boolean` state on which an `Error` of the type specified in the provided `type` should be thrown.
  * @returns The return value is a `boolean` as the result of the check.
  */
 export const errorCallback: ErrorCallback  = (
@@ -16,6 +16,7 @@ export const errorCallback: ErrorCallback  = (
   type: ErrorType = '',
   on: boolean = false,
 ): ResultCallback => {
+  // TODO: check `message`, `type`, `on`
   return (result: boolean, value: any): boolean => {
     message = `${message}, got value ${
       is.object(value) ? JSON.stringify(value) : value
