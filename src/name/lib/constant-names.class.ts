@@ -4,6 +4,7 @@ import { guard } from '@angular-package/type';
 import { CommonName } from './common-name.class';
 // Interface.
 import { ConfigName } from '../interface/config-name.interface';
+import { callbacks } from '../../callback/src/callback.object';
 /**
  * Create a constant name with a changeable prefix and suffix.
  */
@@ -14,9 +15,7 @@ export class ConstantName extends CommonName {
    * @param config A `ConfigName` type value with `prefix` and `suffix` for the name.
    */
   constructor(name: string, config?: ConfigName) {
-    if (guard.is.string(name) === false) {
-      throw new Error(`A \`string\` \`name\` must be initialized`);
-    }
+    guard.is.string(name, callbacks.constantName);
     super(config, name);
   }
 }
