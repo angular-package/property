@@ -89,11 +89,10 @@ import {
   * Object
     * [`callbacks`](#callbacks)
 * [Function](#function)
-  * Function
-    * [`getExistProperty()`](#getexistproperty)
-    * [`getProperties()`](#getproperties)
-    * [`getProperty()`](#getproperty)
-    * [`setProperty()`](#setproperty)
+  * [`getExistProperty()`](#getexistproperty)
+  * [`getProperties()`](#getproperties)
+  * [`getProperty()`](#getproperty)
+  * [`setProperty()`](#setproperty)
 * [Object](#object)
   * Object
     * [`get`](#get)
