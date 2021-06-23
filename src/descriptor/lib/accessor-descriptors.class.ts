@@ -5,7 +5,7 @@ import { getProperties } from '../../lib/get-properties.function';
 // Type.
 import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
 // Callback.
-import { callbacks } from '../../callback/src/callback.object';
+import { callbacks } from '../../callback/src/callbacks.object';
 /**
  * Strictly defines, sets, and stores privately single property accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
  * Features:

@@ -5,7 +5,7 @@ import { getProperties } from '../../lib/get-properties.function';
 // Interface.
 import { DataDescriptor } from '../interface/data-descriptor.interface';
 // Callback.
-import { callbacks } from '../../callback/src/callback.object';
+import { callbacks } from '../../callback/src/callbacks.object';
 /**
  * Strictly defines, sets, and stores privately property data descriptor of a `DataDescriptor<Value>` interface.
  * Features:

@@ -4,7 +4,7 @@ import { guard } from '@angular-package/type';
 import { CommonName } from './common-name.class';
 // Interface.
 import { ConfigName } from '../interface/config-name.interface';
-import { callbacks } from '../../callback/src/callback.object';
+import { callbacks } from '../../callback/src/callbacks.object';
 /**
  * Create a constant name with a changeable prefix and suffix.
  */

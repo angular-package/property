@@ -1,7 +1,7 @@
 // @angular-package/type.
 import { ResultCallback, guard, is } from '@angular-package/type';
 // Callback.
-import { callbacks } from '../../callback/src/callback.object';
+import { callbacks } from '../../callback/src/callbacks.object';
 /**
  * Defines, sets, and stores privately, filtered suffix for the name.
  * + Defines a string type suffix with a static method `define()`.
