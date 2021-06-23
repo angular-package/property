@@ -19,51 +19,60 @@ Features to handle properties.
 [![GitHub forks][property-badge-forks]][property-forks]
 [![GitHub stars][property-badge-stars]][property-stars]
 [![GitHub license][property-badge-license]][property-license]
+[![Support me on Patreon][patreon-badge]][patreon-link]
 
 ```typescript
-/**
- * Object.
- */
+// Object.
 import {
-  get
+  // property/callback
+  callbacks,
+  // property
+  get,
 } from '@angular-package/property';
 ```
 
 ```typescript
-/**
- * Function.
- */
+// Function.
 import {
+  // property/callback
+  errorCallback,
+
+  // property/descriptor
   getDescriptor,
   getDescriptors,
+
+  // @angular-package/property
   getExistProperty,
   getProperties,
   getProperty,
   setProperty,
+
+  // property/object
+  getObject,
 } from '@angular-package/property';
 ```
 
 ```typescript
-/**
- * Descriptor.
- */
 // Class.
 import {
+  // property/descriptor
   AccessorDescriptors,
   DataDescriptors,
-  Descriptor
+  Descriptor,
 } from '@angular-package/property';
 // Interface.
 import {
+  // property/descriptor
   AccessorDescriptor,
   CommonDescriptor,
-  DataDescriptor
+  DataDescriptor,
 } from '@angular-package/property';
 ```
 
 ```typescript
 // Type.
 import {
+  // property/descriptor
   ThisAccessorDescriptor
 } from '@angular-package/property';
 
@@ -89,6 +98,10 @@ import {
     * [`DataDescriptors`](#datadescriptors)
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
+  * [Name](#name-sub-package)
+    * [`Prefix`](#prefix)
+    * [`Suffix`](#suffix)
+    * [`Name`](#name)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -124,19 +137,41 @@ Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to
 ```typescript
 const errorCallback: ErrorCallback  = (
   message: string,
-  on: boolean = false
+  type: ErrorType = '',
+  on: boolean = false,
 ): ResultCallback => {
   return (result: boolean, value: any): boolean => {
+    message = `${message}, got value ${
+      is.object(value) ? JSON.stringify(value) : value
+    }`;
     if (result === on) {
-      throw new Error(
-        `${message}, got value ${
-          is.object(value) ? JSON.stringify(value) : value
-        }`
-      );
+      switch (type) {
+        case 'range': throw new RangeError(message); break;
+        case 'type': throw new TypeError(message); break;
+        case 'URI': throw new URIError(message); break;
+        default: throw new Error(message); break;
+      }
     }
     return result;
   };
 };
+```
+
+**Parameters:**
+
+| Name: `type`           | Description                                                                                                     |
+| :--------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `message: string`      | The `string` type value, as a message for the [`Error`][js-error] instance                                      |
+| `type: ErrorType = ''` | Type of error to throw - `'range'`, `'type'`, `'URI'`, by default it's just an [`Error`][js-error]              |
+| `on: boolean = false`  | A `boolean` state on which an [`Error`][js-error] of the type specified in the provided `type` should be thrown |
+
+**Returns:**
+
+The return value is a `boolean` as the result of the check.
+
+```typescript
+// Example usage.
+
 ```
 
 ----
@@ -1347,7 +1382,7 @@ static define<Value>(
 
 | Name    | Description |
 | :------ | :---------- |
-| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
+| `Value` | Constrains the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
 
 **Parameters:**
 
@@ -1669,6 +1704,10 @@ How do I know when to release 1.0.0?
 MIT © angular-package ([license][property-badge-license])
 
 ----
+
+<!-- Funding -->
+[patreon-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dsciborrudnicki%26type%3Dpatrons&style=flat
+[patreon-link]: https://patreon.com/sciborrudnicki
 
 [angulario]: https://angular.io
 [skeleton]: https://github.com/angular-package/skeleton
