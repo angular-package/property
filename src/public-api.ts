@@ -2,11 +2,19 @@
  * Public API Surface of property
  */
 /**
- * Object.
+ * Default.
  */
+// Object.
 export {
-  get
+  get,
 } from './lib';
+/**
+ * Callback.
+ */
+// Object.
+export { callbacks } from './callback';
+// Function.
+export { errorCallback } from './callback';
 
 /**
  * Function.
