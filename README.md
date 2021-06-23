@@ -22,15 +22,6 @@ Features to handle properties.
 [![Support me on Patreon][patreon-badge]][patreon-link]
 
 ```typescript
-// Object.
-import {
-  get,
-  // callback
-  callbacks,
-} from '@angular-package/property';
-```
-
-```typescript
 // Function.
 import {
   getExistProperty,
@@ -51,6 +42,16 @@ import {
 ```
 
 ```typescript
+// Object.
+import {
+  get,
+
+  // callback
+  callbacks,
+} from '@angular-package/property';
+```
+
+```typescript
 // Class.
 import {
   // descriptor
@@ -58,6 +59,9 @@ import {
   DataDescriptors,
   Descriptor,
 } from '@angular-package/property';
+```
+
+```typescript
 // Interface.
 import {
   // descriptor
@@ -80,30 +84,38 @@ import {
 
 * [Installation](#installation)
 * [Callback](#callback)
-  * [`errorCallback()`](#errorcallback)
-  * [`callbacks`](#callbacks)
+  * Function
+    * [`errorCallback()`](#errorcallback)
+  * Object
+    * [`callbacks`](#callbacks)
 * [Function](#function)
-  * [`getExistProperty()`](#getexistproperty)
-  * [`getProperties()`](#getproperties)
-  * [`getProperty()`](#getproperty)
-  * [`setProperty()`](#setproperty)
+  * Function
+    * [`getExistProperty()`](#getexistproperty)
+    * [`getProperties()`](#getproperties)
+    * [`getProperty()`](#getproperty)
+    * [`setProperty()`](#setproperty)
 * [Object](#object)
-  * [`get`](#get)
-* **Package**
+  * Object
+    * [`get`](#get)
+* Package
   * [Descriptor](#descriptor-sub-package)
-    * [`getDescriptor()`](#getdescriptor)
-    * [`getDescriptors()`](#getdescriptors)
-    * [`Descriptor`](#descriptor)
-    * [`AccessorDescriptors`](#accessordescriptors)
-    * [`DataDescriptors`](#datadescriptors)
+    * Function
+      * [`getDescriptor()`](#getdescriptor)
+      * [`getDescriptors()`](#getdescriptors)
+    * Class
+      * [`Descriptor`](#descriptor)
+      * [`AccessorDescriptors`](#accessordescriptors)
+      * [`DataDescriptors`](#datadescriptors)
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
   * [Name](#name-sub-package)
-    * [`Prefix`](#prefix)
-    * [`Suffix`](#suffix)
-    * [`Name`](#name)
+    * Class
+      * [`Prefix`](#prefix)
+      * [`Suffix`](#suffix)
+      * [`Name`](#name)
   * [Object](#object-sub-package)
-    * [`getObject()`](#getobject)
+    * Function
+      * [`getObject()`](#getobject)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
