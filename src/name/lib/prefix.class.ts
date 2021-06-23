@@ -1,15 +1,17 @@
 // @angular-package/type.
 import { ResultCallback, guard, is } from '@angular-package/type';
+// Callback.
+import { callbacks } from '../../callback/src/callback.object';
 /**
- * Secure define, set, and store privately filtered prefix for the name.
- * + Filter inputted prefix.
- * + Initially set prefix.
- * + Define with a static method `define()`.
- * + Set and store privately with the `set()` method.
- * + Get privately stored prefix.
- * + Change the filter pattern.
- * + Guard the string type prefix value.
- * + Configurable callback function for the `set()` and `define()` methods.
+ * Defines, sets, and stores privately, filtered prefix for the name.
+ * + Defines a string type prefix with a static method `define()`.
+ * + Initially sets prefix.
+ * + Filters provided prefix with customizable regular expression.
+ * + Sets and stores privately with the `set()` method of instance.
+ * + Gets privately stored prefix with the property of the instance.
+ * + Sets custom pattern for the regular expression to filter provided prefix.
+ * + Guards provided string-type prefix.
+ * + Possibility to use custom callback function for the `set()` method of the instance and static `define()` method.
  * + Default callback function for the `set()` method throws an `Error`.
  */
 export class Prefix {
@@ -18,8 +20,11 @@ export class Prefix {
     return this.#prefix;
   }
 
-  // Filter.
-  private filter = /[^a-zA-Z0-9$_]/g;
+  // Pattern.
+  #pattern = /[^a-zA-Z0-9$_]/g;
+
+  // Length.
+  #length = 3;
 
   // Initialize default prefix.
   #prefix = '';
@@ -35,41 +40,52 @@ export class Prefix {
   }
 
   /**
-   * Define prefix for the name.
-   * @param value A `string` type value.
+   * Defines a string type filtered with regexp prefix for the name.
+   * @param prefix A `string` type value as prefix.
+   * @param pattern A `RegExp` type pattern to filter the provided prefix. Default value is set to `/[^a-zA-Z0-9$_]/g`.
+   * @param length A `number` type of the prefix length.
    * @returns The return value is a `string` type prefix.
    */
-   static define(
-    value: string,
-    filter: RegExp = /[^a-zA-Z0-9$_]/g,
-    callback?: ResultCallback
+  static define(
+    prefix: string,
+    pattern: RegExp = /[^a-zA-Z0-9$_]/g,
+    length: number = 3,
+    callback: ResultCallback = callbacks.prefix
   ): string {
-    return guard.is.string(value, callback) ? value.replace(filter, '') : '';
+    return guard.is.string(prefix, callback)
+      ? prefix.replace(pattern, '').slice(0, length)
+      : '';
   }
 
   /**
-   * Sets and stores privately prefix of a string type for the name.
-   * @param prefix A `string` type value.
-   * @param callback A `ResultCallback` function to handle the result of the check whether or not the prefix is a `string`.
+   * Sets the length of the prefix, which by default is set to 3.
+   * @param length A `number` type of the prefix length.
+   * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the length is a `number` type.
    * @returns The return value is a `Prefix` instance for the chaining.
    */
-  public set(prefix: string, callback: ResultCallback = this.callback): this {
-    if (guard.is.string(prefix, callback)) {
-      this.#prefix = Prefix.define(prefix, this.filter, callback);
-    }
+  public length(length: number, callback?: ResultCallback): this {
+    this.#length = guard.is.number(length, callback) ? length : this.#length;
     return this;
   }
 
   /**
-   * Callback function for the `set()` method.
-   * @param result A `boolean` type `result` of the check.
-   * @param value Any type `value` from the check.
-   * @returns The return value is a `boolean` indicating whether or not the prefix is a `string` type.
+   * Sets the pattern for the providing prefix in `set()` method of instance and static `define()` method.
+   * @param pattern A `RegExp` type pattern to filter the provided prefix. Default value is set to `/[^a-zA-Z0-9$_]/g`.
+   * @returns The return value is a `Prefix` instance for the chaining.
    */
-  private callback: ResultCallback = (result: boolean, value: any): boolean => {
-    if (result === false) {
-       throw new Error(`${Prefix.name} must be a \`string\` type, got value ${value}`);
-    }
-    return result;
+  public pattern(pattern: RegExp = this.#pattern): this {
+    this.#pattern = pattern;
+    return this;
+  }
+
+  /**
+   * Sets and stores privately prefix of a string type for the name.
+   * @param prefix A `string` type value as prefix.
+   * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the prefix is a `string` type.
+   * @returns The return value is a `Prefix` instance for the chaining.
+   */
+  public set(prefix: string, callback?: ResultCallback): this {
+    this.#prefix = Prefix.define(prefix, this.#pattern, this.#length, callback);
+    return this;
   }
 }
