@@ -1,24 +1,12 @@
 /*
  * Public API Surface of property
  */
-/**
- * Default.
- */
 // Object.
-export {
-  get,
-} from './lib';
-/**
- * Callback.
- */
-// Object.
+export { get } from './lib';
 export { callbacks } from './callback';
-// Function.
-export { errorCallback } from './callback';
+export { getObject } from './object';
 
-/**
- * Function.
- */
+// Function.
 export {
   getDescriptor,
   getDescriptors,
@@ -27,23 +15,17 @@ export {
   getProperty,
   setProperty,
 } from './lib';
+export { errorCallback } from './callback';
 
-/**
- * Descriptor.
- */
 // Class.
-export {
-  AccessorDescriptors,
-  DataDescriptors,
-  Descriptor
-} from './descriptor';
+export { AccessorDescriptors, DataDescriptors, Descriptor } from './descriptor';
+
 // Interface.
 export {
   AccessorDescriptor,
   CommonDescriptor,
-  DataDescriptor
+  DataDescriptor,
 } from './descriptor/interface';
+
 // Type.
-export {
-  ThisAccessorDescriptor
-} from './descriptor/type';
+export { ThisAccessorDescriptor } from './descriptor/type';
