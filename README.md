@@ -24,30 +24,28 @@ Features to handle properties.
 ```typescript
 // Object.
 import {
-  // property/callback
-  callbacks,
-  // property
   get,
+  // callback
+  callbacks,
 } from '@angular-package/property';
 ```
 
 ```typescript
 // Function.
 import {
-  // property/callback
-  errorCallback,
-
-  // property/descriptor
-  getDescriptor,
-  getDescriptors,
-
-  // @angular-package/property
   getExistProperty,
   getProperties,
   getProperty,
   setProperty,
 
-  // property/object
+  // callback
+  errorCallback,
+
+  // descriptor
+  getDescriptor,
+  getDescriptors,
+
+  // object
   getObject,
 } from '@angular-package/property';
 ```
@@ -55,14 +53,14 @@ import {
 ```typescript
 // Class.
 import {
-  // property/descriptor
+  // descriptor
   AccessorDescriptors,
   DataDescriptors,
   Descriptor,
 } from '@angular-package/property';
 // Interface.
 import {
-  // property/descriptor
+  // descriptor
   AccessorDescriptor,
   CommonDescriptor,
   DataDescriptor,
@@ -72,7 +70,7 @@ import {
 ```typescript
 // Type.
 import {
-  // property/descriptor
+  // descriptor
   ThisAccessorDescriptor
 } from '@angular-package/property';
 
@@ -82,17 +80,19 @@ import {
 
 * [Installation](#installation)
 * [Callback](#callback)
-* [Object](#object)
-  * [`get`](#get)
+  * [`errorCallback()`](#errorcallback)
+  * [`callbacks`](#callbacks)
 * [Function](#function)
-  * [`getDescriptor()`](#getdescriptor)
-  * [`getDescriptors()`](#getdescriptors)
   * [`getExistProperty()`](#getexistproperty)
   * [`getProperties()`](#getproperties)
   * [`getProperty()`](#getproperty)
   * [`setProperty()`](#setproperty)
+* [Object](#object)
+  * [`get`](#get)
 * **Package**
   * [Descriptor](#descriptor-sub-package)
+    * [`getDescriptor()`](#getdescriptor)
+    * [`getDescriptors()`](#getdescriptors)
     * [`Descriptor`](#descriptor)
     * [`AccessorDescriptors`](#accessordescriptors)
     * [`DataDescriptors`](#datadescriptors)
@@ -102,6 +102,8 @@ import {
     * [`Prefix`](#prefix)
     * [`Suffix`](#suffix)
     * [`Name`](#name)
+  * [Object](#object-sub-package)
+    * [`getObject()`](#getobject)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -132,7 +134,13 @@ npm i --save @angular-package/property
 
 ## Callback
 
+### `errorCallback()`
+
+**Description:**
+
 Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
+
+**Syntax:**
 
 ```typescript
 const errorCallback: ErrorCallback  = (
@@ -167,11 +175,49 @@ const errorCallback: ErrorCallback  = (
 
 **Returns:**
 
-The return value is a `boolean` as the result of the check.
+| Returns          | Type       | Description                                                                                 |
+| :--------------- | :--------: | :------------------------------------------------------------------------------------------ |
+| `ResultCallback` | `Function` | The **return type** is a function of a [`ResultCallback`][package-type-resultcallback] type |
+
+The return value is a predefined `function` for use as the callback.
 
 ```typescript
 // Example usage.
 
+```
+
+### `callbacks`
+
+**Description:**
+
+Object with all necessary callbacks for the property package. It can be overwritten with custom [`errorCallback()`](#errorcallback) function.
+
+**Syntax:**
+
+```typescript
+const callbacks: Callbacks = {
+  accessor: errorCallback(
+    `Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`,
+    'type'
+  ),
+  data: errorCallback(
+    `Data descriptor must be an \`DataDescriptors<Value>\` type`,
+    'type'
+  ),
+  descriptor: errorCallback(`Any kind of descriptor was not found`, 'type'),
+  getExistProperty: errorCallback(
+    `Object with the specified key does not exist`,
+    'type'
+  ),
+  getObject: errorCallback(`Provided value is not an \`object\``, 'type'),
+  name: errorCallback(`Name must be a \`string\` type`, 'type'),
+  prefix: errorCallback(`Prefix must be a \`string\` type`, 'type'),
+  suffix: errorCallback(`Suffix must be a \`string\` type`, 'type'),
+  constantName: errorCallback(
+    `A \`string\` \`name\` must be initialized`,
+    'type'
+  ),
+};
 ```
 
 ----
@@ -184,6 +230,8 @@ The return value is a `boolean` as the result of the check.
 
 Get object with all prefixed with `get` functions.
 
+**Syntax:**
+
 ```typescript
 const get: Get = {
   descriptor: getDescriptor,
@@ -195,177 +243,15 @@ const get: Get = {
 };
 ```
 
+**Usage:**
+
+```typescript
+// Example usage.
+```
+
 ----
 
 ## Function
-
-### `getDescriptor()`
-
-**Description:**
-
-Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor]. Use `getDescriptor()` or `get.descriptor()` to return descriptor of the specified property from the specified object.
-
-> Gets the own property descriptor of the specified object. An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
-
-**Features:**
-
-Additional features instead of the default from the wrapped [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor] method.
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-
-**Import:**
-
-```typescript
-import { get, getDescriptor } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>(
-  object: Obj,
-  key: Key
-): PropertyDescriptor | undefined;
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` |
-
-**Parameters:**
-
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the property descriptor from it. The value is **not** being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is **not** being checked against its existence in the `object` |
-
-**Throws:**
-
-Function throws nothing.
-
-**Returns:**
-
-| Returns                           | Type     | Description                                                                       |
-| :-------------------------------- | :------: | :-------------------------------------------------------------------------------- |
-| `PropertyDescriptor \| undefined` | `object` | - |
-
-The **return value** is a property descriptor from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getDescriptor } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getDescriptor(person, 'firstName'); // Returns {value: "first name", writable: true, enumerable: true, configurable: true}
-getDescriptor(people, 'age'); // Returns undefined
-
-const noProperty: any = 'no property';
-const noObject: any = 'my string object';
-
-getDescriptor(person, noProperty); // Returns undefined,
-                                   // It won't give you any `Error`, it's like an object has property with undefined value.
-getDescriptor(noObject, 'age'); // Returns undefined
-                                // The same here.
-```
-
-### `getDescriptors()`
-
-**Description:**
-
-Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
-
-> Returns an object containing all own property descriptors of an object.
-
-**Features:**
-
-Additional features instead of the default from the wrapped [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors] method.
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-
-**Import:**
-
-```typescript
-import { get, getDescriptors } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof Obj>(
-  object: Obj,
-  keys?: Keys[] // Not working in this version.
-): ObjectPropertyDescriptors<Obj> | undefined;
-```
-
-**Generic type variables:**
-
-| Name                     | Description |
-| :----------------------- | :---------- |
-| `Obj extends object`     | Constrained with the `object` type, by default of the value from the captured type of the provided `object`  |
-
-**Parameters:**
-
-| Name: `type`    | Description                                                                                                    |
-| :-------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`   | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get all property descriptors from it. The value is being checked against the proper `object` type |
-| `keys?: Keys[]` | **not working** |
-
-**Returns:**
-
-| Returns                                       | Type     | Description                                                                       |
-| :-------------------------------------------- | :------: | :-------------------------------------------------------------------------------- |
-| `ObjectPropertyDescriptors<Obj> \| undefined` | `object` | - |
-
-The **return value** is an `object` with all property descriptors from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getDescriptors } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getDescriptors(person); // Returns {firstName: {…}, age: {…}}
-getDescriptors(people); // Returns {}
-```
 
 ### `getExistProperty()`
 
@@ -727,18 +613,186 @@ import {
 // Interface.
 import {
   AccessorDescriptor,
-  DataDescriptor
+  DataDescriptor,
 } from '@angular-package/property';
 ```
 
 ```typescript
 // Type.
 import {
-  ThisAccessorDescriptor
+  ThisAccessorDescriptor,
 } from '@angular-package/property';
 ```
 
 ----
+
+### `getDescriptor()`
+
+**Description:**
+
+Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor]. Use `getDescriptor()` or `get.descriptor()` to return descriptor of the specified property from the specified object.
+
+> Gets the own property descriptor of the specified object. An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
+
+**Features:**
+
+Additional features instead of the default from the wrapped [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor] method.
+
+* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
+
+**Import:**
+
+```typescript
+import { get, getDescriptor } from '@angular-package/property';
+```
+
+**Syntax:**
+
+```typescript
+const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>(
+  object: Obj,
+  key: Key
+): PropertyDescriptor | undefined;
+```
+
+**Generic type variables:**
+
+| Name                    | Description |
+| :---------------------- | :---------- |
+| `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` |
+| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` |
+
+**Parameters:**
+
+| Name: `type`  | Description                                                                                                    |
+| :------------ | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the property descriptor from it. The value is **not** being checked against the proper `object` type |
+| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is **not** being checked against its existence in the `object` |
+
+**Throws:**
+
+Function throws nothing.
+
+**Returns:**
+
+| Returns                           | Type     | Description                                                                       |
+| :-------------------------------- | :------: | :-------------------------------------------------------------------------------- |
+| `PropertyDescriptor \| undefined` | `object` | - |
+
+The **return value** is a property descriptor from the `object`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { get, getDescriptor } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+getDescriptor(person, 'firstName'); // Returns {value: "first name", writable: true, enumerable: true, configurable: true}
+getDescriptor(people, 'age'); // Returns undefined
+
+const noProperty: any = 'no property';
+const noObject: any = 'my string object';
+
+getDescriptor(person, noProperty); // Returns undefined,
+                                   // It won't give you any `Error`, it's like an object has property with undefined value.
+getDescriptor(noObject, 'age'); // Returns undefined
+                                // The same here.
+```
+
+### `getDescriptors()`
+
+**Description:**
+
+Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
+
+> Returns an object containing all own property descriptors of an object.
+
+**Features:**
+
+Additional features instead of the default from the wrapped [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors] method.
+
+* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+
+**Import:**
+
+```typescript
+import { get, getDescriptors } from '@angular-package/property';
+```
+
+**Syntax:**
+
+```typescript
+const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof Obj>(
+  object: Obj,
+  keys?: Keys[] // Not working in this version.
+): ObjectPropertyDescriptors<Obj> | undefined;
+```
+
+**Generic type variables:**
+
+| Name                     | Description |
+| :----------------------- | :---------- |
+| `Obj extends object`     | Constrained with the `object` type, by default of the value from the captured type of the provided `object`  |
+
+**Parameters:**
+
+| Name: `type`    | Description                                                                                                    |
+| :-------------- | :------------------------------------------------------------------------------------------------------------- |
+| `object: Obj`   | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get all property descriptors from it. The value is being checked against the proper `object` type |
+| `keys?: Keys[]` | **not working** |
+
+**Returns:**
+
+| Returns                                       | Type     | Description                                                                       |
+| :-------------------------------------------- | :------: | :-------------------------------------------------------------------------------- |
+| `ObjectPropertyDescriptors<Obj> \| undefined` | `object` | - |
+
+The **return value** is an `object` with all property descriptors from the `object`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { get, getDescriptors } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = 'first name';
+  age = 5;
+}
+
+class People {
+  firstName!: string;
+  age!: number;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+getDescriptors(person); // Returns {firstName: {…}, age: {…}}
+getDescriptors(people); // Returns {}
+```
 
 ### Descriptor
 
