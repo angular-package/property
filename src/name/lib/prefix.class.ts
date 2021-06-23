@@ -40,10 +40,10 @@ export class Prefix {
   }
 
   /**
-   * Defines a string type filtered with regexp prefix for the name.
+   * Defines a string-type prefix filtered with specified regular expression of a specified maximum length.
    * @param prefix A `string` type value as prefix.
-   * @param pattern A `RegExp` type pattern to filter the provided prefix. Default value is set to `/[^a-zA-Z0-9$_]/g`.
-   * @param length A `number` type of the prefix length.
+   * @param pattern The pattern of a `RegExp` type to filter the provided prefix. The Default value is set to `/[^a-zA-Z0-9$_]/g`.
+   * @param length Maximum prefix length of a `number` type. The Default value is set to 3.
    * @returns The return value is a `string` type prefix.
    */
   static define(
@@ -58,8 +58,8 @@ export class Prefix {
   }
 
   /**
-   * Sets the length of the prefix, which by default is set to 3.
-   * @param length A `number` type of the prefix length.
+   * Sets the maximum length of the prefix, which by default is set to 3.
+   * @param length A `number` type value to denote prefix maximum length.
    * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the length is a `number` type.
    * @returns The return value is a `Prefix` instance for the chaining.
    */
