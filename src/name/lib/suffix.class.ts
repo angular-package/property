@@ -40,9 +40,10 @@ export class Suffix {
   }
 
   /**
-   * Defines a string type filtered with regexp suffix for the name.
+   * Defines a string-type suffix filtered with specified regular expression of a specified maximum length.
    * @param suffix A `string` type value as suffix.
-   * @param pattern A `RegExp` type pattern to filter provided `value`.
+   * @param pattern The pattern of a `RegExp` type to filter the provided suffix. The Default value is set to `/[^a-zA-Z0-9$_]/g`.
+   * @param length Maximum suffix length of a `number` type. The Default value is set to 3.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the suffix is a `string`.
    * @returns The return value is a `string` type suffix.
    */
@@ -58,10 +59,10 @@ export class Suffix {
   }
 
   /**
-   * Sets the length of the prefix, which by default is set to 3.
-   * @param length A `number` type of the prefix length.
+   * Sets the length of the suffix, which by default is set to 3.
+   * @param length A `number` type value to denote suffix maximum length.
    * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the length is a `number` type.
-   * @returns The return value is a `Prefix` instance for the chaining.
+   * @returns The return value is a `Suffix` instance for the chaining.
    */
   public length(length: number, callback?: ResultCallback): this {
     this.#length = guard.is.number(length, callback) ? length : this.#length;
@@ -69,11 +70,11 @@ export class Suffix {
   }
 
   /**
-   * Sets the pattern for the providing suffix in `set()` method of instance and static `define()` method.
-   * @param pattern A `RegExp` type to filter the provided prefix.
+   * Sets the pattern for the providing suffix in the `set()` method of instance and static `define()` method.
+   * @param pattern A `RegExp` type to filter the provided suffix.
    * @returns The return value is a `Suffix` instance for the chaining.
    */
-  public pattern(pattern: RegExp = /[^a-zA-Z0-9$_]/g): this {
+  public pattern(pattern: RegExp = this.#pattern): this {
     this.#pattern = pattern;
     return this;
   }
