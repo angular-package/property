@@ -6,7 +6,9 @@ import { Suffix } from './suffix.class';
 // Interfaces.
 import { ConfigName } from '../interface/config-name.interface';
 import { PickName } from '../interface/pick-name.interface';
-
+/**
+ * CommonName.
+ */
 export abstract class CommonName {
   // Returns privately stored name.
   public get get(): string {
@@ -28,11 +30,11 @@ export abstract class CommonName {
     };
   }
 
-  // Name.
+  // Private name.
   #name = '';
-  // Private namespace for prefix.
+  // Private instance of prefix.
   #prefix: Prefix = new Prefix();
-  // Private namespace for suffix.
+  // Private instance of suffix.
   #suffix: Suffix = new Suffix();
 
   /**
@@ -53,10 +55,10 @@ export abstract class CommonName {
   }
 
   /**
-   * Set prefix for the name.
+   * Sets prefix for the name.
    * @param prefix A `string` type value as prefix.
    * @param callback A `ResultCallback` function to handle the result of the check if the prefix is a `string`.
-   * @returns this.
+   * @returns The return value is a `this` instance for the chaining.
    */
   public prefix(prefix: string, callback?: ResultCallback): this {
     this.#prefix.set(prefix, callback);
@@ -64,10 +66,10 @@ export abstract class CommonName {
   }
 
   /**
-   * Set suffix for the name.
+   * Sets suffix for the name.
    * @param suffix A `string` type value as suffix.
-   * @param callback A `ResultCallback` function to handle the result of the check if the suffix is a `string`.
-   * @returns this.
+   * @param callback An optional `ResultCallback` function to handle the result of the check if the suffix is a `string`.
+   * @returns The return value is a `this` instance for the chaining.
    */
   public suffix(suffix: string, callback?: ResultCallback): this {
     this.#suffix.set(suffix, callback);
