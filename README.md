@@ -2,23 +2,26 @@
 
 Useful and simple to use packages based on the [angular.io][angulario].
 
-| Package          | Description                                  | Status                                                 | Readme                                                 |
-| :--------------- | :------------------------------------------- | :----------------------------------------------------: | :----------------------------------------------------- |
-| change-detection | Improve application performance.             | *In Progress*                                          | [Readme][cd-readme-github]                             |
-| prism            | `Prism` highlighter module.                  | *In Progress*                                          | [Readme][prism-readme-github]                          |
-| property         | Features to handle object properties.        | [![npm version][property-npm-svg]][property-npm-badge] | [Readme][property-readme-github]                       |
-| ui               | User interface.                              | *In Progress*                                          | [Github][ui-readme-github]                             |
-| type             | Common types, type guards and type checkers. | [![npm version][type-npm-svg]][type-npm-badge]         | [Github][type-readme-github] \| [npm][type-readme-npm] |
+| Package          | Description                                  | Status                                                       | Readme                                                         |
+| :--------------- | :------------------------------------------- | :----------------------------------------------------------: | :------------------------------------------------------------- |
+| change-detection | Improve application performance.             | *In Progress*                                                | [GitHub][cd-github-readme]                                     |
+| prism            | `Prism` highlighter module.                  | *In Progress*                                                | [GitHub][prism-github-readme]                                  |
+| property         | Features to handle object properties.        | [![npm version][property-npm-badge-svg]][property-npm-badge] | [GitHub][property-github-readme] \| [npm][property-npm-readme] |
+| ui               | User interface.                              | *In Progress*                                                | [GitHub][ui-github-readme]                                     |
+| type             | Common types, type guards and type checkers. | [![npm version][type-npm-badge-svg]][type-npm-badge]         | [GitHub][type-github-readme] \| [npm][type-npm-readme]         |
 
 ## angular-package/property
 
 Features to handle properties.
 
-[![npm version][property-npm-svg]][property-npm-badge]
+<!-- npm badge -->
+[![npm version][property-npm-badge-svg]][property-npm-badge]
+<!-- GitHub badges -->
 [![GitHub issues][property-badge-issues]][property-issues]
 [![GitHub forks][property-badge-forks]][property-forks]
 [![GitHub stars][property-badge-stars]][property-stars]
 [![GitHub license][property-badge-license]][property-license]
+<!-- Patreon badge -->
 [![Support me on Patreon][patreon-badge]][patreon-link]
 
 ```typescript
@@ -96,8 +99,8 @@ import {
 * [Object](#object)
   * Object
     * [`get`](#get)
-* Package
-  * [Descriptor](#descriptor-sub-package)
+* [Box](#box)
+  * [Descriptor](#descriptor-box)
     * Function
       * [`getDescriptor()`](#getdescriptor)
       * [`getDescriptors()`](#getdescriptors)
@@ -107,11 +110,11 @@ import {
       * [`DataDescriptors`](#datadescriptors)
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
-  * [Name](#name-sub-package)
+  * [Name](#name-package)
     * Class
+      * [`Name`](#name)
       * [`Prefix`](#prefix)
       * [`Suffix`](#suffix)
-      * [`Name`](#name)
   * [Object](#object-sub-package)
     * Function
       * [`getObject()`](#getobject)
@@ -190,7 +193,7 @@ const errorCallback: ErrorCallback  = (
 | :--------------- | :--------: | :------------------------------------------------------------------------------------------ |
 | `ResultCallback` | `Function` | The **return type** is a function of a [`ResultCallback`][package-type-resultcallback] type |
 
-The return value is a predefined `function` for use as the callback.
+The **return value** is a predefined `function` for use as the callback.
 
 ```typescript
 // Example usage.
@@ -607,7 +610,9 @@ setProperty(people, 'age', 27); // Returns 27
 
 ----
 
-## Descriptor sub package
+## Box
+
+## Descriptor box
 
 Descriptor features to import.
 
@@ -617,6 +622,14 @@ import {
   AccessorDescriptors,
   DataDescriptors,
   Descriptor,
+} from '@angular-package/property';
+```
+
+```typescript
+// Function.
+import {
+  getDescriptor,
+  getDescriptors,
 } from '@angular-package/property';
 ```
 
@@ -805,7 +818,7 @@ getDescriptors(person); // Returns {firstName: {…}, age: {…}}
 getDescriptors(people); // Returns {}
 ```
 
-### Descriptor
+### `Descriptor`
 
 **Description:**
 
@@ -1102,7 +1115,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ----
 
-### AccessorDescriptors
+### `AccessorDescriptors`
 
 **Description:**
 
@@ -1132,18 +1145,6 @@ import { AccessorDescriptors } from '@angular-package/property';
 
 ```typescript
 AccessorDescriptors<Value, Obj = any> { ... }
-```
-
-### AccessorDescriptors callback
-
-#### `accessorCallback()`
-
-The default callback function for the `AccessorDescriptors.guard()` static method that's used to guard provided value.
-
-```typescript
-const accessorCallback: ResultCallback = callbackErrorMessage(
-  `Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`
-);
 ```
 
 ### AccessorDescriptors static methods
@@ -1396,7 +1397,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 ----
 
-### DataDescriptors
+### `DataDescriptors`
 
 **Description:**
 
@@ -1736,6 +1737,124 @@ type ThisAccessorDescriptor<Value, Obj> = AccessorDescriptor<Value> &
 
 ----
 
+## Name package
+
+Name features to import.
+
+```typescript
+// Class.
+import {
+  Name,
+  Prefix,
+  Suffix,
+} from '@angular-package/property';
+```
+
+### `Name`
+
+**Description:**
+
+Handles object property descriptor.
+
+**Features:**
+
+* Strictly defines accessor and data descriptor with the [`defineAccessor()`][descriptor-defineaccessor] and [`defineData()`][descriptor-definedata] static methods.
+* Strictly sets, and stores accessor and data descriptor with the `Descriptor` instance respectively `set.accessor()` and `set.data()` methods of the instance.
+* Get privately stored accessor descriptor defined by the `set.accessor()` method by using `get.accessor` property of the instance.
+* Get privately stored data descriptor defined by the `set.data()` method by using `get.data` property of the instance.
+
+> Strictly means, it guards provided descriptor by checking it against its unique keys and by picking only properties that belong to the appropriate descriptor.
+
+**Import:**
+
+```typescript
+import { Name } from '@angular-package/property';
+```
+
+**Syntax:**
+
+```typescript
+Name { ... }
+```
+
+### Name static methods
+
+#### `Name.define()`
+
+**Description:**
+
+Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
+
+**Syntax:**
+
+```typescript
+static defineAccessor<Value, Obj>(
+  descriptor: ThisAccessorDescriptor<Value, Obj>,
+  callback?: ResultCallback
+): ThisAccessorDescriptor<Value, Obj> { ... }
+```
+
+**Generic type variables:**
+
+| Name    | Description |
+| :------ | :---------- |
+| `Value` | Guards the value type of the `get()` and `set()` methods of the `descriptor` object, and in the return type `ThisAccessorDescriptor<Value, Obj>` |
+| `Obj`   | Gives the possibility to use the `this` keyword that refers to the `Obj` variable inside the `get()` and `set()` methods of the `descriptor` object, and in the return type `ThisAccessorDescriptor<Value, Obj>` |
+
+**Parameters:**
+
+| Name: `type`                                     | Description                                                                                                                                                             |
+| :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to define with the default values of the [`CommonDescriptor`][common-descriptor] |
+| callback?: `ResultCallback`                      | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
+
+**Throws:**
+
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, which means it doesn't contain `get` or `set` property.
+
+**Returns:**
+
+The **return value** is an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Descriptor } from '@angular-package/property';
+
+interface PersonShape {
+  firstName: string;
+}
+
+class Person implements PersonShape {
+  firstName = '';
+}
+
+class People {
+  firstName!: string;
+}
+
+const person: Person = new Person();
+const people: People = new People();
+
+const firstNameDescriptor = Descriptor.defineAccessor<string, Person>({
+  configurable: false,
+  enumerable: false,
+  get(): string {
+    return people.firstName;
+  },
+  set(value: string): void {
+    people.firstName = value;
+  },
+});
+
+// Define the property `firstName` in the `person` object to link with the same property in the `people` object.
+// Changes to the property `firstName` in the `person` object affect the property `firstName` in the `people` object.
+Object.defineProperty(person, 'firstName', firstNameDescriptor);
+```
+
+----
+
 ## GIT
 
 ### Commit
@@ -1782,41 +1901,44 @@ MIT © angular-package ([license][property-badge-license])
 [new]: https://img.shields.io/badge/-new-green
 [update]: https://img.shields.io/badge/-update-red
 
-<!-- Property: badges -->
-[property-badge-issues]: https://img.shields.io/github/issues/angular-package/property
-[property-badge-forks]: https://img.shields.io/github/forks/angular-package/property
-[property-badge-stars]: https://img.shields.io/github/stars/angular-package/property
-[property-badge-license]: https://img.shields.io/github/license/angular-package/property
-
-<!-- Property: github -->
-[property-issues]: https://github.com/angular-package/property/issues
-[property-forks]: https://github.com/angular-package/property/network
-[property-license]: https://github.com/angular-package/property/blob/master/LICENSE
-[property-stars]: https://github.com/angular-package/property/stargazers
-
-<!-- Package: property -->
-[property-npm-svg]: https://badge.fury.io/js/%40angular-package%2Fproperty.svg
-[property-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fproperty
-[property-readme-github]: https://github.com/angular-package/property#readme
-[property-readme-npm]: https://www.npmjs.com/package/@angular-package/property#readme
+<!-- Package: property  -->
+  <!-- GitHub: badges -->
+  [property-badge-issues]: https://img.shields.io/github/issues/angular-package/property
+  [property-badge-forks]: https://img.shields.io/github/forks/angular-package/property
+  [property-badge-stars]: https://img.shields.io/github/stars/angular-package/property
+  [property-badge-license]: https://img.shields.io/github/license/angular-package/property
+  <!-- GitHub: badges links -->
+  [property-issues]: https://github.com/angular-package/property/issues
+  [property-forks]: https://github.com/angular-package/property/network
+  [property-license]: https://github.com/angular-package/property/blob/master/LICENSE
+  [property-stars]: https://github.com/angular-package/property/stargazers
+  <!-- GitHub -->
+  [property-github-readme]: https://github.com/angular-package/property#readme
+  <!-- npm: badges -->
+  [property-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fproperty.svg
+  [property-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fproperty
+  [property-npm-readme]: https://www.npmjs.com/package/@angular-package/property#readme
 
 <!-- Package: type -->
-[type-npm-svg]: https://badge.fury.io/js/%40angular-package%2Ftype.svg
-[type-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftype
-[type-readme-github]: https://github.com/angular-package/type#readme
-[type-readme-npm]: https://www.npmjs.com/package/@angular-package/type#readme
+  <!-- npm -->
+  [type-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Ftype.svg
+  [type-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftype
+  [type-npm-readme]: https://www.npmjs.com/package/@angular-package/type#readme
 
-[package-type-resultcallback]: https://github.com/angular-package/type#resultcallback
-[package-type-key]: https://github.com/angular-package/type#key
+  <!-- GitHub -->
+  [type-github-readme]: https://github.com/angular-package/type#readme
+
+  [package-type-resultcallback]: https://github.com/angular-package/type#resultcallback
+  [package-type-key]: https://github.com/angular-package/type#key
 
 <!-- Package: change-detection -->
-[cd-readme-github]: https://github.com/angular-package/change-detection#readme
+  [cd-github-readme]: https://github.com/angular-package/change-detection#readme
 
 <!-- Package: prism -->
-[prism-readme-github]: https://github.com/angular-package/prism#readme
+  [prism-github-readme]: https://github.com/angular-package/prism#readme
 
 <!-- Package: ui -->
-[ui-readme-github]: https://github.com/angular-package/ui#readme
+  [ui-github-readme]: https://github.com/angular-package/ui#readme
 
 <!-- Property: type -->
 [accessor-descriptor]: #accessordescriptor
