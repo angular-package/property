@@ -21,7 +21,8 @@ Features to handle properties.
 [![GitHub forks][property-badge-forks]][property-forks]
 [![GitHub stars][property-badge-stars]][property-stars]
 [![GitHub license][property-badge-license]][property-license]
-<!-- Patreon badge -->
+<!-- Sponsors badges -->
+[![GitHub sponsors][github-badge-sponsor]][github-sponsor-link]
 [![Support me on Patreon][patreon-badge]][patreon-link]
 
 ```typescript
@@ -1890,6 +1891,8 @@ MIT © angular-package ([license][property-badge-license])
 ----
 
 <!-- Funding -->
+[github-badge-sponsor]: https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&link=https://github.com/sponsors/angular-package
+[github-sponsor-link]: https://github.com/sponsors/angular-package
 [patreon-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dsciborrudnicki%26type%3Dpatrons&style=flat
 [patreon-link]: https://patreon.com/sciborrudnicki
 
