@@ -88,40 +88,38 @@ import {
 
 * [Installation](#installation)
 * [Callback](#callback)
-  * Function
-    * [`errorCallback()`](#errorcallback)
-  * Object
-    * [`callbacks`](#callbacks)
+ Function
+   [`errorCallback()`](#errorcallback)
 * [Function](#function)
-  * [`getExistProperty()`](#getexistproperty)
-  * [`getProperties()`](#getproperties)
-  * [`getProperty()`](#getproperty)
-  * [`setProperty()`](#setproperty)
+ [`getExistProperty()`](#getexistproperty)
+ [`getProperties()`](#getproperties)
+ [`getProperty()`](#getproperty)
+ [`setProperty()`](#setproperty)
 * [Object](#object)
-  * Object
-    * [`get`](#get)
-* [Box](#box)
-  * [Descriptor](#descriptor-box)
-    * Function
-      * [`getDescriptor()`](#getdescriptor)
-      * [`getDescriptors()`](#getdescriptors)
-    * Class
-      * [`Descriptor`](#descriptor)
-      * [`AccessorDescriptors`](#accessordescriptors)
-      * [`DataDescriptors`](#datadescriptors)
-    * [Interface](#descriptor-interface)
-    * [Type](#descriptor-type)
-  * [Name](#name-package)
-    * Class
-      * [`Name`](#name)
-      * [`Prefix`](#prefix)
-      * [`Suffix`](#suffix)
-  * [Object](#object-sub-package)
-    * Function
-      * [`getObject()`](#getobject)
+ Object
+   [`get`](#get)
+* [Package](#package)
+ [Descriptor](#descriptor-package)
+   Function
+     [`getDescriptor()`](#getdescriptor)
+     [`getDescriptors()`](#getdescriptors)
+   Class
+     [`Descriptor`](#descriptor)
+     [`AccessorDescriptors`](#accessordescriptors)
+     [`DataDescriptors`](#datadescriptors)
+   [Interface](#descriptor-interface)
+   [Type](#descriptor-type)
+ [Name](#name-package)
+   Class
+     [`Name`](#name)
+     [`Prefix`](#prefix)
+     [`Suffix`](#suffix)
+ [Object](#object-sub-package)
+   Function
+     [`getObject()`](#getobject)
 * [Git](#git)
-  * [Commit](#commit)
-  * [Versioning](#versioning)
+ [Commit](#commit)
+ [Versioning](#versioning)
 * [License](#license)
 
 ## How angular-package understands
@@ -151,11 +149,7 @@ npm i --save @angular-package/property
 
 ### `errorCallback()`
 
-**Description:**
-
 Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
-
-**Syntax:**
 
 ```typescript
 const errorCallback: ErrorCallback  = (
@@ -196,43 +190,11 @@ const errorCallback: ErrorCallback  = (
 
 The **return value** is a predefined `function` for use as the callback.
 
+**Usage:**
+
 ```typescript
 // Example usage.
 
-```
-
-### `callbacks`
-
-**Description:**
-
-Object with all necessary callbacks for the property package. It can be overwritten with custom [`errorCallback()`](#errorcallback) function.
-
-**Syntax:**
-
-```typescript
-const callbacks: Callbacks = {
-  accessor: errorCallback(
-    `Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`,
-    'type'
-  ),
-  data: errorCallback(
-    `Data descriptor must be an \`DataDescriptors<Value>\` type`,
-    'type'
-  ),
-  descriptor: errorCallback(`Any kind of descriptor was not found`, 'type'),
-  getExistProperty: errorCallback(
-    `Object with the specified key does not exist`,
-    'type'
-  ),
-  getObject: errorCallback(`Provided value is not an \`object\``, 'type'),
-  name: errorCallback(`Name must be a \`string\` type`, 'type'),
-  prefix: errorCallback(`Prefix must be a \`string\` type`, 'type'),
-  suffix: errorCallback(`Suffix must be a \`string\` type`, 'type'),
-  constantName: errorCallback(
-    `A \`string\` \`name\` must be initialized`,
-    'type'
-  ),
-};
 ```
 
 ----
@@ -241,11 +203,7 @@ const callbacks: Callbacks = {
 
 ### `get`
 
-**Description:**
-
-Get object with all prefixed with `get` functions.
-
-**Syntax:**
+The object with all prefixed with `get` functions.
 
 ```typescript
 const get: Get = {
@@ -270,26 +228,16 @@ const get: Get = {
 
 ### `getExistProperty()`
 
-**Description:**
-
 Use `getExistProperty()` or `get.existProperty()` to return the value of the existing specified property from the specified `object`.
 
 **Features:**
 
 * Guards getting the object property value by:
-  * Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-  * Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-  * Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
-  * Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
+ Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
+ Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
+ Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
+ Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
 * Possibility to use custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
-
-**Import:**
-
-```typescript
-import { get, getExistProperty } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 const getExistProperty: GetExistProperty = <
@@ -366,8 +314,6 @@ getExistProperty(people, 'age', (result: boolean, value: any) => {
 
 ### `getProperties()`
 
-**Description:**
-
 Use `getProperties()` or `get.properties()` to get specified properties from the specified `object`.
 
 **Features:**
@@ -378,14 +324,6 @@ Use `getProperties()` or `get.properties()` to get specified properties from the
 * Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
 * Uses custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
 * Returns an object with the specified properties from the specified `object`.
-
-**Import:**
-
-```typescript
-import { get, getProperties } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 const getProperties: GetProperties = <
@@ -457,17 +395,7 @@ getProperties(people, ['age']); // returns {}
 
 ### `getProperty()`
 
-**Description:**
-
 Use `getProperty()` or `get.property()` to return the value of the specified property from the `object`.
-
-**Import:**
-
-```typescript
-import { get, getProperty } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 const getProperty: GetProperty = <
@@ -533,17 +461,7 @@ getProperty(people, 'age'); // Returns undefined
 
 ### `setProperty()`
 
-**Description:**
-
 Sets the value of indicated property by its name in the `object`.
-
-**Import:**
-
-```typescript
-import { setProperty } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 const setProperty: SetProperty = <
@@ -611,9 +529,9 @@ setProperty(people, 'age', 27); // Returns 27
 
 ----
 
-## Box
+## Package
 
-## Descriptor box
+## Descriptor package
 
 Descriptor features to import.
 
@@ -653,8 +571,6 @@ import {
 
 ### `getDescriptor()`
 
-**Description:**
-
 Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor]. Use `getDescriptor()` or `get.descriptor()` to return descriptor of the specified property from the specified object.
 
 > Gets the own property descriptor of the specified object. An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
@@ -665,14 +581,6 @@ Additional features instead of the default from the wrapped [`getOwnPropertyDesc
 
 * Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
 * Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-
-**Import:**
-
-```typescript
-import { get, getDescriptor } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>(
@@ -744,8 +652,6 @@ getDescriptor(noObject, 'age'); // Returns undefined
 
 ### `getDescriptors()`
 
-**Description:**
-
 Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
 
 > Returns an object containing all own property descriptors of an object.
@@ -755,14 +661,6 @@ Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDes
 Additional features instead of the default from the wrapped [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors] method.
 
 * Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-
-**Import:**
-
-```typescript
-import { get, getDescriptors } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof Obj>(
@@ -821,8 +719,6 @@ getDescriptors(people); // Returns {}
 
 ### `Descriptor`
 
-**Description:**
-
 Handles object property descriptor.
 
 **Features:**
@@ -834,14 +730,6 @@ Handles object property descriptor.
 
 > Strictly means, it guards provided descriptor by checking it against its unique keys and by picking only properties that belong to the appropriate descriptor.
 
-**Import:**
-
-```typescript
-import { Descriptor } from '@angular-package/property';
-```
-
-**Syntax:**
-
 ```typescript
 Descriptor<Value, Obj = any> { ... }
 ```
@@ -850,11 +738,7 @@ Descriptor<Value, Obj = any> { ... }
 
 #### `Descriptor.defineAccessor()`
 
-**Description:**
-
 Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
-
-**Syntax:**
 
 ```typescript
 static defineAccessor<Value, Obj>(
@@ -924,11 +808,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 #### `Descriptor.defineData()`
 
-**Description:**
-
 Returns defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
-
-**Syntax:**
 
 ```typescript
 static defineData<Value>(
@@ -992,11 +872,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 #### `Descriptor.fromObject()`
 
-**Description:**
-
 Returns property descriptors from the specified detected object.
-
-**Syntax:**
 
 ```typescript
 static fromObject<Obj extends object>(
@@ -1054,11 +930,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 #### `Descriptor.fromProperty()`
 
-**Description:**
-
 Returns property descriptors from the specified detected object.
-
-**Syntax:**
 
 ```typescript
 static fromObject<Obj extends object>(
@@ -1118,8 +990,6 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ### `AccessorDescriptors`
 
-**Description:**
-
 Strictly defines, sets, and stores privately property accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
 > Strictly means, methods picks `configurable`, `enumerable`, `get`, `set` properties from the provided `descriptor` object.
@@ -1130,19 +1000,12 @@ Strictly defines, sets, and stores privately property accessor descriptor of a [
 * Strictly defines property accessor descriptor.
 * Strictly sets, and stores at the same time property accessor descriptor.
 * Accessor descriptor is of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type:
-  * The return value of the `get()` function is of a generic `Value` type.
-  * The parameter of the `set()` function is of a generic `Value` type.
-  * Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
+ The return value of the `get()` function is of a generic `Value` type.
+ The parameter of the `set()` function is of a generic `Value` type.
+ Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
 * Method [`set()`][accessordescriptors-prototype-set] of the instance and static [`define()`][accessordescriptors-define] picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
 * Get privately stored accessor descriptor defined by the [`set()`][accessordescriptors-prototype-set] method of the instance.
 
-**Import:**
-
-```typescript
-import { AccessorDescriptors } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 AccessorDescriptors<Value, Obj = any> { ... }
@@ -1152,11 +1015,7 @@ AccessorDescriptors<Value, Obj = any> { ... }
 
 #### `AccessorDescriptors.define()`
 
-**Description:**
-
 Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
-
-**Syntax:**
 
 ```typescript
 static define<Value, Obj>(
@@ -1226,11 +1085,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 #### `AccessorDescriptors()`
 
-**Description:**
-
 Creates an instance, and optionally sets an accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
-
-**Syntax:**
 
 ```typescript
 AccessorDescriptors<Value, Obj>(descriptor?: ThisAccessorDescriptor<Value, Obj>)
@@ -1284,11 +1139,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>({
 
 #### `AccessorDescriptors.prototype.set()`
 
-**Description:**
-
 [Strictly][accessordescriptors] sets with the last saved descriptor values, and stores privately accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
-
-**Syntax:**
 
 ```typescript
 set(
@@ -1349,11 +1200,7 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 
 #### `AccessorDescriptors.prototype.get`
 
-**Description:**
-
 Get privately stored accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type defined by the [`set()`][accessordescriptors-prototype-set] method.
-
-**Syntax:**
 
 ```typescript
 get get(): ThisAccessorDescriptor<Value, Obj> { ... }
@@ -1400,8 +1247,6 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 ### `DataDescriptors`
 
-**Description:**
-
 Strictly defines, sets, and stores privately property data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
 
 > Strictly means, data descriptor of a [`DataDescriptor<Value>`][data-descriptor] is type guarded and methods picks `configurable`, `enumerable`, `writable`, `value` properties from the provided `descriptor` object.
@@ -1409,20 +1254,12 @@ Strictly defines, sets, and stores privately property data descriptor of a [`Dat
 **Features:**
 
 * Data descriptor is of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface]:
-  * The `value` property is of a generic `Value` type.
+ The `value` property is of a generic `Value` type.
 * Guarded process of defining the object descriptor, but properties are not being checked against proper values.
 * Strictly defines property data descriptor.
 * Strictly sets, and stores at the same time property data descriptor.
 * Method [`set()`][datadescriptors-prototype-set] of the instance and static [`define()`][datadescriptors-define] picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
 * Get privately stored data descriptor defined by the [`set()`][datadescriptors-prototype-set] method of the instance.
-
-**Import:**
-
-```typescript
-import { DataDescriptors } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 DataDescriptors<Value> { ... }
@@ -1432,11 +1269,7 @@ DataDescriptors<Value> { ... }
 
 #### `DataDescriptors.define()`
 
-**Description:**
-
 Returns [**strictly**][datadescriptors] defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
-
-**Syntax:**
 
 ```typescript
 static define<Value>(
@@ -1505,11 +1338,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 #### `DataDescriptors()`
 
-**Description:**
-
 Creates an instance, and optionally sets a data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
-
-**Syntax:**
 
 ```typescript
 DataDescriptors<Value>(descriptor?: DataDescriptor<Value>)
@@ -1558,11 +1387,7 @@ const firstNameDescriptor = new DataDescriptors<string>({ // Initialize
 
 #### `DataDescriptors.prototype.set()`
 
-**Description:**
-
 [Strictly][datadescriptors] sets with the last saved descriptor values, and stores privately data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
-
-**Syntax:**
 
 ```typescript
 set(
@@ -1629,11 +1454,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 #### `DataDescriptors.prototype.get`
 
-**Description:**
-
 Get privately stored data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] defined by the instance [`set()`][datadescriptors-prototype-set] method.
-
-**Syntax:**
 
 ```typescript
 get get(): DataDescriptor<Value> { ... }
@@ -1680,8 +1501,6 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ### AccessorDescriptor
 
-**Description:**
-
 Descriptor with its unique optional `get()` and `set()` functions, of the `Value` type. For the accessor descriptor with also the object type, please use the type [`ThisAccessorDescriptor<Value, Obj>`](#thisaccessordescriptor). More about property descriptors [here][js-object-define-property].
 
 ```typescript
@@ -1693,11 +1512,7 @@ interface AccessorDescriptor<Value> extends CommonDescriptor {
 
 ### CommonDescriptor
 
-**Description:**
-
 Common keys `configurable` and `enumerable` of a `boolean` type for [accessor][this-accessor-descriptor] and [data descriptor][data-descriptor], picked from the default `PropertyDescriptor`. More about property descriptors [here][js-object-define-property].
-
-**Syntax:**
 
 ```typescript
 interface CommonDescriptor
@@ -1706,11 +1521,7 @@ interface CommonDescriptor
 
 ### DataDescriptor
 
-**Description:**
-
 Descriptor with its unique optional keys, `writable` of a `boolean` type and `value` of a generic `Value` type. More about property descriptors [here][js-object-define-property].
-
-**Syntax:**
 
 ```typescript
 interface DataDescriptor<Value> extends CommonDescriptor {
@@ -1725,11 +1536,7 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 
 ### ThisAccessorDescriptor
 
-**Description:**
-
 [`AccessorDescriptor`][accessor-descriptor] [interface][ts-interface] as a type cause of ease of use `this` of an `Obj` type in the `get()` and `set()` functions. More about property descriptors [here][js-object-define-property].
-
-**Syntax:**
 
 ```typescript
 type ThisAccessorDescriptor<Value, Obj> = AccessorDescriptor<Value> &
@@ -1751,63 +1558,64 @@ import {
 } from '@angular-package/property';
 ```
 
-### `Name`
+### `Prefix`
 
-**Description:**
-
-Handles object property descriptor.
+Manages the `prefix` of a string type for the name.
 
 **Features:**
 
-* Strictly defines accessor and data descriptor with the [`defineAccessor()`][descriptor-defineaccessor] and [`defineData()`][descriptor-definedata] static methods.
-* Strictly sets, and stores accessor and data descriptor with the `Descriptor` instance respectively `set.accessor()` and `set.data()` methods of the instance.
-* Get privately stored accessor descriptor defined by the `set.accessor()` method by using `get.accessor` property of the instance.
-* Get privately stored data descriptor defined by the `set.data()` method by using `get.data` property of the instance.
+* Guards the provided string-type `prefix`.
+* Filters the provided `prefix` with a customizable regular expression and `length`.
 
-> Strictly means, it guards provided descriptor by checking it against its unique keys and by picking only properties that belong to the appropriate descriptor.
+Static:
 
-**Import:**
+* Default `length` of the `prefix` is `3`, and pattern is `/[^a-zA-Z0-9$_]/g`.
+* Defines the `prefix` with a static method `define()`.
+* Customizable `callback`, `length` and regular expression `pattern` in the static `define()` method.
+* Checks if any `value` is an instance of a `Prefix` with static method `is()`.
+
+Instance:
+
+* Defines a `string` type `prefix` with a `define()` method.
+  * Sets
+* Initially sets the `prefix` with optional settings.
+* Sets settings for the `prefix` with the `configure()` method.
+* Sets the `prefix` with the `set()` method.
+* Sets custom callback function for the `set()` method with the `setCallback()` method.
+* Sets the maximum length of the `prefix` with the `setLength()` method.
+* Sets custom regular expression with the `setPattern()` method.
+* Update `prefix` with the actual settings with the `updatePrefix()` method.
+  * Gets privately stored
+* `callback` function with the `getCallback()` method.
+* maximum length` of the `prefix` with the `getLength()` method.
+* `prefix` with the `get` property.
+* Picks privately stored object that contains the `length` and `pattern` with the `pick` property.
+
+### `Prefix` static methods
+
+#### `Prefix.define()`
+
+Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum length.
 
 ```typescript
-import { Name } from '@angular-package/property';
+static define(prefix: string, settings?: AffixSettings): string {
+  return guard.is.string(
+    prefix,
+    settings?.callback ? settings.callback : undefined
+  )
+    ? prefix
+        .replace(settings?.pattern ? settings.pattern : /[^a-zA-Z0-9$_]/g, '')
+        .slice(0, settings?.length ? settings.length : 3)
+    : '';
+}
 ```
-
-**Syntax:**
-
-```typescript
-Name { ... }
-```
-
-### Name static methods
-
-#### `Name.define()`
-
-**Description:**
-
-Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
-
-**Syntax:**
-
-```typescript
-static defineAccessor<Value, Obj>(
-  descriptor: ThisAccessorDescriptor<Value, Obj>,
-  callback?: ResultCallback
-): ThisAccessorDescriptor<Value, Obj> { ... }
-```
-
-**Generic type variables:**
-
-| Name    | Description |
-| :------ | :---------- |
-| `Value` | Guards the value type of the `get()` and `set()` methods of the `descriptor` object, and in the return type `ThisAccessorDescriptor<Value, Obj>` |
-| `Obj`   | Gives the possibility to use the `this` keyword that refers to the `Obj` variable inside the `get()` and `set()` methods of the `descriptor` object, and in the return type `ThisAccessorDescriptor<Value, Obj>` |
 
 **Parameters:**
 
-| Name: `type`                                     | Description                                                                                                                                                             |
-| :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `ThisAccessorDescriptor<Value, Obj>` | An `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type to define with the default values of the [`CommonDescriptor`][common-descriptor] |
-| callback?: `ResultCallback`                      | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `get` or `set` property, by default it uses [`accessorCallback()`][accessordescriptors-accessorcallback] function |
+| Name: `type`                | Description |
+| :-------------------------- | :---------- |
+| `prefix: string`            | A `string` type value as the `prefix` |
+| `settings?: ResultCallback` | An optional `object` of a `PrefixConfig` interface to configure the provided `prefix` |
 
 **Throws:**
 
@@ -1815,43 +1623,538 @@ Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`This
 
 **Returns:**
 
-The **return value** is an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
+The **return value** is a `prefix` of a `string` type or an empty string if the `prefix` is not a `string` type.
 
 **Usage:**
 
 ```typescript
 // Example usage.
-import { Descriptor } from '@angular-package/property';
+import { Prefix } from '@angular-package/property';
 
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = '';
-}
-
-class People {
-  firstName!: string;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-const firstNameDescriptor = Descriptor.defineAccessor<string, Person>({
-  configurable: false,
-  enumerable: false,
-  get(): string {
-    return people.firstName;
+const prefix = Prefix.define('myPrefix12345', {
+  callback: (result, value: any) => {
+    if (result === false) {
+      throw new Error('Must be a string type');
+    }
+    return result;
   },
-  set(value: string): void {
-    people.firstName = value;
-  },
-});
+  length: 3,
+  pattern: /[^0-9]/g
+}); // Returns 123
+```
 
-// Define the property `firstName` in the `person` object to link with the same property in the `people` object.
-// Changes to the property `firstName` in the `person` object affect the property `firstName` in the `people` object.
-Object.defineProperty(person, 'firstName', firstNameDescriptor);
+#### `Prefix.is()`
+
+Checks if any `value` is an instance of a [`Prefix`](#prefix).
+
+```typescript
+static is(value: any, callback?: ResultCallback): value is Prefix {
+  return is.instance(value, Prefix, callback);
+}
+```
+
+**Parameters:**
+
+| Name: `type`                | Description |
+| :-------------------------- | :---------- |
+| `value: any`                | Any `value` to check |
+| `callback?: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `value` is an instance of a `Prefix` |
+
+**Throws:**
+
+Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a .
+
+**Returns:**
+
+| Returns           | Type      | Description                                                                                                                      |
+| :---------------- | :-------: | :------------------------------------------------------------------------------------------------------------------------------- |
+| `value is Prefix` | `boolean` | The **return type** is a `boolean` as the result of its statement indicating the `value` is an instance of a [`Prefix`](#prefix) |
+
+The **return value** is a `boolean` indicating whether or not the `value` is an instance of a [`Prefix`](#prefix).
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+Prefix.is(new Prefix()); // Returns `true`.
+```
+
+### `Prefix` constructor
+
+Initially sets the `prefix` with optional settings.
+
+```typescript
+constructor(prefix?: string, settings?: AffixSettings) {
+  super();
+  if (is.defined(prefix)) {
+    if (is.defined(settings)) {
+      this.configure(settings);
+    }
+    this.set(prefix);
+  }
+}
+```
+
+**Parameters:**
+
+| Name: `type`               | Description |
+| :------------------------- | :---------- |
+| `prefix?: string`          | An optional `string` type value to initially set the `prefix`. |
+| `settings?: AffixSettings` | An optional `object` of a [`AffixSettings`](#affixsettings) interface to customize the provided `prefix` |
+
+**Returns:**
+
+The **return value** is new instance of a [`Prefix`](#prefix).
+
+**Usage:**
+
+```typescript
+// Example usage.
+```
+
+### `Prefix` instance methods
+
+#### `Prefix.prototype.configure()`
+
+Configures `callback`, `length`, and `pattern` options of the `prefix` settings.
+
+```typescript
+public configure(settings: AffixSettings): this {
+  if (guard.object(settings) && is.false(this.isLocked)) {
+    if (is.defined(settings.callback)) {
+      this.setCallback(settings.callback);
+    }
+    if (is.defined(settings.length)) {
+      this.setLength(settings.length);
+    }
+    if (is.defined(settings.pattern)) {
+      this.setPattern(settings.pattern);
+    }
+  }
+  return this;
+}
+```
+
+**Parameters:**
+
+| Name: `type`              | Description |
+| :------------------------ | :---------- |
+| `settings: AffixSettings` | An `object` of a [`AffixSettings`](#affixsettings) interface |
+
+**Returns:**
+
+| Returns | Type     | Description                                                 |
+| ------- | :------: | :---------------------------------------------------------- |
+| `this`  | `Prefix` | The **return type** is the actual instance of the`Prefix`   |
+
+The **return value** is an instance of a `Prefix` for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+```
+
+#### `Prefix.prototype.define()`
+
+Defines the `prefix` with the actual settings.
+
+```typescript
+public define(
+  prefix: string,
+  callback: ResultCallback = this.#callback
+): string {
+  return Prefix.define(prefix, {
+    callback: this.#callback,
+    length: this.getLength(),
+    pattern: this.getPattern(),
+  });
+}
+```
+
+**Parameters:**
+
+| Name: `type`               | Description |
+| :------------------------- | :---------- |
+| `prefix: string`           | A `string` type value |
+| `callback: ResultCallback` | A [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `prefix` is a `string` type  |
+
+**Returns:**
+
+The **return value** is a `prefix` of a  `string` type or an empty string if the `prefix` is not a `string` type.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+```
+
+#### `Prefix.prototype.getCallback()`
+
+Returns callback function of the actual settings.
+
+```typescript
+public getCallback(): ResultCallback {
+  return this.#callback;
+}
+```
+
+**Returns:**
+
+| Returns          | Type             | Description                                                                     |
+| ---------------- | :--------------: | :------------------------------------------------------------------------------ |
+| `this.#callback` | `ResultCallback` | The **return type** is the function of the [`ResultCallback`][package-type-resultcallback] type |
+
+The **return value** is a privately stored `callback` function.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+new Prefix().getCallback(); // Returns (result, value) => {…}
+```
+
+#### `Prefix.prototype.getLength()`
+
+Returns the maximum length of the actual settings for the `prefix`, which by default is set to `3`.
+
+```typescript
+public getLength(): number {
+  return this.#length;
+}
+```
+
+**Returns:**
+
+| Returns        | Type     | Description                            |
+| -------------- | :------: | :------------------------------------- |
+| `this.#length` | `number` | The **return type** is a `number` type |
+
+The **return value** is a privately stored maximum length of the `prefix`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+new Prefix().getLength(); // Returns `3`
+```
+
+#### `Prefix.prototype.getPattern()`
+
+Returns pattern of the actual settings for the `prefix`, which by default is set to `/[^a-zA-Z0-9$_]/g`.
+
+```typescript
+public getPattern(): RegExp {
+  return this.#pattern;
+}
+```
+
+**Returns:**
+
+| Returns         | Type     | Description                            |
+| --------------- | :------: | :------------------------------------- |
+| `this.#pattern` | `RegExp` | The **return type** is a `RegExp` type |
+
+The **return value** is a privately stored regular expression to filter the `prefix`.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+new Prefix().getPattern(); // Returns /[^a-zA-Z0-9$_]/g
+```
+
+#### `Prefix.prototype.getSettings()`
+
+Returns the actual settings of a [`Prefix`](#prefix) instance.
+
+```typescript
+public getSettings(): AffixSettings {
+  return {
+    callback: this.getCallback(),
+    length: this.getLength(),
+    pattern: this.getPattern(),
+  };
+}
+```
+
+**Returns:**
+
+| Returns                         | Type            | Description                                                  |
+| :------------------------------ | :-------------: | :----------------------------------------------------------- |
+| `{ callback, length, pattern }` | `AffixSettings` | A **return type** is an `object` of a [`AffixSettings`](#affixsettings) interface |
+
+The **return value** is an `object` with the actual settings of a [`Prefix`](#prefix) instance.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+new Prefix().getSettings(); // Returns { callback: (result, value) => {…}, length: 3, pattern: /[^a-zA-Z0-9$_]/g }
+```
+
+#### `Prefix.prototype.set()`
+
+Sets the `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method.
+
+```typescript
+public set(
+  prefix: string,
+  callback: ResultCallback = this.getCallback()
+): this {
+  if (is.false(this.isLocked)) {
+    this.#prefix = Prefix.define(prefix, {
+      callback,
+      length: this.getLength(),
+      pattern: this.getPattern(),
+    });
+  }
+  return this;
+}
+```
+
+**Parameters:**
+
+| Name: `type`               | Description |
+| :------------------------- | :---------- |
+| `prefix: string`           | A `string` type value |
+| `callback: ResultCallback` | A [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `prefix` is a `string` type  |
+
+**Returns:**
+
+| Returns | Type     | Description                                                           |
+| ------- | :------: | :-------------------------------------------------------------------- |
+| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
+
+The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+const databasePrefix = new Prefix('database_', { length: 9 }) // databasePrefix.get returns 'database_'
+  .set('wordpress_');                                         // databasePrefix.get returns 'wordpress'
+```
+
+#### `Prefix.prototype.setCallback()`
+
+Sets the callback for the `set()` method. The method works if an instance is not locked by the `lock()` method.
+
+```typescript
+public setCallback(callback: ResultCallback): this {
+  this.#callback =
+    guard.function(callback) && is.false(this.isLocked)
+      ? callback
+      : this.#callback;
+  return this;
+}
+```
+
+**Parameters:**
+
+| Name: `type`               | Description |
+| :------------------------- | :---------- |
+| `callback: ResultCallback` | A [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `prefix` is of a `string` type |
+
+**Returns:**
+
+| Returns | Type     | Description                                                           |
+| ------- | :------: | :-------------------------------------------------------------------- |
+| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
+
+The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+let badPrefix: any = 27;
+
+new Prefix('database_')
+  .setCallback((result: boolean, value: any) => {
+    if (is.false(result)) {
+      throw new TypeError(`Prefix must be a string type got ${value}`);
+    }
+    return result;
+  })
+  .set(badPrefix); // TypeError: Prefix must be a string type got 27
+```
+
+#### `Prefix.prototype.setLength()`
+
+Sets the length of the `prefix`, which by default is set to `3`. The method works if an instance is not locked by the `lock()` method.
+
+```typescript
+public setLength(length: number, callback?: ResultCallback): this {
+  this.#length =
+    guard.is.number(length, callback) && is.false(this.isLocked)
+      ? length
+      : this.#length;
+  return this;
+}
+```
+
+**Parameters:**
+
+| Name: `type`               | Description |
+| :------------------------- | :---------- |
+| `length: number`           | A `number` type value to denote the maximum length of the `prefix` |
+| `callback: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `length` is of a `number` type  |
+
+**Returns:**
+
+| Returns | Type     | Description                                                           |
+| ------- | :------: | :-------------------------------------------------------------------- |
+| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
+
+The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+const databasePrefix = new Prefix('database_', { length: 9 }).setLength(3);
+databasePrefix.getLength(); // returns '3'
+```
+
+#### `Prefix.prototype.setPattern()`
+
+Sets the pattern for the `prefix`. The method works if an instance is not locked by the `lock()` method.
+
+```typescript
+public setPattern(pattern: RegExp, callback?: ResultCallback): this {
+  this.#pattern =
+    is.regexp(pattern, callback) && is.false(this.isLocked)
+      ? pattern
+      : this.#pattern;
+  return this;
+}
+```
+
+**Parameters:**
+
+| Name: `type`               | Description |
+| :------------------------- | :---------- |
+| `pattern: RegExp`          | A `RegExp` type value to filter the `prefix` |
+| `callback: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `pattern` is of a `RegExp` type  |
+
+**Returns:**
+
+| Returns | Type     | Description                                                           |
+| ------- | :------: | :-------------------------------------------------------------------- |
+| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
+
+The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+new Prefix('database_1', { length: 10 }) // databasePrefix.get returns 'database_'
+  .setPattern(/[^0-9]/g)                 // databasePrefix.get returns 'database_'
+  .updatePrefix();                       // databasePrefix.get returns '1'
+```
+
+#### `Prefix.prototype.updatePrefix()`
+
+Updates privately stored `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method.
+
+```typescript
+public updatePrefix(): this {
+  this.set(this.#prefix);
+  return this;
+}
+```
+
+**Returns:**
+
+| Returns | Type     | Description                                                           |
+| ------- | :------: | :-------------------------------------------------------------------- |
+| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
+
+The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+new Prefix('database_', { length: 9 }) // databasePrefix.get returns 'database_'
+  .setLength(3)                        // databasePrefix.get returns 'database_'
+  .updatePrefix();                     // databasePrefix.get returns 'dat'
+```
+
+----
+
+### Name interfaces
+
+#### AffixSettings
+
+Settings with `callback`, `length`, and `pattern` options for the `affix`.
+
+```typescript
+interface AffixSettings extends Pick<Settings, 'length' | 'pattern'> {
+  callback?: ResultCallback;
+}
+```
+
+#### NameSettings
+
+Settings with `callback`, `length`, `pattern`, `prefix`, and `suffix` options for the name.
+
+```typescript
+interface NameSettings extends Settings {
+  callback?: ResultCallback;
+}
+```
+
+#### Settings
+
+Common settings.
+
+```typescript
+interface Settings {
+  /**
+   * Length of the name.
+   */
+  length?: number;
+
+  /**
+   * Pattern to filter provided name.
+   */
+  pattern?: RegExp;
+
+  /**
+   * Prefix of a `string` type or an instance of a `Prefix`.
+   */
+  prefix?: string | Prefix;
+
+  /**
+   * Suffix of a `string` type or an instance of a `Suffix`.
+   */
+  suffix?: string | Suffix;
+}
 ```
 
 ----
@@ -1886,7 +2189,7 @@ How do I know when to release 1.0.0?
 
 ## License
 
-MIT © angular-package ([license][property-badge-license])
+MIT © angular-package ([license][license])
 
 ----
 
