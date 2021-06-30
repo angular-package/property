@@ -88,38 +88,34 @@ import {
 
 * [Installation](#installation)
 * [Callback](#callback)
- Function
-   [`errorCallback()`](#errorcallback)
+  * Function
+    * [`errorCallback()`](#errorcallback)
 * [Function](#function)
- [`getExistProperty()`](#getexistproperty)
- [`getProperties()`](#getproperties)
- [`getProperty()`](#getproperty)
- [`setProperty()`](#setproperty)
+  * [`getExistProperty()`](#getexistproperty)
+  * [`getProperties()`](#getproperties)
+  * [`getProperty()`](#getproperty)
+  * [`setProperty()`](#setproperty)
 * [Object](#object)
- Object
-   [`get`](#get)
+  * [`get`](#get)
 * [Package](#package)
- [Descriptor](#descriptor-package)
-   Function
-     [`getDescriptor()`](#getdescriptor)
-     [`getDescriptors()`](#getdescriptors)
-   Class
-     [`Descriptor`](#descriptor)
-     [`AccessorDescriptors`](#accessordescriptors)
-     [`DataDescriptors`](#datadescriptors)
-   [Interface](#descriptor-interface)
-   [Type](#descriptor-type)
- [Name](#name-package)
-   Class
-     [`Name`](#name)
-     [`Prefix`](#prefix)
-     [`Suffix`](#suffix)
- [Object](#object-sub-package)
-   Function
-     [`getObject()`](#getobject)
+  * [Descriptor](#descriptor-package)
+    * Function
+      * [`getDescriptor()`](#getdescriptor)
+      * [`getDescriptors()`](#getdescriptors)
+    * Class
+      * [`Descriptor`](#descriptor)
+      * [`AccessorDescriptors`](#accessordescriptors)
+      * [`DataDescriptors`](#datadescriptors)
+    * [Interface](#descriptor-interface)
+    * [Type](#descriptor-type)
+  * [Name](#name-package)
+    * Class
+      * [`Name`](#name)
+      * [`Prefix`](#prefix)
+      * [`Suffix`](#suffix)
 * [Git](#git)
- [Commit](#commit)
- [Versioning](#versioning)
+  * [Commit](#commit)
+  * [Versioning](#versioning)
 * [License](#license)
 
 ## How angular-package understands
