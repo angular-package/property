@@ -732,7 +732,7 @@ Descriptor<Value, Obj = any> { ... }
 
 ### Descriptor static methods
 
-#### `Descriptor.defineAccessor()`
+### `Descriptor.defineAccessor()`
 
 Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
 
@@ -802,7 +802,7 @@ const firstNameDescriptor = Descriptor.defineAccessor<string, Person>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-#### `Descriptor.defineData()`
+### `Descriptor.defineData()`
 
 Returns defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
 
@@ -866,7 +866,7 @@ const firstNameDescriptor = Descriptor.defineData<string>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-#### `Descriptor.fromObject()`
+### `Descriptor.fromObject()`
 
 Returns property descriptors from the specified detected object.
 
@@ -924,7 +924,7 @@ const firstNameDescriptor = Descriptor.fromObject();
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-#### `Descriptor.fromProperty()`
+### `Descriptor.fromProperty()`
 
 Returns property descriptors from the specified detected object.
 
@@ -1007,9 +1007,9 @@ Strictly defines, sets, and stores privately property accessor descriptor of a [
 AccessorDescriptors<Value, Obj = any> { ... }
 ```
 
-### AccessorDescriptors static methods
+### `AccessorDescriptors` static methods
 
-#### `AccessorDescriptors.define()`
+### `AccessorDescriptors.define()`
 
 Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
 
@@ -1077,9 +1077,9 @@ const firstNameDescriptor = AccessorDescriptors.define<string, Person>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-### AccessorDescriptors Constructor
+### `AccessorDescriptors` Constructor
 
-#### `AccessorDescriptors()`
+### `AccessorDescriptors()`
 
 Creates an instance, and optionally sets an accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
@@ -1131,9 +1131,9 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>({
 });
 ```
 
-### AccessorDescriptors instance methods
+### `AccessorDescriptors` instance methods
 
-#### `AccessorDescriptors.prototype.set()`
+### `AccessorDescriptors.prototype.set()`
 
 [Strictly][accessordescriptors] sets with the last saved descriptor values, and stores privately accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
@@ -1192,9 +1192,9 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 });
 ```
 
-### AccessorDescriptors instance properties
+### `AccessorDescriptors` instance properties
 
-#### `AccessorDescriptors.prototype.get`
+### `AccessorDescriptors.prototype.get`
 
 Get privately stored accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type defined by the [`set()`][accessordescriptors-prototype-set] method.
 
@@ -1261,9 +1261,9 @@ Strictly defines, sets, and stores privately property data descriptor of a [`Dat
 DataDescriptors<Value> { ... }
 ```
 
-### DataDescriptors static methods
+### `DataDescriptors` static methods
 
-#### `DataDescriptors.define()`
+### `DataDescriptors.define()`
 
 Returns [**strictly**][datadescriptors] defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
 
@@ -1330,9 +1330,9 @@ const firstNameDescriptor = DataDescriptor.define<string, Person>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-### DataDescriptors Constructor
+### `DataDescriptors` Constructor
 
-#### `DataDescriptors()`
+### `DataDescriptors()`
 
 Creates an instance, and optionally sets a data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
 
@@ -1379,9 +1379,9 @@ const firstNameDescriptor = new DataDescriptors<string>({ // Initialize
 });
 ```
 
-### DataDescriptors instance methods
+### `DataDescriptors` instance methods
 
-#### `DataDescriptors.prototype.set()`
+### `DataDescriptors.prototype.set()`
 
 [Strictly][datadescriptors] sets with the last saved descriptor values, and stores privately data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
 
@@ -1446,9 +1446,9 @@ const firstNameDescriptor = new DataDescriptors<string>()
 Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 ```
 
-### DataDescriptors instance properties
+### `DataDescriptors` instance properties
 
-#### `DataDescriptors.prototype.get`
+### `DataDescriptors.prototype.get`
 
 Get privately stored data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] defined by the instance [`set()`][datadescriptors-prototype-set] method.
 
@@ -1589,7 +1589,7 @@ Instance:
 
 ### `Prefix` static methods
 
-#### `Prefix.define()`
+### `Prefix.define()`
 
 Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum length.
 
@@ -1639,7 +1639,7 @@ const prefix = Prefix.define('myPrefix12345', {
 }); // Returns 123
 ```
 
-#### `Prefix.is()`
+### `Prefix.is()`
 
 Checks if any `value` is an instance of a [`Prefix`](#prefix).
 
@@ -1712,7 +1712,7 @@ The **return value** is new instance of a [`Prefix`](#prefix).
 
 ### `Prefix` instance methods
 
-#### `Prefix.prototype.configure()`
+### `Prefix.prototype.configure()`
 
 Configures `callback`, `length`, and `pattern` options of the `prefix` settings.
 
@@ -1754,7 +1754,7 @@ The **return value** is an instance of a `Prefix` for the chaining.
 import { Prefix } from '@angular-package/property';
 ```
 
-#### `Prefix.prototype.define()`
+### `Prefix.prototype.define()`
 
 Defines the `prefix` with the actual settings.
 
@@ -1789,7 +1789,7 @@ The **return value** is a `prefix` of a  `string` type or an empty string if the
 import { Prefix } from '@angular-package/property';
 ```
 
-#### `Prefix.prototype.getCallback()`
+### `Prefix.prototype.getCallback()`
 
 Returns callback function of the actual settings.
 
@@ -1816,7 +1816,7 @@ import { Prefix } from '@angular-package/property';
 new Prefix().getCallback(); // Returns (result, value) => {…}
 ```
 
-#### `Prefix.prototype.getLength()`
+### `Prefix.prototype.getLength()`
 
 Returns the maximum length of the actual settings for the `prefix`, which by default is set to `3`.
 
@@ -1843,7 +1843,7 @@ import { Prefix } from '@angular-package/property';
 new Prefix().getLength(); // Returns `3`
 ```
 
-#### `Prefix.prototype.getPattern()`
+### `Prefix.prototype.getPattern()`
 
 Returns pattern of the actual settings for the `prefix`, which by default is set to `/[^a-zA-Z0-9$_]/g`.
 
@@ -1870,7 +1870,7 @@ import { Prefix } from '@angular-package/property';
 new Prefix().getPattern(); // Returns /[^a-zA-Z0-9$_]/g
 ```
 
-#### `Prefix.prototype.getSettings()`
+### `Prefix.prototype.getSettings()`
 
 Returns the actual settings of a [`Prefix`](#prefix) instance.
 
@@ -1901,7 +1901,7 @@ import { Prefix } from '@angular-package/property';
 new Prefix().getSettings(); // Returns { callback: (result, value) => {…}, length: 3, pattern: /[^a-zA-Z0-9$_]/g }
 ```
 
-#### `Prefix.prototype.set()`
+### `Prefix.prototype.set()`
 
 Sets the `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method.
 
@@ -1946,7 +1946,7 @@ const databasePrefix = new Prefix('database_', { length: 9 }) // databasePrefix.
   .set('wordpress_');                                         // databasePrefix.get returns 'wordpress'
 ```
 
-#### `Prefix.prototype.setCallback()`
+### `Prefix.prototype.setCallback()`
 
 Sets the callback for the `set()` method. The method works if an instance is not locked by the `lock()` method.
 
@@ -1992,7 +1992,7 @@ new Prefix('database_')
   .set(badPrefix); // TypeError: Prefix must be a string type got 27
 ```
 
-#### `Prefix.prototype.setLength()`
+### `Prefix.prototype.setLength()`
 
 Sets the length of the `prefix`, which by default is set to `3`. The method works if an instance is not locked by the `lock()` method.
 
@@ -2031,7 +2031,7 @@ const databasePrefix = new Prefix('database_', { length: 9 }).setLength(3);
 databasePrefix.getLength(); // returns '3'
 ```
 
-#### `Prefix.prototype.setPattern()`
+### `Prefix.prototype.setPattern()`
 
 Sets the pattern for the `prefix`. The method works if an instance is not locked by the `lock()` method.
 
@@ -2071,7 +2071,7 @@ new Prefix('database_1', { length: 10 }) // databasePrefix.get returns 'database
   .updatePrefix();                       // databasePrefix.get returns '1'
 ```
 
-#### `Prefix.prototype.updatePrefix()`
+### `Prefix.prototype.updatePrefix()`
 
 Updates privately stored `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method.
 
@@ -2105,7 +2105,7 @@ new Prefix('database_', { length: 9 }) // databasePrefix.get returns 'database_'
 
 ### Name interfaces
 
-#### AffixSettings
+### AffixSettings
 
 Settings with `callback`, `length`, and `pattern` options for the `affix`.
 
@@ -2115,7 +2115,7 @@ interface AffixSettings extends Pick<Settings, 'length' | 'pattern'> {
 }
 ```
 
-#### NameSettings
+### NameSettings
 
 Settings with `callback`, `length`, `pattern`, `prefix`, and `suffix` options for the name.
 
@@ -2125,7 +2125,7 @@ interface NameSettings extends Settings {
 }
 ```
 
-#### Settings
+### Settings
 
 Common settings.
 
