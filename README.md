@@ -108,7 +108,7 @@ import {
       * [`DataDescriptors`](#datadescriptors)
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
-  * [Name](#name-package)
+  * [Name](#name-sub-package)
     * Class
       * [`Name`](#name)
       * [`Prefix`](#prefix)
@@ -275,9 +275,9 @@ By default throws an [`Error`][js-error] if the specified object does not exist 
 
 **Returns:**
 
-| Returns    | Type     | Description                                                                       |
-| :--------- | :------: | :-------------------------------------------------------------------------------- |
-| `Obj[Key]` | Captured | The **return type** is of type captured from the property value from the `object` |
+| Returns    | Type     | Description                                                                  |
+| :--------- | :------: | :--------------------------------------------------------------------------- |
+| `Obj[Key]` | Captured | The **return type** is of type captured from the property value of the `Obj` |
 
 The **return value** is a property value from the `object`.
 
@@ -1547,7 +1547,7 @@ type ThisAccessorDescriptor<Value, Obj> = AccessorDescriptor<Value> &
 
 ----
 
-## Name package
+## Name sub-package
 
 Name features to import.
 
@@ -1578,7 +1578,7 @@ Static:
 * Default `length` of the `prefix` is `3`, and pattern is `/[^a-zA-Z0-9$_]/g`.
 * Defines the `prefix` with a static method `define()`.
 * Customizable `callback`, `length` and regular expression `pattern` in the static `define()` method.
-* Checks if any `value` is an instance of a `Prefix` with static method [`is()`]().
+* Checks if any `value` is an instance of a `Prefix` with static method [`is()`](#prefixis).
 
 Instance:
 
@@ -1596,6 +1596,23 @@ Instance:
 * maximum length` of the `prefix` with the `getLength()` method.
 * `prefix` with the `get` property.
 * Picks privately stored object that contains the `length` and `pattern` with the `pick` property.
+
+**What is inside:**
+
+| Feature                                                         | Description                                                                                                     |
+| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| [`Prefix.define()`](#prefixdefine)                              | Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum `length` |
+| [`Prefix.is()`](#prefixis)                                      | Checks if any value is an instance of a [`Prefix`](#prefix) |
+| [`Prefix constructor`](#prefix-constructor)                     | Initially sets the `prefix` with optional settings |
+| [`Prefix.prototype.get`](#prefixprototypeget)                   | Gets the prefix defined by the `set()` method with the property `get` |
+| [`Prefix.prototype.pick`](#prefixprototypepick)                 | Picks `length` and `pattern` options from the settings with the property `pick` |
+| [`Prefix.prototype.configure()`](#prefixprototypeconfigure)     | Configures `callback`, `length`, and `pattern` options of the `prefix` settings. The method works if an instance is not locked by the `lock()` method |
+| [`Prefix.prototype.define()`](#prefixprototypedefine)           | Defines the `prefix` with the actual settings |
+| [`Prefix.prototype.getCallback()`](#prefixprototypegetcallback) | Returns callback function of the actual settings |
+| [`Prefix.prototype.getLength()`](#prefixprototypegetlength)     | Returns the maximum `length` of the actual settings for the `prefix`, which by default is set to `3` |
+| [`Prefix.prototype.getPattern()`](#prefixprototypegetpattern)   | Returns pattern of the actual settings for the `prefix`, which by default is set to `/[^a-zA-Z0-9$_]/g` |
+| [`Prefix.prototype.getSettings()`](#prefixprototypegetsettings) | Returns the actual settings of a [`Prefix`](#prefix) instance |
+| [`Prefix.prototype.set()`](#prefixprototypegetset)              | Sets the `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method |
 
 ### `Prefix` static methods
 
@@ -1718,7 +1735,7 @@ The **return value** is new instance of a [`Prefix`](#prefix).
 
 ### `Prefix` instance properties
 
-### `Prefix.prototype.get()`
+### `Prefix.prototype.get`
 
 Gets the `prefix` defined by the `set()` method with the property `get`.
 
@@ -2160,7 +2177,7 @@ new Prefix('database_', { length: 9 }) // databasePrefix.get returns 'database_'
 
 ----
 
-### Name interfaces
+### Name sub-package interface
 
 ### AffixSettings
 
@@ -2194,6 +2211,8 @@ interface NameSettings extends Settings {
   suffix?: string | Suffix;
 }
 ```
+
+### Property interface
 
 ### Settings
 
