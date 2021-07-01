@@ -1572,7 +1572,7 @@ Static:
 * Default `length` of the `prefix` is `3`, and pattern is `/[^a-zA-Z0-9$_]/g`.
 * Defines the `prefix` with a static method `define()`.
 * Customizable `callback`, `length` and regular expression `pattern` in the static `define()` method.
-* Checks if any `value` is an instance of a `Prefix` with static method `is()`.
+* Checks if any `value` is an instance of a `Prefix` with static method [`is()`]().
 
 Instance:
 
@@ -1712,7 +1712,7 @@ The **return value** is new instance of a [`Prefix`](#prefix).
 
 ### `Prefix` instance properties
 
-### `Prefix.prototype.get`
+### `Prefix.prototype.get()`
 
 Gets the `prefix` defined by the `set()` method with the property `get`.
 
@@ -1721,6 +1721,10 @@ public get get(): string {
   return this.#prefix;
 }
 ```
+
+**Returns:**
+
+The **return value** is a privately stored `prefix` of a `string` type.
 
 **Usage:**
 
@@ -1743,6 +1747,10 @@ public get pick(): Pick<AffixSettings, 'length' | 'pattern'> {
   };
 }
 ```
+
+**Returns:**
+
+The **return value** is an `object` of a [`AffixSettings`](#affixsettings) with the picked `length` and `pattern` properties.
 
 **Usage:**
 
@@ -1784,11 +1792,11 @@ public configure(settings: AffixSettings): this {
 
 **Returns:**
 
-| Returns | Type     | Description                                                 |
-| ------- | :------: | :---------------------------------------------------------- |
-| `this`  | `Prefix` | The **return type** is the actual instance of the`Prefix`   |
+| Returns | Type     | Description                                                           |
+| ------- | :------: | :-------------------------------------------------------------------- |
+| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
 
-The **return value** is an instance of a `Prefix` for the chaining.
+The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
 
 **Usage:**
 
@@ -1823,7 +1831,7 @@ public define(
 
 **Returns:**
 
-The **return value** is a `prefix` of a  `string` type or an empty string if the `prefix` is not a `string` type.
+The **return value** is a `prefix` of a `string` type or an empty string if the `prefix` is not a `string` type.
 
 **Usage:**
 
@@ -1900,7 +1908,7 @@ public getPattern(): RegExp {
 
 | Returns         | Type     | Description                            |
 | --------------- | :------: | :------------------------------------- |
-| `this.#pattern` | `RegExp` | The **return type** is a `RegExp` type |
+| `this.#pattern` | `RegExp` | The **return type** is a [`RegExp`][js-regexp] type |
 
 The **return value** is a privately stored regular expression to filter the `prefix`.
 
@@ -2092,8 +2100,8 @@ public setPattern(pattern: RegExp, callback?: ResultCallback): this {
 
 | Name: `type`               | Description |
 | :------------------------- | :---------- |
-| `pattern: RegExp`          | A `RegExp` type value to filter the `prefix` |
-| `callback: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `pattern` is of a `RegExp` type  |
+| `pattern: RegExp`          | A [`RegExp`][js-regexp] type value to filter the `prefix` |
+| `callback: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `pattern` is of a [`RegExp`][js-regexp] type  |
 
 **Returns:**
 
@@ -2164,25 +2172,10 @@ Settings with `callback`, `length`, `pattern`, `prefix`, and `suffix` options fo
 
 ```typescript
 interface NameSettings extends Settings {
+  /**
+   * The callback function of a `ResultCallback` type.
+   */
   callback?: ResultCallback;
-}
-```
-
-### Settings
-
-Common settings.
-
-```typescript
-interface Settings {
-  /**
-   * Length of the name.
-   */
-  length?: number;
-
-  /**
-   * Pattern to filter provided name.
-   */
-  pattern?: RegExp;
 
   /**
    * Prefix of a `string` type or an instance of a `Prefix`.
@@ -2193,6 +2186,24 @@ interface Settings {
    * Suffix of a `string` type or an instance of a `Suffix`.
    */
   suffix?: string | Suffix;
+}
+```
+
+### Settings
+
+Common settings.
+
+```typescript
+interface Settings {
+  /**
+   * Length of a `number` type.
+   */
+  length?: number;
+
+  /**
+   * Pattern of a `RegExp` type.
+   */
+  pattern?: RegExp;
 }
 ```
 
@@ -2228,7 +2239,7 @@ How do I know when to release 1.0.0?
 
 ## License
 
-MIT © angular-package ([license][license])
+MIT © angular-package ([license][property-license])
 
 ----
 
@@ -2346,6 +2357,8 @@ MIT © angular-package ([license][license])
 [js-object-define-property]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
 
 [primitive]: https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+
+[js-regexp]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
 [js-string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
 [stringconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/String
