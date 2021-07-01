@@ -1597,20 +1597,24 @@ Instance:
 * `prefix` with the `get` property.
 * Picks privately stored object that contains the `length` and `pattern` with the `pick` property.
 
-**What is inside:**
+**Static methods:**
 
-| Static methods                                                  | Description                                                                                                     |
-| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| [`Prefix.define()`](#prefixdefine)                              | Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum `length` |
-| [`Prefix.is()`](#prefixis)                                      | Checks if any value is an instance of a [`Prefix`](#prefix) |
+| Methods                            | Description                                                                                                     |
+| :--------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| [`Prefix.define()`](#prefixdefine) | Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum `length` |
+| [`Prefix.is()`](#prefixis)         | Checks if any value is an instance of a [`Prefix`](#prefix) |
 
-| Instance properties                                             | Description                                                                                                     |
-| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| [`Prefix constructor`](#prefix-constructor)                     | Initially sets the `prefix` with optional settings |
-| [`Prefix.prototype.get`](#prefixprototypeget)                   | Gets the prefix defined by the `set()` method with the property `get` |
-| [`Prefix.prototype.pick`](#prefixprototypepick)                 | Picks `length` and `pattern` options from the settings with the property `pick` |
+**Instance methods:**
 
-| Instance methods                                                | Description                                                                                                     |
+| Properties                                      | Description                                                                                                     |
+| :---------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| [`Prefix constructor`](#prefix-constructor)     | Initially sets the `prefix` with optional settings |
+| [`Prefix.prototype.get`](#prefixprototypeget)   | Gets the prefix defined by the `set()` method with the property `get` |
+| [`Prefix.prototype.pick`](#prefixprototypepick) | Picks `length` and `pattern` options from the settings with the property `pick` |
+
+**Instance methods:**
+
+| Methods                                                         | Description                                                                                                     |
 | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
 | [`Prefix.prototype.configure()`](#prefixprototypeconfigure)     | Configures `callback`, `length`, and `pattern` options of the `prefix` settings. The method works if an instance is not locked by the `lock()` method |
 | [`Prefix.prototype.define()`](#prefixprototypedefine)           | Defines the `prefix` with the actual settings |
