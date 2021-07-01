@@ -1554,9 +1554,13 @@ import {
 } from '@angular-package/property';
 ```
 
+### `Name`
+
+...
+
 ### `Prefix`
 
-Manages the `prefix` of a string type for the name.
+Manages the `prefix` of a `string` type for the name.
 
 **Features:**
 
@@ -1611,11 +1615,9 @@ static define(prefix: string, settings?: AffixSettings): string {
 | Name: `type`                | Description |
 | :-------------------------- | :---------- |
 | `prefix: string`            | A `string` type value as the `prefix` |
-| `settings?: ResultCallback` | An optional `object` of a `PrefixConfig` interface to configure the provided `prefix` |
+| `settings?: ResultCallback` | An optional `object` of a [`AffixSettings`](#affixsettings) interface to configure the provided `prefix` |
 
 **Throws:**
-
-Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, which means it doesn't contain `get` or `set` property.
 
 **Returns:**
 
@@ -1657,8 +1659,6 @@ static is(value: any, callback?: ResultCallback): value is Prefix {
 | `callback?: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `value` is an instance of a `Prefix` |
 
 **Throws:**
-
-Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a .
 
 **Returns:**
 
@@ -1710,11 +1710,54 @@ The **return value** is new instance of a [`Prefix`](#prefix).
 // Example usage.
 ```
 
+### `Prefix` instance properties
+
+### `Prefix.prototype.get`
+
+Gets the `prefix` defined by the `set()` method with the property `get`.
+
+```typescript
+public get get(): string {
+  return this.#prefix;
+}
+```
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+const definedPrefix = new Prefix('$$$').get; // Returns '$$$'
+```
+
+### `Prefix.prototype.pick`
+
+Picks `length` and `pattern` options from the settings with the property `pick`.
+
+```typescript
+public get pick(): Pick<AffixSettings, 'length' | 'pattern'> {
+  return {
+    length: this.getLength(),
+    pattern: this.getPattern(),
+  };
+}
+```
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Prefix } from '@angular-package/property';
+
+const pickSettings = new Prefix().pick; // Returns {length: 3, pattern: /[^a-zA-Z0-9$_]/g}
+```
+
 ### `Prefix` instance methods
 
 ### `Prefix.prototype.configure()`
 
-Configures `callback`, `length`, and `pattern` options of the `prefix` settings.
+Configures `callback`, `length`, and `pattern` options of the `prefix` settings. The method works if an instance is not locked by the `lock()` method.
 
 ```typescript
 public configure(settings: AffixSettings): this {
