@@ -1599,20 +1599,30 @@ Instance:
 
 **What is inside:**
 
-| Feature                                                         | Description                                                                                                     |
+| Static methods                                                  | Description                                                                                                     |
 | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
 | [`Prefix.define()`](#prefixdefine)                              | Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum `length` |
 | [`Prefix.is()`](#prefixis)                                      | Checks if any value is an instance of a [`Prefix`](#prefix) |
+
+| Instance properties                                             | Description                                                                                                     |
+| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
 | [`Prefix constructor`](#prefix-constructor)                     | Initially sets the `prefix` with optional settings |
 | [`Prefix.prototype.get`](#prefixprototypeget)                   | Gets the prefix defined by the `set()` method with the property `get` |
 | [`Prefix.prototype.pick`](#prefixprototypepick)                 | Picks `length` and `pattern` options from the settings with the property `pick` |
+
+| Instance methods                                                | Description                                                                                                     |
+| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
 | [`Prefix.prototype.configure()`](#prefixprototypeconfigure)     | Configures `callback`, `length`, and `pattern` options of the `prefix` settings. The method works if an instance is not locked by the `lock()` method |
 | [`Prefix.prototype.define()`](#prefixprototypedefine)           | Defines the `prefix` with the actual settings |
 | [`Prefix.prototype.getCallback()`](#prefixprototypegetcallback) | Returns callback function of the actual settings |
 | [`Prefix.prototype.getLength()`](#prefixprototypegetlength)     | Returns the maximum `length` of the actual settings for the `prefix`, which by default is set to `3` |
 | [`Prefix.prototype.getPattern()`](#prefixprototypegetpattern)   | Returns pattern of the actual settings for the `prefix`, which by default is set to `/[^a-zA-Z0-9$_]/g` |
 | [`Prefix.prototype.getSettings()`](#prefixprototypegetsettings) | Returns the actual settings of a [`Prefix`](#prefix) instance |
-| [`Prefix.prototype.set()`](#prefixprototypegetset)              | Sets the `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method |
+| [`Prefix.prototype.set()`](#prefixprototypeset)                 | Sets the `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method |
+| [`Prefix.prototype.setCallback()`](#prefixprototypesetcallback) | Sets the `callback` for the `set()` method. The method works if an instance is not locked by the `lock()` method |
+| [`Prefix.prototype.setLength()`](#prefixprototypesetlength)     | Sets the length of the `prefix`, which by default is set to `3`. The method works if an instance is not locked by the `lock()` method |
+| [`Prefix.prototype.setPattern()`](#prefixprototypesetpattern)   | Sets the pattern for the `prefix`. The method works if an instance is not locked by the `lock()` method |
+| [`Prefix.prototype.updatePrefix()`](#prefixprototypesetpattern) | Updates privately stored `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method |
 
 ### `Prefix` static methods
 
