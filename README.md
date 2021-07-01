@@ -120,14 +120,20 @@ import {
 
 ## How angular-package understands
 
-Check
-> Is to check the provided argument to be **the same** as **expected**.
+Checks
+> Is to check the provided value to be **the same** as **expected**.
 
 Type guard (constrain)
-> Is to constrain the parameter type to **not let** input **unexpected** value in the **code editor**.
+> Constrains the parameter type to **not let** input **unexpected** value in the **code editor**.
 
-Guard
-> Is a **combination** of both above to **guard type** in the **code editor** and in the provided argument by checking it.
+Guards
+> Is a **combination** of both above, **constrains** the type of the parameter in the **code editor**, and checks its argument.
+
+Sets
+> Sets the provided value in the `object`.
+
+Defines
+> Returns defined value from the method, instead of storing it in the `object`.
 
 ----
 
