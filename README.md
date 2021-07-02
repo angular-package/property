@@ -5,7 +5,7 @@ Useful and simple to use packages based on the [angular.io][angulario].
 | Package                              | Description                                        | Status                                                       |
 | :----------------------------------- | :------------------------------------------------- | -----------------------------------------------------------: |
 | [change-detection][cd-github-readme] | Improve application performance.                   | [![npm version][cd-npm-badge-svg]][cd-npm-badge]             |
-| [core][core-github-readme]           | Package core features.                             | [![npm version][core-npm-badge-svg]][core-npm-badge]         |
+| [core][core-github-readme]           | Core features.                                     | [![npm version][core-npm-badge-svg]][core-npm-badge]         |
 | [prism][prism-github-readme]         | `Prism` highlighter module.                        | [![npm version][prism-npm-badge-svg]][prism-npm-badge]       |
 | [property][property-github-readme]   | Features to handle object properties.              | [![npm version][property-npm-badge-svg]][property-npm-badge] |
 | [reactive][reactive-github-readme]   | Automatize process of creating some rxjs features. | [![npm version][reactive-npm-badge-svg]][reactive-npm-badge] |
@@ -123,6 +123,8 @@ import {
   * [Commit](#commit)
   * [Versioning](#versioning)
 * [License](#license)
+
+----
 
 ## How angular-package understands
 
