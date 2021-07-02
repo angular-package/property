@@ -141,8 +141,6 @@ Sets
 Defines
 > Returns defined value from the method, instead of storing it in the `object`.
 
-----
-
 ## Installation
 
 Install `@angular-package/property` package with command:
@@ -150,8 +148,6 @@ Install `@angular-package/property` package with command:
 ```bash
 npm i --save @angular-package/property
 ```
-
-----
 
 ## Callback
 
@@ -205,8 +201,6 @@ The **return value** is a predefined `function` for use as the callback.
 
 ```
 
-----
-
 ## Object
 
 ### `get`
@@ -229,8 +223,6 @@ const get: Get = {
 ```typescript
 // Example usage.
 ```
-
-----
 
 ## Function
 
@@ -534,8 +526,6 @@ const people: People = new People();
 setProperty(person, 'age', 7); // Returns 7
 setProperty(people, 'age', 27); // Returns 27
 ```
-
-----
 
 ## Package
 
@@ -1013,7 +1003,6 @@ Strictly defines, sets, and stores privately property accessor descriptor of a [
  Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
 * Method [`set()`][accessordescriptors-prototype-set] of the instance and static [`define()`][accessordescriptors-define] picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
 * Get privately stored accessor descriptor defined by the [`set()`][accessordescriptors-prototype-set] method of the instance.
-
 
 ```typescript
 AccessorDescriptors<Value, Obj = any> { ... }
@@ -2421,8 +2410,6 @@ interface Settings {
   pattern?: RegExp;
 }
 ```
-
-----
 
 ## GIT
 
