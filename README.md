@@ -88,7 +88,7 @@ import {
 
 ```
 
-----
+## Table of contents
 
 * [Installation](#installation)
 * [Callback](#callback)
@@ -123,8 +123,6 @@ import {
   * [Commit](#commit)
   * [Versioning](#versioning)
 * [License](#license)
-
-----
 
 ## How angular-package understands
 
