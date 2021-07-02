@@ -2,13 +2,14 @@
 
 Useful and simple to use packages based on the [angular.io][angulario].
 
-| Package          | Description                                  | Status                                                       | Readme                                                         |
-| :--------------- | :------------------------------------------- | :----------------------------------------------------------: | :------------------------------------------------------------- |
-| change-detection | Improve application performance.             | *In Progress*                                                | [GitHub][cd-github-readme]                                     |
-| prism            | `Prism` highlighter module.                  | *In Progress*                                                | [GitHub][prism-github-readme]                                  |
-| property         | Features to handle object properties.        | [![npm version][property-npm-badge-svg]][property-npm-badge] | [GitHub][property-github-readme] \| [npm][property-npm-readme] |
-| ui               | User interface.                              | *In Progress*                                                | [GitHub][ui-github-readme]                                     |
-| type             | Common types, type guards and type checkers. | [![npm version][type-npm-badge-svg]][type-npm-badge]         | [GitHub][type-github-readme] \| [npm][type-npm-readme]         |
+| Package                              | Description                                  | Status                                                       | Readme                                                         |
+| :----------------------------------- | :------------------------------------------- | :----------------------------------------------------------: | :------------------------------------------------------------- |
+| [change-detection][cd-github-readme] | Improve application performance.             | [![npm version][cd-npm-badge-svg]][cd-npm-badge]             | [GitHub][cd-github-readme] \| [npm][cd-npm-readme]             |
+| [core][core-github-readme]           | Package core features.                       | [![npm version][core-npm-badge-svg]][core-npm-badge]         | [GitHub][core-github-readme] \| [npm][core-npm-readme]         |
+| [prism][prism-github-readme]         | `Prism` highlighter module.                  | [![npm version][prism-npm-badge-svg]][prism-npm-badge]       | [GitHub][prism-github-readme] \| [npm][cd-npm-readme]          |
+| [property][property-github-readme]   | Features to handle object properties.        | [![npm version][property-npm-badge-svg]][property-npm-badge] | [GitHub][property-github-readme] \| [npm][property-npm-readme] |
+| [ui][ui-github-readme]               | User interface.                              | *In Progress*                                                | [GitHub][ui-github-readme]                                     |
+| [type][type-github-readme]           | Common types, type guards and type checkers. | [![npm version][type-npm-badge-svg]][type-npm-badge]         | [GitHub][type-github-readme] \| [npm][type-npm-readme]         |
 
 ## angular-package/property
 
@@ -113,6 +114,8 @@ import {
       * [`Name`](#name)
       * [`Prefix`](#prefix)
       * [`Suffix`](#suffix)
+  * [Object](#object-sub-package)
+    * [`ObjectLock`](#objectlock)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -1562,7 +1565,103 @@ import {
 
 ### `Name`
 
-...
+Manages the `name` of a `string` type.
+
+**Instance properties:**
+
+| Properties                                   | Description                                         |
+| :------------------------------------------- | :-------------------------------------------------- |
+| [`Name.isLocked`](#objectlockislocked) | Gets the `lock`(frozen) status of a `this` instance |
+
+**Instance methods:**
+
+| Methods                                             | Description                                                                                         |
+| :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| [`Name.prototype.lock()`](#objectlockprototypelock) | Locks(freeze) an instance of `this` to be sure to do not make any changes on it, cannot be unlocked |
+
+### `Name` instance properties
+
+### `Name.prototype.isLocked`
+
+### `Name` instance methods
+
+### `Name.prototype.set()`
+
+Sets the name.
+
+```typescript
+public set(name: string, callback: ResultCallback = this.#callback): this {
+  if (is.false(this.isLocked)) {
+    this.#name = Name.define(name, {
+      callback,
+      length: this.pick.length,
+      pattern: this.pick.pattern,
+    });
+  }
+  return this;
+}
+```
+
+**Parameters:**
+
+| Name: type                  | Description                          |
+| :-------------------------- | :----------------------------------- |
+| `suffix: string`            | A `string` type value, as a `suffix` |
+| `callback?: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `suffix` is of a `string` type |
+
+**Returns:**
+
+| Returns | Type   | Description                                                       |
+| ------- | :----: | :---------------------------------------------------------------- |
+| `this`  | `Name` | The **return type** is the actual instance of the [`Name`](#name) |
+
+The **return value** is an instance of a [`Name`](#name) for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Name } from '@angular-package/property';
+
+new Name().set();
+```
+
+### `Name.prototype.setSuffix()`
+
+Sets `suffix` for the name.
+
+```typescript
+public setSuffix(suffix: string, callback?: ResultCallback): this {
+  this.#suffix.set(suffix, callback);
+  return this;
+}
+```
+
+**Parameters:**
+
+| Name: type                  | Description                          |
+| :-------------------------- | :----------------------------------- |
+| `suffix: string`            | A `string` type value, as a `suffix` |
+| `callback?: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `suffix` is of a `string` type |
+
+**Returns:**
+
+| Returns | Type   | Description                                                       |
+| ------- | :----: | :---------------------------------------------------------------- |
+| `this`  | `Name` | The **return type** is the actual instance of the [`Name`](#name) |
+
+The **return value** is an instance of a [`Name`](#name) for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { Name } from '@angular-package/property';
+
+new Name().setSuffix();
+```
+
+----
 
 ### `Prefix`
 
@@ -1583,19 +1682,19 @@ Static:
 Instance:
 
 * Defines a `string` type `prefix` with a `define()` method.
-  * Sets
-* Initially sets the `prefix` with optional settings.
-* Sets settings for the `prefix` with the `configure()` method.
-* Sets the `prefix` with the `set()` method.
-* Sets custom callback function for the `set()` method with the `setCallback()` method.
-* Sets the maximum length of the `prefix` with the `setLength()` method.
-* Sets custom regular expression with the `setPattern()` method.
+* Sets
+  * initially the `prefix` with optional settings.
+  * settings for the `prefix` with the `configure()` method.
+  * the `prefix` with the `set()` method.
+  * custom callback function for the `set()` method with the `setCallback()` method.
+  * the maximum length of the `prefix` with the `setLength()` method.
+  * custom regular expression with the `setPattern()` method.
 * Update `prefix` with the actual settings with the `updatePrefix()` method.
-  * Gets privately stored
-* `callback` function with the `getCallback()` method.
-* maximum length` of the `prefix` with the `getLength()` method.
-* `prefix` with the `get` property.
-* Picks privately stored object that contains the `length` and `pattern` with the `pick` property.
+* Gets privately stored
+  * `callback` function with the `getCallback()` method.
+  * maximum length` of the `prefix` with the `getLength()` method.
+  * `prefix` with the `get` property.
+  * Picks privately stored object that contains the `length` and `pattern` with the `pick` property.
 
 **Static methods:**
 
@@ -1604,13 +1703,13 @@ Instance:
 | [`Prefix.define()`](#prefixdefine) | Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum `length` |
 | [`Prefix.is()`](#prefixis)         | Checks if any value is an instance of a [`Prefix`](#prefix) |
 
-**Instance methods:**
+**Instance properties:**
 
 | Properties                                      | Description                                                                                                     |
 | :---------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
 | [`Prefix constructor`](#prefix-constructor)     | Initially sets the `prefix` with optional settings |
 | [`Prefix.prototype.get`](#prefixprototypeget)   | Gets the prefix defined by the `set()` method with the property `get` |
-| [`Prefix.prototype.pick`](#prefixprototypepick) | Picks `length` and `pattern` options from the settings with the property `pick` |
+| [`Prefix.prototype.pick`](#prefixprototypepick) | Picks attributes `length` and `pattern` of the `prefix` from the settings |
 
 **Instance methods:**
 
@@ -1622,7 +1721,7 @@ Instance:
 | [`Prefix.prototype.getLength()`](#prefixprototypegetlength)     | Returns the maximum `length` of the actual settings for the `prefix`, which by default is set to `3` |
 | [`Prefix.prototype.getPattern()`](#prefixprototypegetpattern)   | Returns pattern of the actual settings for the `prefix`, which by default is set to `/[^a-zA-Z0-9$_]/g` |
 | [`Prefix.prototype.getSettings()`](#prefixprototypegetsettings) | Returns the actual settings of a [`Prefix`](#prefix) instance |
-| [`Prefix.prototype.set()`](#prefixprototypeset)                 | Sets the `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method |
+| [`Prefix.prototype.set()`](#prefixprototypeset)                 | Sets the `prefix` with the actual settings. The method works if an instance is not locked by the [`lock()`](#objectlockprototypelock) method |
 | [`Prefix.prototype.setCallback()`](#prefixprototypesetcallback) | Sets the `callback` for the `set()` method. The method works if an instance is not locked by the `lock()` method |
 | [`Prefix.prototype.setLength()`](#prefixprototypesetlength)     | Sets the length of the `prefix`, which by default is set to `3`. The method works if an instance is not locked by the `lock()` method |
 | [`Prefix.prototype.setPattern()`](#prefixprototypesetpattern)   | Sets the pattern for the `prefix`. The method works if an instance is not locked by the `lock()` method |
@@ -1774,7 +1873,7 @@ const definedPrefix = new Prefix('$$$').get; // Returns '$$$'
 
 ### `Prefix.prototype.pick`
 
-Picks `length` and `pattern` options from the settings with the property `pick`.
+Picks attributes `length` and `pattern` of the `prefix` from the settings.
 
 ```typescript
 public get pick(): Pick<AffixSettings, 'length' | 'pattern'> {
@@ -2226,6 +2325,80 @@ interface NameSettings extends Settings {
 }
 ```
 
+### Object sub-package
+
+### `ObjectLock`
+
+Manages the lock an instance of `this`.
+
+**Instance properties:**
+
+| Properties                                   | Description                                         |
+| :------------------------------------------- | :-------------------------------------------------- |
+| [`ObjectLock.isLocked`](#objectlockislocked) | Gets the `lock`(frozen) status of a `this` instance |
+
+**Instance methods:**
+
+| Methods                                                   | Description                                                                                         |
+| :-------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| [`ObjectLock.prototype.lock()`](#objectlockprototypelock) | Locks(freeze) an instance of `this` to be sure to do not make any changes on it, cannot be unlocked |
+
+### `ObjectLock` instance properties
+
+### `ObjectLock.prototype.isLocked`
+
+Gets the `lock`(frozen) status of a `this` instance.
+
+> "Returns true if existing property attributes and values cannot be modified in an object, and new properties cannot be added to the object."
+
+```typescript
+public get isLocked(): boolean {
+  return Object.isFrozen(this);
+}
+```
+
+**Returns:**
+
+The **return value** is a `boolean` type indicating whether or not an instance of `this` is locked (frozen).
+
+**Usage:**
+
+```typescript
+// Example usage.
+import { ObjectLock } from '@angular-package/property';
+
+class Address {}
+class Person extends ObjectLock {}
+
+const person = new Person().isLocked; // Returns `false`
+```
+
+### `ObjectLock` instance methods
+
+### `ObjectLock.prototype.lock()`
+
+Locks(freeze) an instance of `this` to be sure to do not make any changes on it, cannot be unlocked.
+
+```typescript
+public lock(): this {
+  Object.freeze(this);
+  return this;
+}
+```
+
+**Returns:**
+
+The **return value** is a `this` instance for the chaining.
+
+**Usage:**
+
+```typescript
+// Example usage.
+class Address {}
+class Person extends ObjectLock {}
+const person = new Person().lock(); // `person` is locked (frozen)
+```
+
 ### Property interface
 
 ### Settings
@@ -2307,12 +2480,42 @@ MIT © angular-package ([license][property-license])
   [property-forks]: https://github.com/angular-package/property/network
   [property-license]: https://github.com/angular-package/property/blob/master/LICENSE
   [property-stars]: https://github.com/angular-package/property/stargazers
+
+<!-- Package: core -->
+  <!-- npm -->
+  [core-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fcore.svg
+  [core-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fcore
+  [core-npm-readme]: https://www.npmjs.com/package/@angular-package/core#readme
+
   <!-- GitHub -->
-  [property-github-readme]: https://github.com/angular-package/property#readme
-  <!-- npm: badges -->
+  [core-github-readme]: https://github.com/angular-package/core#readme
+
+<!-- Package: change-detection -->
+  <!-- npm -->
+  [cd-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fchange-detection.svg
+  [cd-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fchange-detection
+  [cd-npm-readme]: https://www.npmjs.com/package/@angular-package/change-detection#readme
+
+  <!-- GitHub -->
+  [cd-github-readme]: https://github.com/angular-package/change-detection#readme
+
+<!-- Package: prism -->
+  <!-- npm -->
+  [prism-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fprism.svg
+  [prism-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fprism
+  [prism-npm-readme]: https://www.npmjs.com/package/@angular-package/prism#readme
+
+  <!-- GitHub -->
+  [prism-github-readme]: https://github.com/angular-package/prism#readme
+
+<!-- Package: property -->
+  <!-- npm -->
   [property-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fproperty.svg
   [property-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fproperty
   [property-npm-readme]: https://www.npmjs.com/package/@angular-package/property#readme
+
+  <!-- GitHub -->
+  [property-github-readme]: https://github.com/angular-package/property#readme
 
 <!-- Package: type -->
   <!-- npm -->
@@ -2326,13 +2529,13 @@ MIT © angular-package ([license][property-license])
   [package-type-resultcallback]: https://github.com/angular-package/type#resultcallback
   [package-type-key]: https://github.com/angular-package/type#key
 
-<!-- Package: change-detection -->
-  [cd-github-readme]: https://github.com/angular-package/change-detection#readme
-
-<!-- Package: prism -->
-  [prism-github-readme]: https://github.com/angular-package/prism#readme
-
 <!-- Package: ui -->
+  <!-- npm -->
+  [ui-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fui.svg
+  [ui-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fui
+  [ui-npm-readme]: https://www.npmjs.com/package/@angular-package/ui#readme
+
+  <!-- GitHub -->
   [ui-github-readme]: https://github.com/angular-package/ui#readme
 
 <!-- Property: type -->
