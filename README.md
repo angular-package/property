@@ -8,6 +8,7 @@ Useful and simple to use packages based on the [angular.io][angulario].
 | [core][core-github-readme]           | Package core features.                       | [![npm version][core-npm-badge-svg]][core-npm-badge]         | [GitHub][core-github-readme] \| [npm][core-npm-readme]         |
 | [prism][prism-github-readme]         | `Prism` highlighter module.                  | [![npm version][prism-npm-badge-svg]][prism-npm-badge]       | [GitHub][prism-github-readme] \| [npm][cd-npm-readme]          |
 | [property][property-github-readme]   | Features to handle object properties.        | [![npm version][property-npm-badge-svg]][property-npm-badge] | [GitHub][property-github-readme] \| [npm][property-npm-readme] |
+| [reactive][reactive-github-readme]   | Features to handle object properties.        | [![npm version][reactive-npm-badge-svg]][reactive-npm-badge] | [GitHub][reactive-github-readme] \| [npm][reactive-npm-readme] |
 | [ui][ui-github-readme]               | User interface.                              | *In Progress*                                                | [GitHub][ui-github-readme]                                     |
 | [type][type-github-readme]           | Common types, type guards and type checkers. | [![npm version][type-npm-badge-svg]][type-npm-badge]         | [GitHub][type-github-readme] \| [npm][type-npm-readme]         |
 
@@ -2516,6 +2517,15 @@ MIT © angular-package ([license][property-license])
 
   <!-- GitHub -->
   [property-github-readme]: https://github.com/angular-package/property#readme
+
+<!-- Package: reactive -->
+  <!-- npm -->
+  [reactive-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Freactive.svg
+  [reactive-npm-badge]: https://badge.fury.io/js/%40angular-package%2Freactive
+  [reactive-npm-readme]: https://www.npmjs.com/package/@angular-package/reactive#readme
+
+  <!-- GitHub -->
+  [reactive-github-readme]: https://github.com/angular-package/reactive#readme
 
 <!-- Package: type -->
   <!-- npm -->
