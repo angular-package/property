@@ -3,12 +3,12 @@ import { ResultCallback, guard, is } from '@angular-package/type';
 // Class.
 import { ObjectLock } from '../../object/src/object-lock.class';
 /**
- * Manages settings for the affix of a string type.
+ * Manages settings for the `affix` of a string type.
  * - Default `length` of the affix is `3`, and pattern is `/[^a-zA-Z0-9$_]/g`.
  *
  *   Sets
  * - Initially sets the affix with optional settings.
- * - Sets the maximum length of the affix with the `setLength()` method.
+ * - Sets the maximum `length` of the affix with the `setLength()` method.
  * - Sets custom regular expression with the `setPattern()` method.
  *
  *   Gets privately stored
