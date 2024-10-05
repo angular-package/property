@@ -128,7 +128,7 @@ npm i --save @angular-package/property
 Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
 
 ```typescript
-const errorCallback: ErrorCallback  = (
+export const errorCallback: ErrorCallback  = (
   message: string,
   on: boolean = false
 ): ResultCallback => {
@@ -136,7 +136,7 @@ const errorCallback: ErrorCallback  = (
     if (result === on) {
       throw new Error(
         `${message}, got value ${
-          is.object(value) ? JSON.stringify(value) : value
+          typeof value === 'object' ? JSON.stringify(value) : value
         }`
       );
     }
@@ -621,7 +621,7 @@ Strictly defines, sets, and stores privately property data descriptor of a [`Dat
 * Guarded process of defining the object descriptor, but properties are not being checked against proper values.
 * Strictly defines property data descriptor.
 * Strictly sets, and stores at the same time property data descriptor.
-* Method [`set()`][datadescriptors-prototype-set] of the instance and static [`define()`][datadescriptors-define] picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
+* Method [`set()`][datadescriptors-prototype-set] of the instance and static [`define()`](datadescriptorsdefine) picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
 * Get privately stored data descriptor defined by the [`set()`][datadescriptors-prototype-set] method of the instance.
 
 ```typescript
@@ -1225,6 +1225,7 @@ Useful and simple to use packages.
   [type-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Ftype.png
   [type-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftype
   [type-npm-readme]: https://www.npmjs.com/package/@angular-package/type#readme
+  [package-type-resultcallback]: https://github.com/angular-package/type#resultcallback
 
   <!-- GitHub -->
   [type-github-readme]: https://github.com/angular-package/type#readme
@@ -1256,9 +1257,13 @@ Useful and simple to use packages.
 
 [accessordescriptors]: #accessordescriptors
 [accessordescriptors-define]: #accessordescriptorsdefine
+[accessordescriptors-accessorcallback]: https://github.com/angular-package/property/blob/master/src/callback/src/callback.object.ts
+
 [accessordescriptors-prototype-set]: #accessordescriptorsprototypeset
 
 [datadescriptors]: #datadescriptors
+[datadescriptors-datacallback]: https://github.com/angular-package/property/blob/master/src/callback/src/callback.object.ts
+
 [datadescriptors-prototype-set]: #datadescriptorsprototypeset
 
 [descriptor-defineaccessor]: #descriptordefineaccessor
