@@ -14,73 +14,73 @@ import { DataDescriptor } from '../descriptor/interface/data-descriptor.interfac
  */
 export class Property<
   Obj extends object,
-  Keys extends keyof Obj
-> extends WrapProperty<Obj, Keys> {
+  Names extends keyof Obj
+> extends WrapProperty<Obj, Names> {
   /**
    *
    * @param object
-   * @param key
+   * @param name
    * @param accessor
    * @returns
    * @angularpackage
    */
-  public static define<Obj extends object, Key extends PropertyKey, Value>(
+  public static define<Obj extends object, Name extends PropertyKey, Value>(
     object: Obj,
-    key: Key,
+    name: Name,
     data?: DataDescriptor<Value>,
     accessor?: AccessorDescriptor<Value> & ThisType<Obj>
-  ): Obj & { [K in Key]: Value } {
+  ): Obj & { [K in Name]: Value } {
     typeof data === 'object'
-      ? Object.defineProperty(object, key, data)
+      ? Object.defineProperty(object, name, data)
       : typeof accessor === 'object' &&
-        Object.defineProperty(object, key, accessor);
+        Object.defineProperty(object, name, accessor);
     return object as any;
   }
 
   /**
    *
    * @param obj
-   * @param key
+   * @param name
    * @returns
    * @angularpackage
    */
-  public static set<Obj extends object, Key extends keyof Obj>(
+  public static set<Obj extends object, Name extends keyof Obj>(
     object: Obj,
-    key: Key,
-    value: Obj[Key]
+    name: Name,
+    value: Obj[Name]
   ): typeof Property {
-    object[key] = value;
+    object[name] = value;
     return this;
   }
 
   /**
    *
    * @param object
-   * @param key
+   * @param name
    * @returns
    * @angularpackage
    */
-  public static get<Obj extends object, Key extends keyof Obj>(
+  public static get<Obj extends object, Name extends keyof Obj>(
     object: Obj,
-    key: Key
-  ): Obj[Key] {
-    return object[key];
+    name: Name
+  ): Obj[Name] {
+    return object[name];
   }
 
   /**
    *
    * @param object
-   * @param keys
+   * @param names
    * @returns
    * @angularpackage
    */
-  public static pick<Obj extends object, Keys extends keyof Obj>(
+  public static pick<Obj extends object, Names extends keyof Obj>(
     object: Obj,
-    ...keys: Keys[]
-  ): { [Key in Keys]: Obj[Key] } {
+    ...names: Names[]
+  ): { [Key in Names]: Obj[Key] } {
     return Object.assign(
       {},
-      ...keys.map(key =>
+      ...names.map(key =>
         typeof object[key] !== 'undefined' ? { [key]: object[key] } : undefined
       )
     );
@@ -89,20 +89,20 @@ export class Property<
   /**
    *
    * @param object
-   * @param keys
+   * @param names
    * @param getterCallback
    * @param setterCallback
    * @returns
    * @angularpackage
    */
-  public static wrap<Obj extends object | Function, Keys extends keyof Obj>(
+  public static wrap<Obj extends object | Function, Names extends keyof Obj>(
     object: Obj,
-    keys: Keys[],
-    getterCallback?: GetterCallback<Obj, Keys>,
-    setterCallback?: SetterCallback<Obj, Keys>
-  ): WrapProperty<Obj, Keys> {
-    return new WrapProperty(object, ...keys).wrap(
-      keys,
+    names: Names[],
+    getterCallback?: GetterCallback<Obj, Names>,
+    setterCallback?: SetterCallback<Obj, Names>
+  ): WrapProperty<Obj, Names> {
+    return new WrapProperty(object, ...names).wrap(
+      names,
       getterCallback,
       setterCallback
     );
@@ -111,10 +111,10 @@ export class Property<
   /**
    *
    * @param object
-   * @param keys
+   * @param names
    * @angularpackage
    */
-  constructor(object: Obj, ...keys: Keys[]) {
-    super(object, ...keys);
+  constructor(object: Obj, ...names: Names[]) {
+    super(object, ...names);
   }
 }
