@@ -1,8 +1,5 @@
-import { CommonDescriptor } from './common-descriptor.interface';
-/**
- * Descriptor with its unique optional keys, `writable` of a `boolean` type and `value` of a generic `Value` type.
- */
-export interface DataDescriptor<Value> extends CommonDescriptor {
+export interface DataDescriptor<Value>
+  extends Pick<PropertyDescriptor, 'configurable' | 'enumerable'> {
   writable?: boolean;
   value?: Value;
 }
