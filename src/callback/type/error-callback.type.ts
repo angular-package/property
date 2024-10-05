@@ -1,6 +1,6 @@
-// External import: Type.
-import { ResultCallback } from '@angular-package/type';
-// Import: Type.
-import { ErrorType } from '../../error/type/error-type.type';
-// Export: Type.
-export type ErrorCallback = (message: string, type?: ErrorType, on?: boolean) => ResultCallback;
+import { ResultCallback } from "../../descriptor/type/result-callback.type";
+
+/**
+ * 
+ */
+export type ErrorCallback = (message: string, on?: boolean) => ResultCallback;
