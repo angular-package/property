@@ -169,6 +169,8 @@ export {
   ThisAccessorDescriptor
 } from './type';
 
+```
+
 ----
 
 ### `Descriptor`
