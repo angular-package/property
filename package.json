@@ -1,6 +1,6 @@
 {
   "name": "@angular-package/property",
-  "version": "1.0.0-alpha",
+  "version": "1.0.1-alpha",
   "description": "Features to handle object properties.",
   "author": "Angular Package <contact@angular-package.dev> (https://angular-package.dev)",
   "homepage": "https://github.com/angular-package/property#readme",
