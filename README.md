@@ -1,18 +1,10 @@
-# Packages
+# angular-package
 
-Useful and simple to use packages based on the [angular.io][angulario].
+<a href='https://angular-package.dev' target='_blank'>
+  <img align="right"  width="92" height="92" src="https://avatars.githubusercontent.com/u/31412194?s=400&u=c9929aa36826318ccac8f7b84516e1ce3af7e21c&v=4" />
+</a>
 
-| Package                              | Description                                        | Status                                                       |
-| :----------------------------------- | :------------------------------------------------- | -----------------------------------------------------------: |
-| [change-detection][cd-github-readme] | Improve application performance.                   | [![npm version][cd-npm-badge-svg]][cd-npm-badge]             |
-| [core][core-github-readme]           | Core features.                                     | [![npm version][core-npm-badge-svg]][core-npm-badge]         |
-| [prism][prism-github-readme]         | `Prism` highlighter module.                        | [![npm version][prism-npm-badge-svg]][prism-npm-badge]       |
-| [property][property-github-readme]   | Features to handle object properties.              | [![npm version][property-npm-badge-svg]][property-npm-badge] |
-| [reactive][reactive-github-readme]   | Automatize process of creating some rxjs features. | [![npm version][reactive-npm-badge-svg]][reactive-npm-badge] |
-| [ui][ui-github-readme]               | User interface.                                    | *In Progress*                                                |
-| [type][type-github-readme]           | Common types, type guards and type checkers.       | [![npm version][type-npm-badge-svg]][type-npm-badge]         |
-
-> Click on the package name to visit the package GitHub README.md
+The angular-package supports the development process of [angular](https://angular.io)-based applications in varied ways through the thoughtful, reusable, easy-to-use small pieces of code called packages.
 
 ## angular-package/property
 
@@ -30,99 +22,45 @@ Features to handle properties.
 [![Support me on Patreon][patreon-badge]][patreon-link]
 
 ```typescript
-// Function.
-import {
-  getExistProperty,
-  getProperties,
-  getProperty,
-  setProperty,
+export {
+  // Class.
+  Property,
+  WrapProperty,
+} from './lib';
 
-  // callback
-  errorCallback,
-
-  // descriptor
-  getDescriptor,
-  getDescriptors,
-
-  // object
-  getObject,
-} from '@angular-package/property';
-```
-
-```typescript
-// Object.
-import {
-  get,
-
-  // callback
-  callbacks,
-} from '@angular-package/property';
-```
-
-```typescript
-// Class.
-import {
-  // descriptor
-  AccessorDescriptors,
-  DataDescriptors,
+export {
+  // Class.
   Descriptor,
-} from '@angular-package/property';
-```
-
-```typescript
-// Interface.
-import {
-  // descriptor
+  Descriptors,
+  // Interface.
   AccessorDescriptor,
   CommonDescriptor,
   DataDescriptor,
-} from '@angular-package/property';
-```
+  // Type.
+  ThisAccessorDescriptor,
+} from './descriptor';
 
-```typescript
-// Type.
-import {
-  // descriptor
-  ThisAccessorDescriptor
-} from '@angular-package/property';
-
+export { GetterCallback, SetterCallback } from './type';
 ```
 
 ## Table of contents
 
+* [Skeleton](#skeleton)
 * [Installation](#installation)
 * [Callback](#callback)
-  * Function
-    * [`errorCallback()`](#errorcallback)
-* [Function](#function)
-  * [`getExistProperty()`](#getexistproperty)
-  * [`getProperties()`](#getproperties)
-  * [`getProperty()`](#getproperty)
-  * [`setProperty()`](#setproperty)
-* [Object](#object)
-  * [`get`](#get)
 * [Package](#package)
   * [Descriptor](#descriptor-package)
-    * Function
-      * [`getDescriptor()`](#getdescriptor)
-      * [`getDescriptors()`](#getdescriptors)
     * Class
       * [`Descriptor`](#descriptor)
       * [`AccessorDescriptors`](#accessordescriptors)
       * [`DataDescriptors`](#datadescriptors)
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
-  * [Name](#name-sub-package)
-    * Class
-      * [`Name`](#name)
-      * [`Prefix`](#prefix)
-      * [`Suffix`](#suffix)
-  * [Object](#object-sub-package)
-    * [`ObjectLock`](#objectlock)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
 * [License](#license)
+* [Packages](#packages)
 
 ## How angular-package understands
 
@@ -141,6 +79,20 @@ Sets
 Defines
 > Returns defined value from the method, instead of storing it in the `object`.
 
+## Skeleton
+
+This package was built by the [library skeleton][skeleton] which was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.1.
+
+Copy this package to the `packages/core` folder of the [library skeleton][skeleton] then run the commands below.
+
+### Build
+
+Run `ng build core` to build the package. The build artifacts will be stored in the `dist/` directory.
+
+### Running unit tests
+
+Run `ng test core` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
 ## Installation
 
 Install `@angular-package/property` package with command:
@@ -149,387 +101,35 @@ Install `@angular-package/property` package with command:
 npm i --save @angular-package/property
 ```
 
-## Callback
+----
 
-### `errorCallback()`
+## Callback
 
 Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
 
 ```typescript
 const errorCallback: ErrorCallback  = (
   message: string,
-  type: ErrorType = '',
-  on: boolean = false,
+  on: boolean = false
 ): ResultCallback => {
   return (result: boolean, value: any): boolean => {
-    message = `${message}, got value ${
-      is.object(value) ? JSON.stringify(value) : value
-    }`;
     if (result === on) {
-      switch (type) {
-        case 'range': throw new RangeError(message); break;
-        case 'type': throw new TypeError(message); break;
-        case 'URI': throw new URIError(message); break;
-        default: throw new Error(message); break;
-      }
+      throw new Error(
+        `${message}, got value ${
+          is.object(value) ? JSON.stringify(value) : value
+        }`
+      );
     }
     return result;
   };
 };
 ```
 
-**Parameters:**
-
-| Name: `type`           | Description                                                                                                     |
-| :--------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| `message: string`      | The `string` type value, as a message for the [`Error`][js-error] instance                                      |
-| `type: ErrorType = ''` | Type of error to throw - `'range'`, `'type'`, `'URI'`, by default it's just an [`Error`][js-error]              |
-| `on: boolean = false`  | A `boolean` state on which an [`Error`][js-error] of the type specified in the provided `type` should be thrown |
-
-**Returns:**
-
-| Returns          | Type       | Description                                                                                 |
-| :--------------- | :--------: | :------------------------------------------------------------------------------------------ |
-| `ResultCallback` | `Function` | The **return type** is a function of a [`ResultCallback`][package-type-resultcallback] type |
-
-The **return value** is a predefined `function` for use as the callback.
-
-**Usage:**
-
-```typescript
-// Example usage.
-
-```
-
-## Object
-
-### `get`
-
-The object with all prefixed with `get` functions.
-
-```typescript
-const get: Get = {
-  descriptor: getDescriptor,
-  descriptors: getDescriptors,
-  existProperty: getExistProperty,
-  object: getObject,
-  properties: getProperties,
-  property: getProperty
-};
-```
-
-**Usage:**
-
-```typescript
-// Example usage.
-```
-
-## Function
-
-### `getExistProperty()`
-
-Use `getExistProperty()` or `get.existProperty()` to return the value of the existing specified property from the specified `object`.
-
-**Features:**
-
-* Guards getting the object property value by:
- Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
- Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
- Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
- Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
-* Possibility to use custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
-
-```typescript
-const getExistProperty: GetExistProperty = <
-  Obj extends object,
-  Key extends keyof Obj
->(
-  object: Obj,
-  key: Key,
-  callback: ResultCallback = callbacks.getExistProperty
-): Obj[Key] =>
-  guard.is.objectKey(object, key, callback)
-    ? getProperty(object, key)
-    : getProperty(object, key);
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
-
-**Parameters:**
-
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against its existence in the `object` |
-
-**Throws:**
-
-By default throws an [`Error`][js-error] if the specified object does not exist or the object exists, but its key doesn't.
-
-**Returns:**
-
-| Returns    | Type     | Description                                                                  |
-| :--------- | :------: | :--------------------------------------------------------------------------- |
-| `Obj[Key]` | Captured | The **return type** is of type captured from the property value of the `Obj` |
-
-The **return value** is a property value from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getExistProperty } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getExistProperty(person, 'firstName'); // Returns 'first name'
-getExistProperty(people, 'age'); // Uncaught Error: Object with the specified key does not exist, got value {}
-// Custom callback.
-getExistProperty(people, 'age', (result: boolean, value: any) => {
-  console.log(result); // `result` of the check is equal to the `false`
-  console.log(value); // `value` is equal to `{}` - object is empty
-  return result;
-}); // Returns `undefined`, does not throws an Error cause of custom callback.
-```
-
-### `getProperties()`
-
-Use `getProperties()` or `get.properties()` to get specified properties from the specified `object`.
-
-**Features:**
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-* Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
-* Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
-* Uses custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
-* Returns an object with the specified properties from the specified `object`.
-
-```typescript
-const getProperties: GetProperties = <
-  Obj extends object,
-  Keys extends keyof Obj
->(
-  object: Obj,
-  keys: Keys[]
-): Pick<Obj, Keys> =>
-  Object.assign(
-    {},
-    ...keys.map((key) =>
-      !is.undefined(object[key]) ? { [key]: object[key] } : undefined
-    )
-  );
-```
-
-**Generic type variables:**
-
-| Name                     | Description |
-| :----------------------- | :---------- |
-| `Obj extends object`     | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the provided `object` that is linked with the return type `Pick<Obj, Keys>` |
-| `Keys extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a properties that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `Pick<Obj, Keys>` |
-
-**Parameters:**
-
-| Name: `type`   | Description                                                                                                    |
-| :------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`  | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the values of the specified `keys` from it. The value is **not** being checked against the proper `object` type |
-| `keys: Keys[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the names of the properties that the `object` contains. The value is **not** being checked against the proper `key` type |
-
-**Returns:**
-
-| Returns           | Type     | Description                                                                                  |
-| :---------------- | :------: | :------------------------------------------------------------------------------------------- |
-| `Pick<Obj, Keys>` | `object` | The **return type** is an `object` of a generic `Obj` type, by default of type captured from the provided `object` with picked properties from the `keys` |
-
-The **return value** is an `object` with the specified properties.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { getProperties } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-  age: number;
-  lastName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-  lastName = 'last name';
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getProperties(person, ['age',  'firstName', 'lastName']); // returns {age: 5, firstName: "first name", lastName: "last name"}
-getProperties(people, ['age']); // returns {}
-```
-
-### `getProperty()`
-
-Use `getProperty()` or `get.property()` to return the value of the specified property from the `object`.
-
-```typescript
-const getProperty: GetProperty = <
-  Obj extends object,
-  Key extends keyof Obj
->(
-  object: Obj,
-  key: Key
-): Obj[Key] => object[key];
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `Obj[Key]` |
-
-**Parameters:**
-
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get property value from it. The value is not being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is not being checked against proper `key` type |
-
-**Returns:**
-
-| Returns    | Type     | Description                                                                                       |
-| :--------- | :------: | :------------------------------------------------------------------------------------------------ |
-| `Obj[Key]` | Captured | The **return type** is of type captured from the property (`Key`) value from the `object` (`Obj`) |
-
-The **return value** is  a property value from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { getProperty } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-  age: number;
-  lastName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-  lastName = 'last name';
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getProperty(person, 'age'); // Returns 5
-getProperty(people, 'age'); // Returns undefined
-```
-
-### `setProperty()`
-
-Sets the value of indicated property by its name in the `object`.
-
-```typescript
-const setProperty: SetProperty = <
-  Obj extends object,
-  Key extends keyof Obj
->(
-  object: Obj,
-  key: Key,
-  value: Obj[Key]
-): Obj[Key] => (object[key] = value);
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
-
-**Parameters:**
-
-| Name: `type`      | Description                                                                                                    |
-| :---------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`     | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to set the value with the indicated `key` as its property name. The value is not checked against the proper `object` type |
-| `key: Key`        | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains |
-| `value: Obj[Key]` | The `value` of the type captured from the provided `key` in the provided `object`. The `value` is not checked against the proper type |
-
-**Returns:**
-
-| Returns    | Type     | Description                                                                                       |
-| :--------- | :------: | :------------------------------------------------------------------------------------------------ |
-| `Obj[Key]` | Captured | The **return type** is of type captured from the property (`Key`) value from the `object` (`Obj`) |
-
-The **return value** is the value from the property of the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { setProperty } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-  age: number;
-  lastName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-  lastName = 'last name';
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-setProperty(person, 'age', 7); // Returns 7
-setProperty(people, 'age', 27); // Returns 27
-```
+----
 
 ## Package
 
-## Descriptor package
+### Descriptor package
 
 Descriptor features to import.
 
@@ -566,154 +166,6 @@ import {
 ```
 
 ----
-
-### `getDescriptor()`
-
-Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor]. Use `getDescriptor()` or `get.descriptor()` to return descriptor of the specified property from the specified object.
-
-> Gets the own property descriptor of the specified object. An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
-
-**Features:**
-
-Additional features instead of the default from the wrapped [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor] method.
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-
-```typescript
-const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>(
-  object: Obj,
-  key: Key
-): PropertyDescriptor | undefined;
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` |
-
-**Parameters:**
-
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the property descriptor from it. The value is **not** being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is **not** being checked against its existence in the `object` |
-
-**Throws:**
-
-Function throws nothing.
-
-**Returns:**
-
-| Returns                           | Type     | Description                                                                       |
-| :-------------------------------- | :------: | :-------------------------------------------------------------------------------- |
-| `PropertyDescriptor \| undefined` | `object` | - |
-
-The **return value** is a property descriptor from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getDescriptor } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getDescriptor(person, 'firstName'); // Returns {value: "first name", writable: true, enumerable: true, configurable: true}
-getDescriptor(people, 'age'); // Returns undefined
-
-const noProperty: any = 'no property';
-const noObject: any = 'my string object';
-
-getDescriptor(person, noProperty); // Returns undefined,
-                                   // It won't give you any `Error`, it's like an object has property with undefined value.
-getDescriptor(noObject, 'age'); // Returns undefined
-                                // The same here.
-```
-
-### `getDescriptors()`
-
-Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
-
-> Returns an object containing all own property descriptors of an object.
-
-**Features:**
-
-Additional features instead of the default from the wrapped [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors] method.
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-
-```typescript
-const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof Obj>(
-  object: Obj,
-  keys?: Keys[] // Not working in this version.
-): ObjectPropertyDescriptors<Obj> | undefined;
-```
-
-**Generic type variables:**
-
-| Name                     | Description |
-| :----------------------- | :---------- |
-| `Obj extends object`     | Constrained with the `object` type, by default of the value from the captured type of the provided `object`  |
-
-**Parameters:**
-
-| Name: `type`    | Description                                                                                                    |
-| :-------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`   | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get all property descriptors from it. The value is being checked against the proper `object` type |
-| `keys?: Keys[]` | **not working** |
-
-**Returns:**
-
-| Returns                                       | Type     | Description                                                                       |
-| :-------------------------------------------- | :------: | :-------------------------------------------------------------------------------- |
-| `ObjectPropertyDescriptors<Obj> \| undefined` | `object` | - |
-
-The **return value** is an `object` with all property descriptors from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getDescriptors } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getDescriptors(person); // Returns {firstName: {…}, age: {…}}
-getDescriptors(people); // Returns {}
-```
 
 ### `Descriptor`
 
@@ -1494,7 +946,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ----
 
-## Descriptor interface
+### Descriptor interface
 
 ### AccessorDescriptor
 
@@ -1529,7 +981,7 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 
 ----
 
-## Descriptor type
+### Descriptor type
 
 ### ThisAccessorDescriptor
 
@@ -1538,877 +990,6 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 ```typescript
 type ThisAccessorDescriptor<Value, Obj> = AccessorDescriptor<Value> &
   ThisType<Obj>;
-```
-
-----
-
-## Name sub-package
-
-Name features to import.
-
-```typescript
-// Class.
-import {
-  Name,
-  Prefix,
-  Suffix,
-} from '@angular-package/property';
-```
-
-### `Name`
-
-Manages the `name` of a `string` type.
-
-**Instance properties:**
-
-| Properties                                   | Description                                         |
-| :------------------------------------------- | :-------------------------------------------------- |
-| [`Name.isLocked`](#objectlockislocked) | Gets the `lock`(frozen) status of a `this` instance |
-
-**Instance methods:**
-
-| Methods                                             | Description                                                                                         |
-| :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| [`Name.prototype.lock()`](#objectlockprototypelock) | Locks(freeze) an instance of `this` to be sure to do not make any changes on it, cannot be unlocked |
-
-### `Name` instance properties
-
-### `Name.prototype.isLocked`
-
-### `Name` instance methods
-
-### `Name.prototype.set()`
-
-Sets the name.
-
-```typescript
-public set(name: string, callback: ResultCallback = this.#callback): this {
-  if (is.false(this.isLocked)) {
-    this.#name = Name.define(name, {
-      callback,
-      length: this.pick.length,
-      pattern: this.pick.pattern,
-    });
-  }
-  return this;
-}
-```
-
-**Parameters:**
-
-| Name: type                  | Description                          |
-| :-------------------------- | :----------------------------------- |
-| `suffix: string`            | A `string` type value, as a `suffix` |
-| `callback?: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `suffix` is of a `string` type |
-
-**Returns:**
-
-| Returns | Type   | Description                                                       |
-| ------- | :----: | :---------------------------------------------------------------- |
-| `this`  | `Name` | The **return type** is the actual instance of the [`Name`](#name) |
-
-The **return value** is an instance of a [`Name`](#name) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Name } from '@angular-package/property';
-
-new Name().set();
-```
-
-### `Name.prototype.setSuffix()`
-
-Sets `suffix` for the name.
-
-```typescript
-public setSuffix(suffix: string, callback?: ResultCallback): this {
-  this.#suffix.set(suffix, callback);
-  return this;
-}
-```
-
-**Parameters:**
-
-| Name: type                  | Description                          |
-| :-------------------------- | :----------------------------------- |
-| `suffix: string`            | A `string` type value, as a `suffix` |
-| `callback?: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `suffix` is of a `string` type |
-
-**Returns:**
-
-| Returns | Type   | Description                                                       |
-| ------- | :----: | :---------------------------------------------------------------- |
-| `this`  | `Name` | The **return type** is the actual instance of the [`Name`](#name) |
-
-The **return value** is an instance of a [`Name`](#name) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Name } from '@angular-package/property';
-
-new Name().setSuffix();
-```
-
-----
-
-### `Prefix`
-
-Manages the `prefix` of a `string` type for the name.
-
-**Features:**
-
-* Guards the provided string-type `prefix`.
-* Filters the provided `prefix` with a customizable regular expression and `length`.
-
-Static:
-
-* Default `length` of the `prefix` is `3`, and pattern is `/[^a-zA-Z0-9$_]/g`.
-* Defines the `prefix` with a static method `define()`.
-* Customizable `callback`, `length` and regular expression `pattern` in the static `define()` method.
-* Checks if any `value` is an instance of a `Prefix` with static method [`is()`](#prefixis).
-
-Instance:
-
-* Defines a `string` type `prefix` with a `define()` method.
-* Sets
-  * initially the `prefix` with optional settings.
-  * settings for the `prefix` with the `configure()` method.
-  * the `prefix` with the `set()` method.
-  * custom callback function for the `set()` method with the `setCallback()` method.
-  * the maximum length of the `prefix` with the `setLength()` method.
-  * custom regular expression with the `setPattern()` method.
-* Update `prefix` with the actual settings with the `updatePrefix()` method.
-* Gets privately stored
-  * `callback` function with the `getCallback()` method.
-  * maximum length` of the `prefix` with the `getLength()` method.
-  * `prefix` with the `get` property.
-  * Picks privately stored object that contains the `length` and `pattern` with the `pick` property.
-
-**Static methods:**
-
-| Methods                            | Description                                                                                                     |
-| :--------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| [`Prefix.define()`](#prefixdefine) | Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum `length` |
-| [`Prefix.is()`](#prefixis)         | Checks if any value is an instance of a [`Prefix`](#prefix) |
-
-**Instance properties:**
-
-| Properties                                      | Description                                                                                                     |
-| :---------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| [`Prefix constructor`](#prefix-constructor)     | Initially sets the `prefix` with optional settings |
-| [`Prefix.prototype.get`](#prefixprototypeget)   | Gets the prefix defined by the `set()` method with the property `get` |
-| [`Prefix.prototype.pick`](#prefixprototypepick) | Picks attributes `length` and `pattern` of the `prefix` from the settings |
-
-**Instance methods:**
-
-| Methods                                                         | Description                                                                                                     |
-| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| [`Prefix.prototype.configure()`](#prefixprototypeconfigure)     | Configures `callback`, `length`, and `pattern` options of the `prefix` settings. The method works if an instance is not locked by the `lock()` method |
-| [`Prefix.prototype.define()`](#prefixprototypedefine)           | Defines the `prefix` with the actual settings |
-| [`Prefix.prototype.getCallback()`](#prefixprototypegetcallback) | Returns callback function of the actual settings |
-| [`Prefix.prototype.getLength()`](#prefixprototypegetlength)     | Returns the maximum `length` of the actual settings for the `prefix`, which by default is set to `3` |
-| [`Prefix.prototype.getPattern()`](#prefixprototypegetpattern)   | Returns pattern of the actual settings for the `prefix`, which by default is set to `/[^a-zA-Z0-9$_]/g` |
-| [`Prefix.prototype.getSettings()`](#prefixprototypegetsettings) | Returns the actual settings of a [`Prefix`](#prefix) instance |
-| [`Prefix.prototype.set()`](#prefixprototypeset)                 | Sets the `prefix` with the actual settings. The method works if an instance is not locked by the [`lock()`](#objectlockprototypelock) method |
-| [`Prefix.prototype.setCallback()`](#prefixprototypesetcallback) | Sets the `callback` for the `set()` method. The method works if an instance is not locked by the `lock()` method |
-| [`Prefix.prototype.setLength()`](#prefixprototypesetlength)     | Sets the length of the `prefix`, which by default is set to `3`. The method works if an instance is not locked by the `lock()` method |
-| [`Prefix.prototype.setPattern()`](#prefixprototypesetpattern)   | Sets the pattern for the `prefix`. The method works if an instance is not locked by the `lock()` method |
-| [`Prefix.prototype.updatePrefix()`](#prefixprototypesetpattern) | Updates privately stored `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method |
-
-### `Prefix` static methods
-
-### `Prefix.define()`
-
-Returns defined string-type `prefix` filtered with the specified regular expression of a specified maximum length.
-
-```typescript
-static define(prefix: string, settings?: AffixSettings): string {
-  return guard.is.string(
-    prefix,
-    settings?.callback ? settings.callback : undefined
-  )
-    ? prefix
-        .replace(settings?.pattern ? settings.pattern : /[^a-zA-Z0-9$_]/g, '')
-        .slice(0, settings?.length ? settings.length : 3)
-    : '';
-}
-```
-
-**Parameters:**
-
-| Name: `type`                | Description |
-| :-------------------------- | :---------- |
-| `prefix: string`            | A `string` type value as the `prefix` |
-| `settings?: ResultCallback` | An optional `object` of a [`AffixSettings`](#affixsettings) interface to configure the provided `prefix` |
-
-**Throws:**
-
-**Returns:**
-
-The **return value** is a `prefix` of a `string` type or an empty string if the `prefix` is not a `string` type.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-const prefix = Prefix.define('myPrefix12345', {
-  callback: (result, value: any) => {
-    if (result === false) {
-      throw new Error('Must be a string type');
-    }
-    return result;
-  },
-  length: 3,
-  pattern: /[^0-9]/g
-}); // Returns 123
-```
-
-### `Prefix.is()`
-
-Checks if any `value` is an instance of a [`Prefix`](#prefix).
-
-```typescript
-static is(value: any, callback?: ResultCallback): value is Prefix {
-  return is.instance(value, Prefix, callback);
-}
-```
-
-**Parameters:**
-
-| Name: `type`                | Description |
-| :-------------------------- | :---------- |
-| `value: any`                | Any `value` to check |
-| `callback?: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `value` is an instance of a `Prefix` |
-
-**Throws:**
-
-**Returns:**
-
-| Returns           | Type      | Description                                                                                                                      |
-| :---------------- | :-------: | :------------------------------------------------------------------------------------------------------------------------------- |
-| `value is Prefix` | `boolean` | The **return type** is a `boolean` as the result of its statement indicating the `value` is an instance of a [`Prefix`](#prefix) |
-
-The **return value** is a `boolean` indicating whether or not the `value` is an instance of a [`Prefix`](#prefix).
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-Prefix.is(new Prefix()); // Returns `true`.
-```
-
-### `Prefix` constructor
-
-Initially sets the `prefix` with optional settings.
-
-```typescript
-constructor(prefix?: string, settings?: AffixSettings) {
-  super();
-  if (is.defined(prefix)) {
-    if (is.defined(settings)) {
-      this.configure(settings);
-    }
-    this.set(prefix);
-  }
-}
-```
-
-**Parameters:**
-
-| Name: `type`               | Description |
-| :------------------------- | :---------- |
-| `prefix?: string`          | An optional `string` type value to initially set the `prefix`. |
-| `settings?: AffixSettings` | An optional `object` of a [`AffixSettings`](#affixsettings) interface to customize the provided `prefix` |
-
-**Returns:**
-
-The **return value** is new instance of a [`Prefix`](#prefix).
-
-**Usage:**
-
-```typescript
-// Example usage.
-```
-
-### `Prefix` instance properties
-
-### `Prefix.prototype.get`
-
-Gets the `prefix` defined by the `set()` method with the property `get`.
-
-```typescript
-public get get(): string {
-  return this.#prefix;
-}
-```
-
-**Returns:**
-
-The **return value** is a privately stored `prefix` of a `string` type.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-const definedPrefix = new Prefix('$$$').get; // Returns '$$$'
-```
-
-### `Prefix.prototype.pick`
-
-Picks attributes `length` and `pattern` of the `prefix` from the settings.
-
-```typescript
-public get pick(): Pick<AffixSettings, 'length' | 'pattern'> {
-  return {
-    length: this.getLength(),
-    pattern: this.getPattern(),
-  };
-}
-```
-
-**Returns:**
-
-The **return value** is an `object` of a [`AffixSettings`](#affixsettings) with the picked `length` and `pattern` properties.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-const pickSettings = new Prefix().pick; // Returns {length: 3, pattern: /[^a-zA-Z0-9$_]/g}
-```
-
-### `Prefix` instance methods
-
-### `Prefix.prototype.configure()`
-
-Configures `callback`, `length`, and `pattern` options of the `prefix` settings. The method works if an instance is not locked by the `lock()` method.
-
-```typescript
-public configure(settings: AffixSettings): this {
-  if (guard.object(settings) && is.false(this.isLocked)) {
-    if (is.defined(settings.callback)) {
-      this.setCallback(settings.callback);
-    }
-    if (is.defined(settings.length)) {
-      this.setLength(settings.length);
-    }
-    if (is.defined(settings.pattern)) {
-      this.setPattern(settings.pattern);
-    }
-  }
-  return this;
-}
-```
-
-**Parameters:**
-
-| Name: `type`              | Description |
-| :------------------------ | :---------- |
-| `settings: AffixSettings` | An `object` of a [`AffixSettings`](#affixsettings) interface |
-
-**Returns:**
-
-| Returns | Type     | Description                                                           |
-| ------- | :------: | :-------------------------------------------------------------------- |
-| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
-
-The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-```
-
-### `Prefix.prototype.define()`
-
-Defines the `prefix` with the actual settings.
-
-```typescript
-public define(
-  prefix: string,
-  callback: ResultCallback = this.#callback
-): string {
-  return Prefix.define(prefix, {
-    callback: this.#callback,
-    length: this.getLength(),
-    pattern: this.getPattern(),
-  });
-}
-```
-
-**Parameters:**
-
-| Name: `type`               | Description |
-| :------------------------- | :---------- |
-| `prefix: string`           | A `string` type value |
-| `callback: ResultCallback` | A [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `prefix` is a `string` type  |
-
-**Returns:**
-
-The **return value** is a `prefix` of a `string` type or an empty string if the `prefix` is not a `string` type.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-```
-
-### `Prefix.prototype.getCallback()`
-
-Returns callback function of the actual settings.
-
-```typescript
-public getCallback(): ResultCallback {
-  return this.#callback;
-}
-```
-
-**Returns:**
-
-| Returns          | Type             | Description                                                                     |
-| ---------------- | :--------------: | :------------------------------------------------------------------------------ |
-| `this.#callback` | `ResultCallback` | The **return type** is the function of the [`ResultCallback`][package-type-resultcallback] type |
-
-The **return value** is a privately stored `callback` function.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-new Prefix().getCallback(); // Returns (result, value) => {…}
-```
-
-### `Prefix.prototype.getLength()`
-
-Returns the maximum length of the actual settings for the `prefix`, which by default is set to `3`.
-
-```typescript
-public getLength(): number {
-  return this.#length;
-}
-```
-
-**Returns:**
-
-| Returns        | Type     | Description                            |
-| -------------- | :------: | :------------------------------------- |
-| `this.#length` | `number` | The **return type** is a `number` type |
-
-The **return value** is a privately stored maximum length of the `prefix`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-new Prefix().getLength(); // Returns `3`
-```
-
-### `Prefix.prototype.getPattern()`
-
-Returns pattern of the actual settings for the `prefix`, which by default is set to `/[^a-zA-Z0-9$_]/g`.
-
-```typescript
-public getPattern(): RegExp {
-  return this.#pattern;
-}
-```
-
-**Returns:**
-
-| Returns         | Type     | Description                            |
-| --------------- | :------: | :------------------------------------- |
-| `this.#pattern` | `RegExp` | The **return type** is a [`RegExp`][js-regexp] type |
-
-The **return value** is a privately stored regular expression to filter the `prefix`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-new Prefix().getPattern(); // Returns /[^a-zA-Z0-9$_]/g
-```
-
-### `Prefix.prototype.getSettings()`
-
-Returns the actual settings of a [`Prefix`](#prefix) instance.
-
-```typescript
-public getSettings(): AffixSettings {
-  return {
-    callback: this.getCallback(),
-    length: this.getLength(),
-    pattern: this.getPattern(),
-  };
-}
-```
-
-**Returns:**
-
-| Returns                         | Type            | Description                                                  |
-| :------------------------------ | :-------------: | :----------------------------------------------------------- |
-| `{ callback, length, pattern }` | `AffixSettings` | A **return type** is an `object` of a [`AffixSettings`](#affixsettings) interface |
-
-The **return value** is an `object` with the actual settings of a [`Prefix`](#prefix) instance.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-new Prefix().getSettings(); // Returns { callback: (result, value) => {…}, length: 3, pattern: /[^a-zA-Z0-9$_]/g }
-```
-
-### `Prefix.prototype.set()`
-
-Sets the `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method.
-
-```typescript
-public set(
-  prefix: string,
-  callback: ResultCallback = this.getCallback()
-): this {
-  if (is.false(this.isLocked)) {
-    this.#prefix = Prefix.define(prefix, {
-      callback,
-      length: this.getLength(),
-      pattern: this.getPattern(),
-    });
-  }
-  return this;
-}
-```
-
-**Parameters:**
-
-| Name: `type`               | Description |
-| :------------------------- | :---------- |
-| `prefix: string`           | A `string` type value |
-| `callback: ResultCallback` | A [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `prefix` is a `string` type  |
-
-**Returns:**
-
-| Returns | Type     | Description                                                           |
-| ------- | :------: | :-------------------------------------------------------------------- |
-| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
-
-The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-const databasePrefix = new Prefix('database_', { length: 9 }) // databasePrefix.get returns 'database_'
-  .set('wordpress_');                                         // databasePrefix.get returns 'wordpress'
-```
-
-### `Prefix.prototype.setCallback()`
-
-Sets the callback for the `set()` method. The method works if an instance is not locked by the `lock()` method.
-
-```typescript
-public setCallback(callback: ResultCallback): this {
-  this.#callback =
-    guard.function(callback) && is.false(this.isLocked)
-      ? callback
-      : this.#callback;
-  return this;
-}
-```
-
-**Parameters:**
-
-| Name: `type`               | Description |
-| :------------------------- | :---------- |
-| `callback: ResultCallback` | A [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `prefix` is of a `string` type |
-
-**Returns:**
-
-| Returns | Type     | Description                                                           |
-| ------- | :------: | :-------------------------------------------------------------------- |
-| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
-
-The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-let badPrefix: any = 27;
-
-new Prefix('database_')
-  .setCallback((result: boolean, value: any) => {
-    if (is.false(result)) {
-      throw new TypeError(`Prefix must be a string type got ${value}`);
-    }
-    return result;
-  })
-  .set(badPrefix); // TypeError: Prefix must be a string type got 27
-```
-
-### `Prefix.prototype.setLength()`
-
-Sets the length of the `prefix`, which by default is set to `3`. The method works if an instance is not locked by the `lock()` method.
-
-```typescript
-public setLength(length: number, callback?: ResultCallback): this {
-  this.#length =
-    guard.is.number(length, callback) && is.false(this.isLocked)
-      ? length
-      : this.#length;
-  return this;
-}
-```
-
-**Parameters:**
-
-| Name: `type`               | Description |
-| :------------------------- | :---------- |
-| `length: number`           | A `number` type value to denote the maximum length of the `prefix` |
-| `callback: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `length` is of a `number` type  |
-
-**Returns:**
-
-| Returns | Type     | Description                                                           |
-| ------- | :------: | :-------------------------------------------------------------------- |
-| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
-
-The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-const databasePrefix = new Prefix('database_', { length: 9 }).setLength(3);
-databasePrefix.getLength(); // returns '3'
-```
-
-### `Prefix.prototype.setPattern()`
-
-Sets the pattern for the `prefix`. The method works if an instance is not locked by the `lock()` method.
-
-```typescript
-public setPattern(pattern: RegExp, callback?: ResultCallback): this {
-  this.#pattern =
-    is.regexp(pattern, callback) && is.false(this.isLocked)
-      ? pattern
-      : this.#pattern;
-  return this;
-}
-```
-
-**Parameters:**
-
-| Name: `type`               | Description |
-| :------------------------- | :---------- |
-| `pattern: RegExp`          | A [`RegExp`][js-regexp] type value to filter the `prefix` |
-| `callback: ResultCallback` | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `pattern` is of a [`RegExp`][js-regexp] type  |
-
-**Returns:**
-
-| Returns | Type     | Description                                                           |
-| ------- | :------: | :-------------------------------------------------------------------- |
-| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
-
-The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-new Prefix('database_1', { length: 10 }) // databasePrefix.get returns 'database_'
-  .setPattern(/[^0-9]/g)                 // databasePrefix.get returns 'database_'
-  .updatePrefix();                       // databasePrefix.get returns '1'
-```
-
-### `Prefix.prototype.updatePrefix()`
-
-Updates privately stored `prefix` with the actual settings. The method works if an instance is not locked by the `lock()` method.
-
-```typescript
-public updatePrefix(): this {
-  this.set(this.#prefix);
-  return this;
-}
-```
-
-**Returns:**
-
-| Returns | Type     | Description                                                           |
-| ------- | :------: | :-------------------------------------------------------------------- |
-| `this`  | `Prefix` | The **return type** is the actual instance of the [`Prefix`](#prefix) |
-
-The **return value** is an instance of a [`Prefix`](#prefix) for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Prefix } from '@angular-package/property';
-
-new Prefix('database_', { length: 9 }) // databasePrefix.get returns 'database_'
-  .setLength(3)                        // databasePrefix.get returns 'database_'
-  .updatePrefix();                     // databasePrefix.get returns 'dat'
-```
-
-----
-
-### Name sub-package interface
-
-### AffixSettings
-
-Settings with `callback`, `length`, and `pattern` options for the `affix`.
-
-```typescript
-interface AffixSettings extends Pick<Settings, 'length' | 'pattern'> {
-  callback?: ResultCallback;
-}
-```
-
-### NameSettings
-
-Settings with `callback`, `length`, `pattern`, `prefix`, and `suffix` options for the name.
-
-```typescript
-interface NameSettings extends Settings {
-  /**
-   * The callback function of a `ResultCallback` type.
-   */
-  callback?: ResultCallback;
-
-  /**
-   * Prefix of a `string` type or an instance of a `Prefix`.
-   */
-  prefix?: string | Prefix;
-
-  /**
-   * Suffix of a `string` type or an instance of a `Suffix`.
-   */
-  suffix?: string | Suffix;
-}
-```
-
-### Object sub-package
-
-### `ObjectLock`
-
-Manages the lock an instance of `this`.
-
-**Instance properties:**
-
-| Properties                                   | Description                                         |
-| :------------------------------------------- | :-------------------------------------------------- |
-| [`ObjectLock.isLocked`](#objectlockislocked) | Gets the `lock`(frozen) status of a `this` instance |
-
-**Instance methods:**
-
-| Methods                                                   | Description                                                                                         |
-| :-------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| [`ObjectLock.prototype.lock()`](#objectlockprototypelock) | Locks(freeze) an instance of `this` to be sure to do not make any changes on it, cannot be unlocked |
-
-### `ObjectLock` instance properties
-
-### `ObjectLock.prototype.isLocked`
-
-Gets the `lock`(frozen) status of a `this` instance.
-
-> "Returns true if existing property attributes and values cannot be modified in an object, and new properties cannot be added to the object."
-
-```typescript
-public get isLocked(): boolean {
-  return Object.isFrozen(this);
-}
-```
-
-**Returns:**
-
-The **return value** is a `boolean` type indicating whether or not an instance of `this` is locked (frozen).
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { ObjectLock } from '@angular-package/property';
-
-class Address {}
-class Person extends ObjectLock {}
-
-const person = new Person().isLocked; // Returns `false`
-```
-
-### `ObjectLock` instance methods
-
-### `ObjectLock.prototype.lock()`
-
-Locks(freeze) an instance of `this` to be sure to do not make any changes on it, cannot be unlocked.
-
-```typescript
-public lock(): this {
-  Object.freeze(this);
-  return this;
-}
-```
-
-**Returns:**
-
-The **return value** is a `this` instance for the chaining.
-
-**Usage:**
-
-```typescript
-// Example usage.
-class Address {}
-class Person extends ObjectLock {}
-const person = new Person().lock(); // `person` is locked (frozen)
-```
-
-### Property interface
-
-### Settings
-
-Common settings.
-
-```typescript
-interface Settings {
-  /**
-   * Length of a `number` type.
-   */
-  length?: number;
-
-  /**
-   * Pattern of a `RegExp` type.
-   */
-  pattern?: RegExp;
-}
 ```
 
 ## GIT
@@ -2443,7 +1024,22 @@ How do I know when to release 1.0.0?
 
 MIT © angular-package ([license][property-license])
 
-----
+## Packages
+
+Useful and simple to use packages based on the [angular.io][angulario].
+
+| Package                              | Description                                        | Status                                                       |
+| :----------------------------------- | :------------------------------------------------- | -----------------------------------------------------------: |
+| [change-detection][cd-github-readme] | Improve application performance.                   | [![npm version][cd-npm-badge-svg]][cd-npm-badge]             |
+| [core][core-github-readme]           | Core features.                                     | [![npm version][core-npm-badge-svg]][core-npm-badge]         |
+| [prism][prism-github-readme]         | `Prism` highlighter module.                        | [![npm version][prism-npm-badge-svg]][prism-npm-badge]       |
+| [property][property-github-readme]   | Features to handle object properties.              | [![npm version][property-npm-badge-svg]][property-npm-badge] |
+| [reactive][reactive-github-readme]   | Automatize process of creating some rxjs features. | [![npm version][reactive-npm-badge-svg]][reactive-npm-badge] |
+| [ui][ui-github-readme]               | User interface.                                    | *In Progress*                                                |
+| [type][type-github-readme]           | Common types, type guards and type checkers.       | [![npm version][type-npm-badge-svg]][type-npm-badge]         |
+
+> Click on the package name to visit the package GitHub README.md
+
 
 <!-- Funding -->
 [github-badge-sponsor]: https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&link=https://github.com/sponsors/angular-package
