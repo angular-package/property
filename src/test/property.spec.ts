@@ -1,65 +1,42 @@
 import { Property } from '../lib/property.class';
+import { Descriptor } from '../descriptor/lib/descriptor.class';
+/**
+ *
+ */
+class ExampleComponent {
+  public set surname(surname: string) {
+    this.#surname = surname;
+  }
+  public get surname(): string{
+    return this.#surname;
+  }
 
-describe(Property.name, () => {
-  // Defined.
-  it('is DEFINED', () => expect(Property).toBeDefined());
+  public firstname = 'my name';
 
-/*
-  it(`constant name`, () => {
+  public age = 35;
 
-  });
+  #surname = 'Surname';
 
-  it(`generic name`, () => {
-    new Property({
-      prefix: '$$'
-    }).get;
-  });
+  public service = {
+    firstname: '',
+    surname: '',
+  };
 
-  const bla =
-  bla.name(name => {
-    name.set('x');
-    console.log(name.generate);
-  });
-*/
-});
+  constructor() {}
 
-/*
-interface Person {
-  $$age__: number;
-  $$firstName__: string;
-  firstName: string;
-  surname: string;
+  public method(firstname: string, surname: string): string {
+    this.firstname = firstname;
+    this.surname = surname;
+    return this.firstname;
+  }
 }
 
-const PERSON: Person = {
-  $$age__: 27,
-  $$firstName__: 'Ścibor',
-  firstName: 'Aaa',
-  surname: 'Bbb'
-};
+const exampleComponent = new ExampleComponent();
 
-const prop: Property = new Property({
-  name: 'age',
-  prefix: '$$',
-  suffix: '__'
-});
-// prop.#name.set('firstName');
-const blaBla = new Property('my');
-blaBla.name(name => {
-  console.log(name.generate);
-});
-const bla = new Property({
-  prefix: '$$'
-});
-bla.name(name => {
-  name.set('CONSTANT_NAME');
-  console.log(name.generate);
-});
+// console.log(Object.getOwnPropertyDescriptors(exampleComponent));
+// console.log(Descriptor.getAll(exampleComponent));
+// console.log(Descriptor.get(exampleComponent, 'age'));
 
 
-// console.log(prop.get(PERSON));
+console.log(new Property(exampleComponent));
 
-
-// prop.set<Person, 'firstName'>(PERSON, 'firstName', 'Seebor');
-// console.log(PERSON, prop.get<Person, 'firstName'>(PERSON, 'firstName'));
-*/
