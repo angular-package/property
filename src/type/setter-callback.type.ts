@@ -1,1 +1,6 @@
-export type SetterCallback<Source, Key extends keyof Source> = (value?: Source[Key], oldValue?: Source[Key], instance?: Source) => void;
+export type SetterCallback<Obj, Key extends keyof Obj> = (
+  value: Obj[Key],
+  oldValue: Obj[Key],
+  key: Key,
+  instance: Obj
+) => void;

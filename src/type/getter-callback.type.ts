@@ -1,1 +1,4 @@
-export type GetterCallback<Source, Key extends keyof Source> = (property?: Key, instance?: Source) => Source[Key];
+export type GetterCallback<Obj, Key extends keyof Obj> = (
+  key: Key,
+  instance: Obj
+) => Obj[Key] | void;
