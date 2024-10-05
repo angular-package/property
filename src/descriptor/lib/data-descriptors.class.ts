@@ -1,11 +1,12 @@
-// Object.
-import { is, guard, ResultCallback } from '@angular-package/type';
-// Function.
-import { getProperties } from '../../lib/get-properties.function';
+// Class.
+import { Property } from '../../lib';
+// Callback.
+import { callbacks } from '../../callback/src/callback.object';
 // Interface.
 import { DataDescriptor } from '../interface/data-descriptor.interface';
-// Callback.
-import { callbacks } from '../../callback/src/callbacks.object';
+// Type.
+import { ResultCallback } from '../type/result-callback.type';
+
 /**
  * Strictly defines, sets, and stores privately property data descriptor of a `DataDescriptor<Value>` interface.
  * Features:
@@ -19,31 +20,6 @@ import { callbacks } from '../../callback/src/callbacks.object';
  * + Get privately stored data descriptor defined by the `set()` method of the instance.
  */
 export class DataDescriptors<Value> {
-  // Defaults to data descriptor.
-  #descriptor: DataDescriptor<Value> = {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    value: undefined,
-  };
-
-  /**
-   * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
-   */
-  get get(): DataDescriptor<Value> {
-    return this.#descriptor;
-  }
-
-  /**
-   * Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
-   * @param descriptor An optional `object` of a `DataDescriptor<Value>` interface to initially set.
-   */
-  constructor(descriptor?: DataDescriptor<Value>) {
-    if (is.defined(descriptor)) {
-      this.set(descriptor);
-    }
-  }
-
   /**
    * Returns strictly defined data descriptor of a `DataDescriptor<Value>` interface on `writable` or `value` property detected.
    * Strictly means, parameter `descriptor` is type guarded and method picks `configurable`, `enumerable`, `writable`, `value`
@@ -58,19 +34,38 @@ export class DataDescriptors<Value> {
     descriptor: DataDescriptor<Value>,
     callback?: ResultCallback
   ): DataDescriptor<Value> {
-    if (DataDescriptors.guard(descriptor, callback)) {
-      return getProperties(
-        {
-          ...{
-            configurable: true,
-            enumerable: true,
-          },
-          ...descriptor,
-        },
-        ['configurable', 'enumerable', 'writable', 'value']
-      );
-    }
-    return {};
+    const result = {
+      ...{
+        configurable: true,
+        enumerable: true,
+      },
+      ...Property.pick(descriptor, 'configurable', 'enumerable', 'writable', 'value')
+    };
+    callback && callback(typeof result === 'object', result);
+    return result;
+  }
+
+  /**
+   * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
+   */
+  get get(): DataDescriptor<Value> {
+    return this.#descriptor;
+  }
+
+  // Defaults to data descriptor.
+  #descriptor: DataDescriptor<Value> = {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: undefined,
+  };
+
+  /**
+   * Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
+   * @param descriptor An optional `object` of a `DataDescriptor<Value>` interface to initially set.
+   */
+  constructor(descriptor?: DataDescriptor<Value>) {
+    descriptor && this.set(descriptor);
   }
 
   /**
@@ -86,10 +81,13 @@ export class DataDescriptors<Value> {
     descriptor: DataDescriptor<Value>,
     callback: ResultCallback = callbacks.data
   ): descriptor is DataDescriptor<Value> {
-    return callback(
-      guard.is.objectKeys(descriptor, 'writable', 'value'),
-      descriptor
-    );
+    let result = true;
+    Object
+      .keys(descriptor)
+      .forEach(key => (result === true) && (result = key in {
+        'configurable': true, 'enumerable': true, 'writable': true, 'value': true
+      }));
+    return callback(result, descriptor);
   }
 
   /**
