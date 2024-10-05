@@ -19,4 +19,7 @@ export {
   ThisAccessorDescriptor,
 } from './descriptor';
 
-export { GetterCallback, SetterCallback } from './type';
+export {
+  GetterCallback,
+  SetterCallback
+} from './type';
