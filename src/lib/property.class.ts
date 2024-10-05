@@ -1,117 +1,120 @@
-import { is, guard, Key, ResultCallback } from '@angular-package/type';
+// Class.
+import { WrapProperty } from './wrap-property.class';
 
-import { Descriptor } from '../descriptor/lib/descriptor.class';
-import { PropertyName } from './property-name.class';
+// Type.
+import { GetterCallback } from '../type/getter-callback.type';
+import { SetterCallback } from '../type/setter-callback.type';
 
-import { ConfigName } from '../name/interface/config-name.interface';
-import { GenericConfigName } from '../name/interface/generic-config-name.interface';
-
-import { AnyDescriptor } from '../descriptor/type/any-descriptor.type';
-import { getProperty } from './get-property.function';
-import { setProperty } from './set-property.function';
+// Interface.
+import { AccessorDescriptor } from '../descriptor/interface/accessor-descriptor.interface';
+import { DataDescriptor } from '../descriptor/interface/data-descriptor.interface';
 
 /**
- * Methods to handle object properties.
+ *
  */
-export class Property<Value> {
-
-  check = {
-    object: false,
-    key: false,
-    type: false
-  };
-
-  #descriptor: Descriptor<Value, any> = new Descriptor();
-  #name: PropertyName;
-  #value: Value | any;
-  // #bind: PropertyBind<Type> = new PropertyBind();
-  // #wrap: PropertyWrap<Type> = new PropertyWrap();
-  constructor(constantOrConfig?: string | GenericConfigName, config?: ConfigName) {
-    if (is.string(constantOrConfig)) {
-      this.#name = new PropertyName(constantOrConfig, config);
-    } else {
-      this.#name = new PropertyName(constantOrConfig);
-    }
-  }
-
+export class Property<
+  Obj extends object,
+  Keys extends keyof Obj
+> extends WrapProperty<Obj, Keys> {
   /**
-   * 
-   * @param configName 
+   *
+   * @param object
+   * @param key
+   * @param accessor
+   * @returns
+   * @angularpackage
    */
-  public config(configName: ConfigName): this {
-    this.#name.config(configName);
-    return this;
-  }
-
-  /**
-   * 
-   * @param object 
-   * @param value 
-   * @param key 
-   */
-  public define<Obj extends object, K extends keyof Obj>(
+  public static define<Obj extends object, Key extends PropertyKey, Value>(
     object: Obj,
-    value: Obj[K] = this.#value,
-    key: K = this.#name.generate as K
-  ): this {
-    // Object.defineProperty(object, key, );
-    return this;
+    key: Key,
+    data?: DataDescriptor<Value>,
+    accessor?: AccessorDescriptor<Value> & ThisType<Obj>
+  ): Obj & { [K in Key]: Value } {
+    typeof data === 'object'
+      ? Object.defineProperty(object, key, data)
+      : typeof accessor === 'object' &&
+        Object.defineProperty(object, key, accessor);
+    return object as any;
   }
 
   /**
-   * 
-   * @param descriptor 
+   *
+   * @param obj
+   * @param key
+   * @returns
+   * @angularpackage
    */
-  public descriptor(descriptor: AnyDescriptor<Value>): this {
-    return this;
-  }
-
-  /**
-   * 
-   * @param object 
-   * @param key 
-   * @param callback 
-   */
-  public get<Obj extends object, K extends keyof Obj>(
+  public static set<Obj extends object, Key extends keyof Obj>(
     object: Obj,
-    key: K = this.#name.generate as K,
-    callback?: ResultCallback
-  ): Obj[K] | undefined {
-    return getProperty(object, key);
-  }
-
-  /**
-   * 
-   * @param name 
-   */
-  public name(name: string): this {
-    this.#name.set(name);
+    key: Key,
+    value: Obj[Key]
+  ): typeof Property {
+    object[key] = value;
     return this;
   }
 
   /**
-   * 
-   * @description 
-   * @param object 
-   * @param value 
-   * @param key 
+   *
+   * @param object
+   * @param key
+   * @returns
+   * @angularpackage
    */
-  public set<Obj extends object, K extends keyof Obj>(object: Obj, value: Obj[K] = this.#value, key: K = this.#name.generate as K): this {
-// if (guard.is.objectKey(object, key)) {
-//   if (is.type(value, typeof object[key])) {
-//     object[key] = value;
-//   }
-// }
-    setProperty(object, key, value);
-    return this;
+  public static get<Obj extends object, Key extends keyof Obj>(
+    object: Obj,
+    key: Key
+  ): Obj[Key] {
+    return object[key];
   }
 
   /**
-   * 
-   * @param value 
+   *
+   * @param object
+   * @param keys
+   * @returns
+   * @angularpackage
    */
-  public value<Type extends Value>(value: Type): this {
-    this.#value = value;
-    return this;
+  public static pick<Obj extends object, Keys extends keyof Obj>(
+    object: Obj,
+    ...keys: Keys[]
+  ): { [Key in Keys]: Obj[Key] } {
+    return Object.assign(
+      {},
+      ...keys.map(key =>
+        typeof object[key] !== 'undefined' ? { [key]: object[key] } : undefined
+      )
+    );
+  }
+
+  /**
+   *
+   * @param object
+   * @param keys
+   * @param getterCallback
+   * @param setterCallback
+   * @returns
+   * @angularpackage
+   */
+  public static wrap<Obj extends object | Function, Keys extends keyof Obj>(
+    object: Obj,
+    keys: Keys[],
+    getterCallback?: GetterCallback<Obj, Keys>,
+    setterCallback?: SetterCallback<Obj, Keys>
+  ): WrapProperty<Obj, Keys> {
+    return new WrapProperty(object, ...keys).wrap(
+      keys,
+      getterCallback,
+      setterCallback
+    );
+  }
+
+  /**
+   *
+   * @param object
+   * @param keys
+   * @angularpackage
+   */
+  constructor(object: Obj, ...keys: Keys[]) {
+    super(object, ...keys);
   }
 }

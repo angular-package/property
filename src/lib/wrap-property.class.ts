@@ -1,78 +1,184 @@
-
-export class WrapProperty<Type = any> {
+// Class.
+import { Descriptors } from '../descriptor/lib/descriptors.class';
+// Type.
+import { GetterCallback } from '../type/getter-callback.type';
+import { SetterCallback } from '../type/setter-callback.type';
+/**
+ *
+ */
+export class WrapProperty<
+  Obj extends object | Function,
+  Names extends keyof Obj
+> {
+  /**
+   *
+   */
+  public get descriptors(): Descriptors<Obj, Names> {
+    return this.#descriptors;
+  }
 
   /**
+   *
+   */
+  public get wrapped(): Set<Names> {
+    return this.#wrapped;
+  }
+
+  /**
+   *
+   */
+  public get wrappedValues(): Map<Names, any> {
+    return this.#wrappedValues;
+  }
+
+  /**
+   *
+   */
+  #descriptors: Descriptors<Obj, Names>;
+
+  /**
+   *
+   */
+  #object: Obj;
+
+  /**
+   *
+   */
+  #wrapped: Set<Names> = new Set();
+
+  /**
+   *
+   */
+  #wrappedValues: Map<Names, any> = new Map();
+
+  /**
+   *
+   * @param object
+   * @param names
+   * @angularpackage
+   */
+  constructor(object: Obj, ...names: Names[]) {
+    this.#object = object;
+    this.#descriptors = new Descriptors(object, ...names);
+  }
+
+  /**
+   *
+   * @param names
+   * @param getterCallback
+   * @param setterCallback
+   * @returns
+   * @angularpackage
+   */
+  public wrap<Name extends Names>(
+    names: Name | Name[],
+    getterCallback?: GetterCallback<Obj, Name>,
+    setterCallback?: SetterCallback<Obj, Name>
+  ): this {
+    Array.isArray(names)
+      ? names.forEach(name => this.#wrap(this.#object, name, getterCallback, setterCallback))
+      : this.#wrap(this.#object, names, getterCallback, setterCallback);
+    return this;
+  }
+
+  /**
+   *
+   * @param names
+   * @returns
+   * @angularpackage
+   */
+  public unwrap(...names: Names[]): this {
+    Array.isArray(names) &&
+      names.forEach(
+        (name) => (
+          // Remove from the #wrapped storage.
+          this.#wrapped.delete(name),
+          Object.defineProperty(this.#object, name, {
+            ...this.#descriptors.get(name),
+          })
+        )
+      );
+    return this;
+  }
+
+  /**
+   * TODO: Check wrapping for union types.
    * Wrapper for source object property.
-   * @param source Source object as decorator function or component type to wrap properties.
-   * @param key Source object property key to wrap value.
+   * @param object Source object as decorator function or component type to wrap properties.
+   * @param name Source object property key to wrap value.
    * @param getterCallback Function to wrap source property getter.
    * @param setterCallback Function to wrap source property setter.
+   * @angularpackage
    */
-  // public wrap<Source, Key extends keyof Source>(
-  //   source: Source,
-  //   key: Key,
-  //   getterCallback?: GetterCallback<Source, Key>,
-  //   setterCallback?: SetterCallback<Source, Key>
-  // ): this {
-  //   if (is.object<Source>(source)) {
-  //     // Use key as string.
-  //     const property: string = key.toString();
-  //     if (guard.is.string(property)) {
-  //       if (this.wrapped$$ instanceof Array && this.wrapped$$.includes(key) === false) {
-  //         // Store original property getter and setter.
-  //         const stored = new StoreOriginalClass().properties(property, source);
-  //         // Create property with prefix and suffix to be wrapped by original name.
-  //         const privatePropertyName = property; // this.name.generate(property);
-  //         // Wrap property.
-  //         if (is.string(privatePropertyName)) {
-  //           Object.defineProperties(is.function(source) ? source.prototype : source, {
-  //             [privatePropertyName]: {
-  //               writable: true,
-  //               value: (is.function(source) ? source.prototype : source)[key]
-  //             }
-  //           });
-  //           Object.defineProperties(is.function(source) ? source.prototype : source, {
-  //             [key]: {
-  //               configurable: true,
-  //               get(): Source[Key] {
-  //                 // Custom getter.
-  //                 if (is.object<GetterCallback<Source, Key>>(getterCallback)) {
-  //                   getterCallback(key, this);
-  //                 }
-  //                 // Perform stored getter.
-  //                 if (stored.getter[property]) {
-  //                   return stored.getter[property].apply(this, arguments);
-  //                 }
-  //                 if (this[privatePropertyName]) {
-  //                   return this[privatePropertyName];
-  //                 }
-  //               },
-  //               set(value: Source[Key]): void {
-  //                 const oldValue = this[privatePropertyName];
-  //                 // Remember input value.
-  //                 this[privatePropertyName] = value;
-  //                 // Perform stored setter.
-  //                 if (stored.setter[property]) {
-  //                   stored.setter[property].apply(this, arguments);
-  //                 }
-  //                 // Use custom setter.
-  //                 if (is.object<SetterCallback<Source, Key>>(setterCallback)) {
-  //                   setterCallback(value, oldValue, this);
-  //                 }
-  //               }
-  //             }
-  //           });
-  //           this.wrapped$$.push(key);
-  //         } else {
-  //           throw new Error(`Problem: const \`privatePropertyName\`: ${privatePropertyName} must be \`string\` type`);
-  //         }
-  //       }
-  //     } else {
-  //       throw new Error(`Problem: Argument \`key\`: ${key} must be \`Key\` type`);
-  //     }
-  //   } else {
-  //     throw new Error(`Problem: Argument \`source\`: ${source} must be \`Source\` type`);
-  //   }
-  //   return this;
-  // }
+  #wrap<Name extends Names>(
+    object: Obj,
+    name: Name,
+    getterCallback?: GetterCallback<Obj, Name>,
+    setterCallback?: SetterCallback<Obj, Name>
+  ): this {
+    const thisInstance = this;
+    if (this.#wrapped.has(name) === false) {
+      if (typeof object === 'object' || typeof object === 'function') {
+        // If the descriptor is not already found set the original descriptor if exists.
+        this.#descriptors.has(name) === false &&
+          this.#descriptors.setPicked(object, name);
+
+        // Detect source.
+        const detectedSource =
+          typeof object === 'function' ? object.prototype : object;
+
+        // Sets the default value to wrapped property.
+        this.#wrappedValues.set(name, detectedSource[name]);
+
+        // Define property.
+        Object.defineProperty(detectedSource, name, {
+          configurable: true,
+          // If true then Maximum call exceeded.
+          enumerable: false,
+          get(): Obj[Name] {
+            // Prepare variable to return.
+            let result;
+            // Perform stored getter.
+            thisInstance.descriptors.has(name) &&
+              thisInstance.descriptors
+                .get(name)
+                ?.get?.apply(this, arguments as any);
+
+            // Custom getter.
+            typeof getterCallback === 'function' &&
+              (result = getterCallback(name, this));
+
+            // Returns the value.
+            return result || thisInstance.wrappedValues.get(name);
+          },
+          set(value: Obj[Name]): void {
+            // Store the old value to pass to setterCallback.
+            const oldValue = thisInstance.wrappedValues.get(name);
+            // Perform stored setter.
+            thisInstance.descriptors.has(name) &&
+              thisInstance.descriptors
+                .get(name)
+                ?.set?.apply(this, arguments as any);
+            // Set the value.
+            thisInstance.wrappedValues.set(name, value);
+            // Use custom setter.
+            typeof setterCallback === 'function' &&
+              setterCallback(value, oldValue, name, this);
+          },
+        });
+        this.#wrapped.add(name);
+      } else {
+        throw new Error(
+          `Problem: Argument \`object\`: ${object} must be generic type variable \`Obj\`.
+          Quick fix: Check the passed object in the constructor.
+          `
+        );
+      }
+    } else {
+      throw new Error(
+        `Problem: Property \`name\`: ${String(name)} is already wrapped.`
+      );
+    }
+    return this;
+  }
 }
