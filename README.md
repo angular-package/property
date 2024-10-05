@@ -939,6 +939,16 @@ MIT © angular-package ([license][property-license])
 
 Useful and simple to use packages.
 
+[callback][callback-github-readme] Manages the callback [`function`][js-function].
+<br>
+[![npm version][callback-npm-badge-png]][callback-npm-badge]
+<br>
+[change-detection][cd-github-readme] Improves application performance.
+<br>
+[![npm version][cd-npm-badge-png]][cd-npm-badge]
+
+
+
 | Package                                      | Description                                                       | Status |
 | :------------------------------------------- | :---------------------------------------------------------------- | -----: |
 | [callback][callback-github-readme]           | Manages the callback [`function`][js-function].                   | [![npm version][callback-npm-badge-png]][callback-npm-badge] |
@@ -1161,7 +1171,7 @@ Useful and simple to use packages.
   <!-- npm -->
   [spectrecss-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fspectrecss.svg
   [spectrecss-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fspectrecss.png
-  [spectrecss-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fspectrecss
+  [spectrecss-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fspectre.css
   [spectrecss-npm-readme]: https://www.npmjs.com/package/@angular-package/spectre.css#readme
 
   <!-- GitHub -->
