@@ -49,17 +49,17 @@ export class Descriptor {
   /**
    *
    * @param object
-   * @param key
+   * @param name
    * @returns
    * @angularpackage
    */
-  public static get<Obj, Key extends keyof Obj>(
+  public static get<Obj, Name extends keyof Obj>(
     object: Obj,
-    key: Key
+    name: Name
   ): PropertyDescriptor | undefined {
     return (
-      Object.getOwnPropertyDescriptor(object, key) ||
-      Object.getOwnPropertyDescriptor(this.#detectObject(object), key)
+      Object.getOwnPropertyDescriptor(object, name) ||
+      Object.getOwnPropertyDescriptor(this.#detectObject(object), name)
     );
   }
 
@@ -81,18 +81,18 @@ export class Descriptor {
   /**
    *
    * @param object
-   * @param keys
+   * @param names
    * @returns
    * @angularpackage
    */
-  public static pick<Obj extends object | Function, Keys extends keyof Obj>(
+  public static pick<Obj extends object | Function, Names extends keyof Obj>(
     object: Obj,
-    ...keys: Keys[]
-  ): Pick<ObjectPropertyDescriptors<Obj>, Keys> {
+    ...names: Names[]
+  ): Pick<ObjectPropertyDescriptors<Obj>, Names> {
     // Prepare constant to assign descriptors of picked keys.
     const pickedDescriptors: Pick<
       ObjectPropertyDescriptors<Obj>,
-      Keys
+      Names
     > = {} as any;
 
     // Get all descriptors.
@@ -101,7 +101,7 @@ export class Descriptor {
     // If descriptors exists then set picked descriptor into the map storage.
     typeof descriptors === 'object' &&
       Object.keys(descriptors)
-        .filter(key => keys.includes(key as any))
+        .filter(key => names.includes(key as any))
         .forEach(key =>
           Object.assign(pickedDescriptors, {
             [key]: descriptors[key],
