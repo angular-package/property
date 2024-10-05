@@ -43,6 +43,8 @@ export {
 export { GetterCallback, SetterCallback } from './type';
 ```
 
+[Previous README.md](https://github.com/angular-package/property/blob/44608671696872ea163b8b6cfa704471fafd8ac3/README.md)
+
 ## Table of contents
 
 * [Skeleton](#skeleton)
@@ -56,6 +58,7 @@ export { GetterCallback, SetterCallback } from './type';
       * [`DataDescriptors`](#datadescriptors)
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
+  * [Descriptors](#descriptors)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -903,6 +906,17 @@ type ThisAccessorDescriptor<Value, Obj> = AccessorDescriptor<Value> &
   ThisType<Obj>;
 ```
 
+### Descriptors
+
+Property descriptors container.
+
+```typescript
+export class Descriptors<
+  Obj extends object | Function,
+  Keys extends keyof Obj
+> { ... }
+```
+
 ## GIT
 
 ### Commit
@@ -939,16 +953,6 @@ MIT © angular-package ([license][property-license])
 
 Useful and simple to use packages.
 
-[callback][callback-github-readme] Manages the callback [`function`][js-function].
-<br>
-[![npm version][callback-npm-badge-png]][callback-npm-badge]
-<br>
-[change-detection][cd-github-readme] Improves application performance.
-<br>
-[![npm version][cd-npm-badge-png]][cd-npm-badge]
-
-
-
 | Package                                      | Description                                                       | Status |
 | :------------------------------------------- | :---------------------------------------------------------------- | -----: |
 | [callback][callback-github-readme]           | Manages the callback [`function`][js-function].                   | [![npm version][callback-npm-badge-png]][callback-npm-badge] |
@@ -974,8 +978,6 @@ Useful and simple to use packages.
 | [type][type-github-readme]                   | Common types, type guards, and type checkers.                     | [![npm version][type-npm-badge-png]][type-npm-badge] |
 | [ui][ui-github-readme]                       | User interface.                                                   | [![npm version][ui-npm-badge-png]][ui-npm-badge] |
 | [wrapper][wrapper-github-readme]             | Wrap the text with the opening and closing chars.                 | [![npm version][wrapper-npm-badge-png]][wrapper-npm-badge] |
-
-
 
 > Click on the package name to visit the package GitHub README.md
 

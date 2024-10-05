@@ -132,5 +132,8 @@ dist
 # Demo
 # demo
 
-# temoporary
+# Temoporary
 temp
+
+# Ignore
+*.ignore*
