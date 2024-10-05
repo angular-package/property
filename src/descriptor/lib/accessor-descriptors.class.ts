@@ -1,11 +1,13 @@
-// `is`, `guard` objects.
-import { guard, is, ResultCallback } from '@angular-package/type';
-// Function.
-import { getProperties } from '../../lib/get-properties.function';
-// Type.
-import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
+// Class.
+import { Property } from '../../lib';
+
 // Callback.
 import { callbacks } from '../../callback/src/callback.object';
+
+// Type.
+import { ResultCallback } from '../type/result-callback.type';
+import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
+
 /**
  * Strictly defines, sets, and stores privately single property accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
  * Features:
@@ -19,30 +21,7 @@ import { callbacks } from '../../callback/src/callback.object';
  * Methods `set()` and `define()` picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
  * Get privately stored accessor descriptor defined by the `set()` method.
  */
-export class AccessorDescriptors<Value, Obj = any> {
-  // Single private accessor descriptor.
-  #descriptor: ThisAccessorDescriptor<Value, Obj> = {
-    configurable: true,
-    enumerable: true,
-  };
-
-  /**
-   * Get privately stored accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type defined by the `set()` method.
-   */
-  get get(): ThisAccessorDescriptor<Value, Obj> {
-    return this.#descriptor;
-  }
-
-  /**
-   * Creates an instance, and optionally sets an accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
-   * @param descriptor An optional `object` of a `ThisAccessorDescriptor<Value, Obj>` type to initially set accessor descriptor.
-   */
-  constructor(descriptor?: ThisAccessorDescriptor<Value, Obj>) {
-    if (is.defined(descriptor)) {
-      this.set(descriptor);
-    }
-  }
-
+export class AccessorDescriptors<Value, Obj extends object> {
   /**
    * Returns strictly defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type on `get` or `set` property detected.
    * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to define with the default values of the
@@ -53,23 +32,43 @@ export class AccessorDescriptors<Value, Obj = any> {
    * doesn't contain `get` or `set` property.
    * @returns The return value is an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
    */
-  static define<Value, Obj>(
+  public static define<Value, Obj extends object = object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback?: ResultCallback
+    callback: ResultCallback = callbacks.accessor
   ): ThisAccessorDescriptor<Value, Obj> {
-    if (AccessorDescriptors.guard(descriptor, callback)) {
-      return getProperties(
-        {
-          ...{
-            configurable: true,
-            enumerable: true,
-          },
-          ...descriptor,
-        },
-        ['configurable', 'enumerable', 'get', 'set']
-      );
-    }
-    return {};
+    const result = {
+      ...{
+        configurable: true,
+        enumerable: true,
+      },
+      ...Property.pick(descriptor, 'configurable', 'enumerable', 'get', 'set')
+    };
+    callback && callback(typeof result === 'object', result);
+    return result;
+  }
+
+  /**
+   * Get privately stored accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type defined by the `set()` method.
+   */
+  get get(): ThisAccessorDescriptor<Value, Obj> {
+    return this.#descriptor;
+  }
+
+  // Single private accessor descriptor.
+  #descriptor: ThisAccessorDescriptor<Value, Obj> = {
+    configurable: true,
+    enumerable: true,
+  };
+
+  /**
+   * Creates an instance, and optionally sets an accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
+   * @param descriptor An optional `object` of a `ThisAccessorDescriptor<Value, Obj>` type to initially set accessor descriptor.
+   */
+  constructor(
+    descriptor?: ThisAccessorDescriptor<Value, Obj>,
+    callback?: ResultCallback
+  ) {
+    descriptor && this.set(descriptor, callback);
   }
 
   /**
@@ -81,11 +80,17 @@ export class AccessorDescriptors<Value, Obj = any> {
    * doesn't contain `get` or `set` property.
    * @returns The return value is a boolean indicating whether the `descriptor` is an `object` with the `get` or `set` property.
    */
-  static guard<Value, Obj>(
+  static guard<Value, Obj extends object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback: ResultCallback = callbacks.accessor
   ): descriptor is ThisAccessorDescriptor<Value, Obj> {
-    return callback(guard.is.objectKeys(descriptor, 'get', 'set'), descriptor);
+    let result = true;
+    Object
+      .keys(descriptor)
+      .forEach(key => (result === true) && (result = key in {
+        'configurable': true, 'enumerable': true, 'get': true, 'set': true
+      }));
+    return callback(result, descriptor);
   }
 
   /**
@@ -102,17 +107,7 @@ export class AccessorDescriptors<Value, Obj = any> {
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback?: ResultCallback
   ): this {
-    if (AccessorDescriptors.guard(descriptor, callback)) {
-      this.#descriptor = {
-        ...this.#descriptor,
-        ...getProperties(descriptor, [
-          'configurable',
-          'enumerable',
-          'get',
-          'set',
-        ]),
-      };
-    }
+    this.#descriptor = AccessorDescriptors.define(descriptor, callback);
     return this;
   }
 }

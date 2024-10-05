@@ -1,111 +1,114 @@
-# Packages
+# angular-package
 
-Useful and simple to use packages based on the [angular.io][angulario].
+<a href='https://angular-package.dev' target='_blank'>
+  <img align="right"  width="92" height="92" src="https://avatars.githubusercontent.com/u/31412194?s=400&u=c9929aa36826318ccac8f7b84516e1ce3af7e21c&v=4" />
+</a>
 
-| Package          | Description                                  | Status                                                 | Readme                                                 |
-| :--------------- | :------------------------------------------- | :----------------------------------------------------: | :----------------------------------------------------- |
-| change-detection | Improve application performance.             | *In Progress*                                          | [Readme][cd-readme-github]                             |
-| prism            | `Prism` highlighter module.                  | *In Progress*                                          | [Readme][prism-readme-github]                          |
-| property         | Features to handle object properties.        | [![npm version][property-npm-svg]][property-npm-badge] | [Readme][property-readme-github]                       |
-| ui               | User interface.                              | *In Progress*                                          | [Github][ui-readme-github]                             |
-| type             | Common types, type guards and type checkers. | [![npm version][type-npm-svg]][type-npm-badge]         | [Github][type-readme-github] \| [npm][type-readme-npm] |
+The angular-package supports the development process of [angular](https://angular.io)-based applications in varied ways through the thoughtful, reusable, easy-to-use small pieces of code called packages.
 
 ## angular-package/property
 
 Features to handle properties.
 
-[![npm version][property-npm-svg]][property-npm-badge]
+<!-- npm badge -->
+[![npm version][property-npm-badge-svg]][property-npm-badge]
+<!-- GitHub badges -->
 [![GitHub issues][property-badge-issues]][property-issues]
 [![GitHub forks][property-badge-forks]][property-forks]
 [![GitHub stars][property-badge-stars]][property-stars]
 [![GitHub license][property-badge-license]][property-license]
+<!-- Sponsors badges -->
+[![GitHub sponsors][github-badge-sponsor]][github-sponsor-link]
+[![Support me on Patreon][patreon-badge]][patreon-link]
 
 ```typescript
-/**
- * Object.
- */
-import {
-  get
-} from '@angular-package/property';
-```
+export {
+  // Class.
+  Property,
+  WrapProperty,
+} from './lib';
 
-```typescript
-/**
- * Function.
- */
-import {
-  getDescriptor,
-  getDescriptors,
-  getExistProperty,
-  getProperties,
-  getProperty,
-  setProperty,
-} from '@angular-package/property';
-```
-
-```typescript
-/**
- * Descriptor.
- */
-// Class.
-import {
-  AccessorDescriptors,
-  DataDescriptors,
-  Descriptor
-} from '@angular-package/property';
-// Interface.
-import {
+export {
+  // Class.
+  Descriptor,
+  Descriptors,
+  // Interface.
   AccessorDescriptor,
   CommonDescriptor,
-  DataDescriptor
-} from '@angular-package/property';
+  DataDescriptor,
+  // Type.
+  ThisAccessorDescriptor,
+} from './descriptor';
+
+export { GetterCallback, SetterCallback } from './type';
 ```
 
-```typescript
-// Type.
-import {
-  ThisAccessorDescriptor
-} from '@angular-package/property';
+## Table of contents
 
-```
-
-----
-
+* [Skeleton](#skeleton)
 * [Installation](#installation)
 * [Callback](#callback)
-* [Object](#object)
-  * [`get`](#get)
-* [Function](#function)
-  * [`getDescriptor()`](#getdescriptor)
-  * [`getDescriptors()`](#getdescriptors)
-  * [`getExistProperty()`](#getexistproperty)
-  * [`getProperties()`](#getproperties)
-  * [`getProperty()`](#getproperty)
-  * [`setProperty()`](#setproperty)
-* **Package**
-  * [Descriptor](#descriptor-sub-package)
-    * [`Descriptor`](#descriptor)
-    * [`AccessorDescriptors`](#accessordescriptors)
-    * [`DataDescriptors`](#datadescriptors)
+* [Package](#package)
+  * [Descriptor](#descriptor-package)
+    * Class
+      * [`Descriptor`](#descriptor)
+      * [`AccessorDescriptors`](#accessordescriptors)
+      * [`DataDescriptors`](#datadescriptors)
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
 * [License](#license)
+* [Packages](#packages)
 
 ## How angular-package understands
 
-Check
-> Is to check the provided argument to be **the same** as **expected**.
+Checks
+> Is to check the provided value to be **the same** as **expected**.
 
 Type guard (constrain)
-> Is to constrain the parameter type to **not let** input **unexpected** value in the **code editor**.
+> Constrains the parameter type to **not let** input **unexpected** value in the **code editor**.
 
-Guard
-> Is a **combination** of both above to **guard type** in the **code editor** and in the provided argument by checking it.
+Guards
+> Is a **combination** of both above, **constrains** the type of the parameter in the **code editor**, and checks its argument.
 
-----
+Sets
+> Sets the provided value in the `object`.
+
+Defines
+> Returns defined value from the method, instead of storing it in the `object`.
+
+## Skeleton
+
+This package was generated by the [skeleton workspace][skeleton] with [Angular CLI](https://github.com/angular/angular-cli) version `14.2.0`.
+
+Copy this package to the `packages/property` folder of the [skeleton workspace][skeleton] then run the commands below.
+
+<br>
+
+## Code scaffolding
+
+Run `ng generate component component-name --project property` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project property`.
+> Note: Don't forget to add `--project property` or else it will be added to the default project in your `angular.json` file.
+
+### Build
+
+Run `ng build property` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+### Publishing
+
+After building your library with `ng build property`, go to the dist folder `cd dist/property` and run `npm publish`.
+
+## Running unit tests
+
+Run `ng test property` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+<br>
 
 ## Installation
 
@@ -141,573 +144,36 @@ const errorCallback: ErrorCallback  = (
 
 ----
 
-## Object
+## Package
 
-### `get`
-
-**Description:**
-
-Get object with all prefixed with `get` functions.
-
-```typescript
-const get: Get = {
-  descriptor: getDescriptor,
-  descriptors: getDescriptors,
-  existProperty: getExistProperty,
-  object: getObject,
-  properties: getProperties,
-  property: getProperty
-};
-```
-
-----
-
-## Function
-
-### `getDescriptor()`
-
-**Description:**
-
-Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor]. Use `getDescriptor()` or `get.descriptor()` to return descriptor of the specified property from the specified object.
-
-> Gets the own property descriptor of the specified object. An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
-
-**Features:**
-
-Additional features instead of the default from the wrapped [`getOwnPropertyDescriptor()`][js-object-getownpropertydescriptor] method.
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-
-**Import:**
-
-```typescript
-import { get, getDescriptor } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const getDescriptor: GetDescriptor = <Obj extends object, Key extends keyof Obj>(
-  object: Obj,
-  key: Key
-): PropertyDescriptor | undefined;
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, by default of the value from the captured type of the provided `object` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` |
-
-**Parameters:**
-
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the property descriptor from it. The value is **not** being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is **not** being checked against its existence in the `object` |
-
-**Throws:**
-
-Function throws nothing.
-
-**Returns:**
-
-| Returns                           | Type     | Description                                                                       |
-| :-------------------------------- | :------: | :-------------------------------------------------------------------------------- |
-| `PropertyDescriptor \| undefined` | `object` | - |
-
-The **return value** is a property descriptor from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getDescriptor } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getDescriptor(person, 'firstName'); // Returns {value: "first name", writable: true, enumerable: true, configurable: true}
-getDescriptor(people, 'age'); // Returns undefined
-
-const noProperty: any = 'no property';
-const noObject: any = 'my string object';
-
-getDescriptor(person, noProperty); // Returns undefined,
-                                   // It won't give you any `Error`, it's like an object has property with undefined value.
-getDescriptor(noObject, 'age'); // Returns undefined
-                                // The same here.
-```
-
-### `getDescriptors()`
-
-**Description:**
-
-Wrapper function for the [`Object`][js-object] static method [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors]. Use `getDescriptors()` or `get.descriptors()` to return all property descriptors from the specified `object`.
-
-> Returns an object containing all own property descriptors of an object.
-
-**Features:**
-
-Additional features instead of the default from the wrapped [`getOwnPropertyDescriptors()`][js-object-getOwnpropertydescriptors] method.
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-
-**Import:**
-
-```typescript
-import { get, getDescriptors } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const getDescriptors: GetDescriptors = <Obj extends object, Keys extends keyof Obj>(
-  object: Obj,
-  keys?: Keys[] // Not working in this version.
-): ObjectPropertyDescriptors<Obj> | undefined;
-```
-
-**Generic type variables:**
-
-| Name                     | Description |
-| :----------------------- | :---------- |
-| `Obj extends object`     | Constrained with the `object` type, by default of the value from the captured type of the provided `object`  |
-
-**Parameters:**
-
-| Name: `type`    | Description                                                                                                    |
-| :-------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`   | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get all property descriptors from it. The value is being checked against the proper `object` type |
-| `keys?: Keys[]` | **not working** |
-
-**Returns:**
-
-| Returns                                       | Type     | Description                                                                       |
-| :-------------------------------------------- | :------: | :-------------------------------------------------------------------------------- |
-| `ObjectPropertyDescriptors<Obj> \| undefined` | `object` | - |
-
-The **return value** is an `object` with all property descriptors from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getDescriptors } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getDescriptors(person); // Returns {firstName: {…}, age: {…}}
-getDescriptors(people); // Returns {}
-```
-
-### `getExistProperty()`
-
-**Description:**
-
-Use `getExistProperty()` or `get.existProperty()` to return the value of the existing specified property from the specified `object`.
-
-**Features:**
-
-* Guards getting the object property value by:
-  * Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-  * Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-  * Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
-  * Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
-* Possibility to use custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
-
-**Import:**
-
-```typescript
-import { get, getExistProperty } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const getExistProperty: GetExistProperty = <
-  Obj extends object,
-  Key extends keyof Obj
->(
-  object: Obj,
-  key: Key,
-  callback: ResultCallback = callbacks.getExistProperty
-): Obj[Key] =>
-  guard.is.objectKey(object, key, callback)
-    ? getProperty(object, key)
-    : getProperty(object, key);
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Guarded with the `object` type, by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Guarded with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
-
-**Parameters:**
-
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the existing property value from it. The value is being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the existing `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is being checked against its existence in the `object` |
-
-**Throws:**
-
-By default throws an [`Error`][js-error] if the specified object does not exist or the object exists, but its key doesn't.
-
-**Returns:**
-
-| Returns    | Type     | Description                                                                       |
-| :--------- | :------: | :-------------------------------------------------------------------------------- |
-| `Obj[Key]` | Captured | The **return type** is of type captured from the property value from the `object` |
-
-The **return value** is a property value from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { get, getExistProperty } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getExistProperty(person, 'firstName'); // Returns 'first name'
-getExistProperty(people, 'age'); // Uncaught Error: Object with the specified key does not exist, got value {}
-// Custom callback.
-getExistProperty(people, 'age', (result: boolean, value: any) => {
-  console.log(result); // `result` of the check is equal to the `false`
-  console.log(value); // `value` is equal to `{}` - object is empty
-  return result;
-}); // Returns `undefined`, does not throws an Error cause of custom callback.
-```
-
-### `getProperties()`
-
-**Description:**
-
-Use `getProperties()` or `get.properties()` to get specified properties from the specified `object`.
-
-**Features:**
-
-* Constraints the `object` parameter with a generic `Obj` variable of an `object` type.
-* Constraints the `key` parameter with a `Key` variable which is of a key of the `Obj` variable.
-* Checks whether the provided object is of an `object` type and `key` of a [`Key`][package-type-key] type, and if not, throws an [`Error`][js-error].
-* Checks whether the provided object has own property by using [`Object.prototype.hasOwnProperty()`][js-hasownproperty] method.
-* Uses custom `callback` function of a [`ResultCallback`][package-type-resultcallback] type.
-* Returns an object with the specified properties from the specified `object`.
-
-**Import:**
-
-```typescript
-import { get, getProperties } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const getProperties: GetProperties = <
-  Obj extends object,
-  Keys extends keyof Obj
->(
-  object: Obj,
-  keys: Keys[]
-): Pick<Obj, Keys> =>
-  Object.assign(
-    {},
-    ...keys.map((key) =>
-      !is.undefined(object[key]) ? { [key]: object[key] } : undefined
-    )
-  );
-```
-
-**Generic type variables:**
-
-| Name                     | Description |
-| :----------------------- | :---------- |
-| `Obj extends object`     | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the provided `object` that is linked with the return type `Pick<Obj, Keys>` |
-| `Keys extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a properties that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `Pick<Obj, Keys>` |
-
-**Parameters:**
-
-| Name: `type`   | Description                                                                                                    |
-| :------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`  | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get the values of the specified `keys` from it. The value is **not** being checked against the proper `object` type |
-| `keys: Keys[]` | An array of a `keyof` type property names from the `object`, by default of type captured from the provided `keys` in the array as the names of the properties that the `object` contains. The value is **not** being checked against the proper `key` type |
-
-**Returns:**
-
-| Returns           | Type     | Description                                                                                  |
-| :---------------- | :------: | :------------------------------------------------------------------------------------------- |
-| `Pick<Obj, Keys>` | `object` | The **return type** is an `object` of a generic `Obj` type, by default of type captured from the provided `object` with picked properties from the `keys` |
-
-The **return value** is an `object` with the specified properties.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { getProperties } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-  age: number;
-  lastName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-  lastName = 'last name';
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getProperties(person, ['age',  'firstName', 'lastName']); // returns {age: 5, firstName: "first name", lastName: "last name"}
-getProperties(people, ['age']); // returns {}
-```
-
-### `getProperty()`
-
-**Description:**
-
-Use `getProperty()` or `get.property()` to return the value of the specified property from the `object`.
-
-**Import:**
-
-```typescript
-import { get, getProperty } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const getProperty: GetProperty = <
-  Obj extends object,
-  Key extends keyof Obj
->(
-  object: Obj,
-  key: Key
-): Obj[Key] => object[key];
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the provided `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the provided `key` that's linked to the return type `Obj[Key]` |
-
-**Parameters:**
-
-| Name: `type`  | Description                                                                                                    |
-| :------------ | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj` | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to get property value from it. The value is not being checked against the proper `object` type |
-| `key: Key`    | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains. The value is not being checked against proper `key` type |
-
-**Returns:**
-
-| Returns    | Type     | Description                                                                                       |
-| :--------- | :------: | :------------------------------------------------------------------------------------------------ |
-| `Obj[Key]` | Captured | The **return type** is of type captured from the property (`Key`) value from the `object` (`Obj`) |
-
-The **return value** is  a property value from the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { getProperty } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-  age: number;
-  lastName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-  lastName = 'last name';
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-getProperty(person, 'age'); // Returns 5
-getProperty(people, 'age'); // Returns undefined
-```
-
-### `setProperty()`
-
-**Description:**
-
-Sets the value of indicated property by its name in the `object`.
-
-**Import:**
-
-```typescript
-import { setProperty } from '@angular-package/property';
-```
-
-**Syntax:**
-
-```typescript
-const setProperty: SetProperty = <
-  Obj extends object,
-  Key extends keyof Obj
->(
-  object: Obj,
-  key: Key,
-  value: Obj[Key]
-): Obj[Key] => (object[key] = value);
-```
-
-**Generic type variables:**
-
-| Name                    | Description |
-| :---------------------- | :---------- |
-| `Obj extends object`    | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the argument `object` linked with the return type `Obj[Key]` |
-| `Key extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `key` argument that's linked to the return type `Obj[Key]` |
-
-**Parameters:**
-
-| Name: `type`      | Description                                                                                                    |
-| :---------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`     | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to set the value with the indicated `key` as its property name. The value is not checked against the proper `object` type |
-| `key: Key`        | A `keyof` type property name from the `object`, by default of type captured from the provided `key` as the name of the property that the `object` contains |
-| `value: Obj[Key]` | The `value` of the type captured from the provided `key` in the provided `object`. The `value` is not checked against the proper type |
-
-**Returns:**
-
-| Returns    | Type     | Description                                                                                       |
-| :--------- | :------: | :------------------------------------------------------------------------------------------------ |
-| `Obj[Key]` | Captured | The **return type** is of type captured from the property (`Key`) value from the `object` (`Obj`) |
-
-The **return value** is the value from the property of the `object`.
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { setProperty } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-  age: number;
-  lastName: string;
-}
-
-class Person implements PersonShape {
-  firstName = 'first name';
-  age = 5;
-  lastName = 'last name';
-}
-
-class People {
-  firstName!: string;
-  age!: number;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-setProperty(person, 'age', 7); // Returns 7
-setProperty(people, 'age', 27); // Returns 27
-```
-
-----
-
-## Descriptor sub package
+### Descriptor package
 
 Descriptor features to import.
 
 ```typescript
 // Class.
-import {
-  AccessorDescriptors,
-  DataDescriptors,
+export {
   Descriptor,
-} from '@angular-package/property';
-```
+  Descriptors
+} from './lib';
 
-```typescript
 // Interface.
-import {
+export {
   AccessorDescriptor,
+  CommonDescriptor,
   DataDescriptor
-} from '@angular-package/property';
-```
+} from './interface';
 
-```typescript
 // Type.
-import {
+export {
   ThisAccessorDescriptor
-} from '@angular-package/property';
+} from './type';
+
 ```
 
 ----
 
-### Descriptor
-
-**Description:**
+### `Descriptor`
 
 Handles object property descriptor.
 
@@ -720,27 +186,15 @@ Handles object property descriptor.
 
 > Strictly means, it guards provided descriptor by checking it against its unique keys and by picking only properties that belong to the appropriate descriptor.
 
-**Import:**
-
-```typescript
-import { Descriptor } from '@angular-package/property';
-```
-
-**Syntax:**
-
 ```typescript
 Descriptor<Value, Obj = any> { ... }
 ```
 
 ### Descriptor static methods
 
-#### `Descriptor.defineAccessor()`
-
-**Description:**
+### `Descriptor.defineAccessor()`
 
 Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
-
-**Syntax:**
 
 ```typescript
 static defineAccessor<Value, Obj>(
@@ -808,13 +262,9 @@ const firstNameDescriptor = Descriptor.defineAccessor<string, Person>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-#### `Descriptor.defineData()`
-
-**Description:**
+### `Descriptor.defineData()`
 
 Returns defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
-
-**Syntax:**
 
 ```typescript
 static defineData<Value>(
@@ -876,135 +326,30 @@ const firstNameDescriptor = Descriptor.defineData<string>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-#### `Descriptor.fromObject()`
+### `Descriptor.get()`
 
-**Description:**
+Returns property descriptor from the property of the specified detected object.
+
+```typescript
+public static get<Obj, Name extends keyof Obj>(
+  object: Obj,
+  name: Name
+): PropertyDescriptor | undefined { ... }
+````
+
+### `Descriptor.getAll()`
 
 Returns property descriptors from the specified detected object.
 
-**Syntax:**
-
 ```typescript
-static fromObject<Obj extends object>(
+public static getAll<Obj extends object | Function>(
   object: Obj
-): ObjectPropertyDescriptors<Obj> | undefined { ... }
-```
-
-**Generic type variables:**
-
-| Name    | Description |
-| :------ | :---------- |
-| `Value` | Constraints the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
-
-**Parameters:**
-
-| Name: `type`                        | Description                                                                                                                                                            |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] to define with the default values of the [`CommonDescriptor`][common-descriptor] |
-| callback?: `ResultCallback`         | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function |
-
-**Throws:**
-
-Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] type, which means it doesn't contain `writable` or `value` property.
-
-**Returns:**
-
-The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Descriptor } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = '';
-}
-
-class People {
-  firstName!: string;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-const firstNameDescriptor = Descriptor.fromObject();
-
-// Defines the property `firstName` of a type string in the `person` object with the same value as the property in the `people` object.
-Object.defineProperty(person, 'firstName', firstNameDescriptor);
-```
-
-#### `Descriptor.fromProperty()`
-
-**Description:**
-
-Returns property descriptors from the specified detected object.
-
-**Syntax:**
-
-```typescript
-static fromObject<Obj extends object>(
-  object: Obj
-): ObjectPropertyDescriptors<Obj> | undefined { ... }
-```
-
-**Generic type variables:**
-
-| Name    | Description |
-| :------ | :---------- |
-| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
-
-**Parameters:**
-
-| Name: `type`                        | Description                                                                                                                                                            |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| descriptor: `DataDescriptor<Value>` | An `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] to define with the default values of the [`CommonDescriptor`][common-descriptor] |
-| callback?: `ResultCallback`         | An optional [`ResultCallback`][package-type-resultcallback] function to handle the result of the check whether or not the `descriptor` is an `object` with `writable` or `value` property, by default it uses [`dataCallback()`](#datacallback) function |
-
-**Throws:**
-
-Throws an [`Error`][js-error] if the `descriptor` is not an `object` of a [`DataDescriptor<Value>`][data-descriptor] type, which means it doesn't contain `writable` or `value` property.
-
-**Returns:**
-
-The **return value** is an `object` of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
-
-**Usage:**
-
-```typescript
-// Example usage.
-import { Descriptor } from '@angular-package/property';
-
-interface PersonShape {
-  firstName: string;
-}
-
-class Person implements PersonShape {
-  firstName = '';
-}
-
-class People {
-  firstName!: string;
-}
-
-const person: Person = new Person();
-const people: People = new People();
-
-const firstNameDescriptor = Descriptor.fromObject();
-
-// Defines the property `firstName` of a type string in the `person` object with the same value as the property in the `people` object.
-Object.defineProperty(person, 'firstName', firstNameDescriptor);
+): ObjectPropertyDescriptors<Obj> { ... }
 ```
 
 ----
 
-### AccessorDescriptors
-
-**Description:**
+### `AccessorDescriptors`
 
 Strictly defines, sets, and stores privately property accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
 
@@ -1016,45 +361,21 @@ Strictly defines, sets, and stores privately property accessor descriptor of a [
 * Strictly defines property accessor descriptor.
 * Strictly sets, and stores at the same time property accessor descriptor.
 * Accessor descriptor is of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type:
-  * The return value of the `get()` function is of a generic `Value` type.
-  * The parameter of the `set()` function is of a generic `Value` type.
-  * Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
+ The return value of the `get()` function is of a generic `Value` type.
+ The parameter of the `set()` function is of a generic `Value` type.
+ Keyword `this` refers to an `Obj` variable in both `get()` and `set()` functions.
 * Method [`set()`][accessordescriptors-prototype-set] of the instance and static [`define()`][accessordescriptors-define] picks `configurable`, `enumerable`, `get`, `set` properties from the provided data.
 * Get privately stored accessor descriptor defined by the [`set()`][accessordescriptors-prototype-set] method of the instance.
-
-**Import:**
-
-```typescript
-import { AccessorDescriptors } from '@angular-package/property';
-```
-
-**Syntax:**
 
 ```typescript
 AccessorDescriptors<Value, Obj = any> { ... }
 ```
 
-### AccessorDescriptors callback
+### `AccessorDescriptors` static methods
 
-#### `accessorCallback()`
-
-The default callback function for the `AccessorDescriptors.guard()` static method that's used to guard provided value.
-
-```typescript
-const accessorCallback: ResultCallback = callbackErrorMessage(
-  `Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`
-);
-```
-
-### AccessorDescriptors static methods
-
-#### `AccessorDescriptors.define()`
-
-**Description:**
+### `AccessorDescriptors.define()`
 
 Returns defined accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type, on `get` or `set` property detected.
-
-**Syntax:**
 
 ```typescript
 static define<Value, Obj>(
@@ -1120,15 +441,11 @@ const firstNameDescriptor = AccessorDescriptors.define<string, Person>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-### AccessorDescriptors Constructor
+### `AccessorDescriptors` Constructor
 
-#### `AccessorDescriptors()`
-
-**Description:**
+### `AccessorDescriptors()`
 
 Creates an instance, and optionally sets an accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
-
-**Syntax:**
 
 ```typescript
 AccessorDescriptors<Value, Obj>(descriptor?: ThisAccessorDescriptor<Value, Obj>)
@@ -1178,15 +495,11 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>({
 });
 ```
 
-### AccessorDescriptors instance methods
+### `AccessorDescriptors` instance methods
 
-#### `AccessorDescriptors.prototype.set()`
-
-**Description:**
+### `AccessorDescriptors.prototype.set()`
 
 [Strictly][accessordescriptors] sets with the last saved descriptor values, and stores privately accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type.
-
-**Syntax:**
 
 ```typescript
 set(
@@ -1243,15 +556,11 @@ const firstNameDescriptor = new AccessorDescriptors<string, Person>().set({
 });
 ```
 
-### AccessorDescriptors instance properties
+### `AccessorDescriptors` instance properties
 
-#### `AccessorDescriptors.prototype.get`
-
-**Description:**
+### `AccessorDescriptors.prototype.get`
 
 Get privately stored accessor descriptor of a [`ThisAccessorDescriptor<Value, Obj>`][this-accessor-descriptor] type defined by the [`set()`][accessordescriptors-prototype-set] method.
-
-**Syntax:**
 
 ```typescript
 get get(): ThisAccessorDescriptor<Value, Obj> { ... }
@@ -1296,9 +605,7 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 
 ----
 
-### DataDescriptors
-
-**Description:**
+### `DataDescriptors`
 
 Strictly defines, sets, and stores privately property data descriptor of a [`DataDescriptor<Value>`][data-descriptor] interface.
 
@@ -1307,34 +614,22 @@ Strictly defines, sets, and stores privately property data descriptor of a [`Dat
 **Features:**
 
 * Data descriptor is of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface]:
-  * The `value` property is of a generic `Value` type.
+ The `value` property is of a generic `Value` type.
 * Guarded process of defining the object descriptor, but properties are not being checked against proper values.
 * Strictly defines property data descriptor.
 * Strictly sets, and stores at the same time property data descriptor.
 * Method [`set()`][datadescriptors-prototype-set] of the instance and static [`define()`][datadescriptors-define] picks `configurable`, `enumerable`, `writable`, `value` properties from the provided data.
 * Get privately stored data descriptor defined by the [`set()`][datadescriptors-prototype-set] method of the instance.
 
-**Import:**
-
-```typescript
-import { DataDescriptors } from '@angular-package/property';
-```
-
-**Syntax:**
-
 ```typescript
 DataDescriptors<Value> { ... }
 ```
 
-### DataDescriptors static methods
+### `DataDescriptors` static methods
 
-#### `DataDescriptors.define()`
-
-**Description:**
+### `DataDescriptors.define()`
 
 Returns [**strictly**][datadescriptors] defined data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface], on `writable` or `value` property detected.
-
-**Syntax:**
 
 ```typescript
 static define<Value>(
@@ -1347,7 +642,7 @@ static define<Value>(
 
 | Name    | Description |
 | :------ | :---------- |
-| `Value` | Guards the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
+| `Value` | Constrains the `value` property from the `descriptor` object, and the return type of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] |
 
 **Parameters:**
 
@@ -1399,15 +694,11 @@ const firstNameDescriptor = DataDescriptor.define<string, Person>({
 Object.defineProperty(person, 'firstName', firstNameDescriptor);
 ```
 
-### DataDescriptors Constructor
+### `DataDescriptors` Constructor
 
-#### `DataDescriptors()`
-
-**Description:**
+### `DataDescriptors()`
 
 Creates an instance, and optionally sets a data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
-
-**Syntax:**
 
 ```typescript
 DataDescriptors<Value>(descriptor?: DataDescriptor<Value>)
@@ -1452,15 +743,11 @@ const firstNameDescriptor = new DataDescriptors<string>({ // Initialize
 });
 ```
 
-### DataDescriptors instance methods
+### `DataDescriptors` instance methods
 
-#### `DataDescriptors.prototype.set()`
-
-**Description:**
+### `DataDescriptors.prototype.set()`
 
 [Strictly][datadescriptors] sets with the last saved descriptor values, and stores privately data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface].
-
-**Syntax:**
 
 ```typescript
 set(
@@ -1523,15 +810,11 @@ const firstNameDescriptor = new DataDescriptors<string>()
 Object.defineProperty(person, 'firstName', firstNameDescriptor.get);
 ```
 
-### DataDescriptors instance properties
+### `DataDescriptors` instance properties
 
-#### `DataDescriptors.prototype.get`
-
-**Description:**
+### `DataDescriptors.prototype.get`
 
 Get privately stored data descriptor of a [`DataDescriptor<Value>`][data-descriptor] [interface][ts-interface] defined by the instance [`set()`][datadescriptors-prototype-set] method.
-
-**Syntax:**
 
 ```typescript
 get get(): DataDescriptor<Value> { ... }
@@ -1574,11 +857,9 @@ Object.defineProperty(person, 'firstName', firstNameDescriptor);
 
 ----
 
-## Descriptor interface
+### Descriptor interface
 
 ### AccessorDescriptor
-
-**Description:**
 
 Descriptor with its unique optional `get()` and `set()` functions, of the `Value` type. For the accessor descriptor with also the object type, please use the type [`ThisAccessorDescriptor<Value, Obj>`](#thisaccessordescriptor). More about property descriptors [here][js-object-define-property].
 
@@ -1591,11 +872,7 @@ interface AccessorDescriptor<Value> extends CommonDescriptor {
 
 ### CommonDescriptor
 
-**Description:**
-
 Common keys `configurable` and `enumerable` of a `boolean` type for [accessor][this-accessor-descriptor] and [data descriptor][data-descriptor], picked from the default `PropertyDescriptor`. More about property descriptors [here][js-object-define-property].
-
-**Syntax:**
 
 ```typescript
 interface CommonDescriptor
@@ -1604,11 +881,7 @@ interface CommonDescriptor
 
 ### DataDescriptor
 
-**Description:**
-
 Descriptor with its unique optional keys, `writable` of a `boolean` type and `value` of a generic `Value` type. More about property descriptors [here][js-object-define-property].
-
-**Syntax:**
 
 ```typescript
 interface DataDescriptor<Value> extends CommonDescriptor {
@@ -1619,22 +892,16 @@ interface DataDescriptor<Value> extends CommonDescriptor {
 
 ----
 
-## Descriptor type
+### Descriptor type
 
 ### ThisAccessorDescriptor
 
-**Description:**
-
 [`AccessorDescriptor`][accessor-descriptor] [interface][ts-interface] as a type cause of ease of use `this` of an `Obj` type in the `get()` and `set()` functions. More about property descriptors [here][js-object-define-property].
-
-**Syntax:**
 
 ```typescript
 type ThisAccessorDescriptor<Value, Obj> = AccessorDescriptor<Value> &
   ThisType<Obj>;
 ```
-
-----
 
 ## GIT
 
@@ -1666,9 +933,57 @@ How do I know when to release 1.0.0?
 
 ## License
 
-MIT © angular-package ([license][property-badge-license])
+MIT © angular-package ([license][property-license])
 
-----
+## Packages
+
+Useful and simple to use packages.
+
+[callback][callback-github-readme] Manages the callback [`function`][js-function].
+<br>
+[![npm version][callback-npm-badge-png]][callback-npm-badge]
+<br>
+[change-detection][cd-github-readme] Improves application performance.
+<br>
+[![npm version][cd-npm-badge-png]][cd-npm-badge]
+
+
+
+| Package                                      | Description                                                       | Status |
+| :------------------------------------------- | :---------------------------------------------------------------- | -----: |
+| [callback][callback-github-readme]           | Manages the callback [`function`][js-function].                   | [![npm version][callback-npm-badge-png]][callback-npm-badge] |
+| [change-detection][cd-github-readme]         | Improves application performance.                                 | [![npm version][cd-npm-badge-png]][cd-npm-badge] |
+| [component-loader][cl-github-readme]         | Handles dynamic loading components.                               | [![npm version][cl-npm-badge-png]][cl-npm-badge] |
+| [core][core-github-readme]                   | Core features.                                                    | [![npm version][core-npm-badge-png]][core-npm-badge] |
+| [error][error-github-readme]                 | Manages an [`Error`][js-error].                                   | [![npm version][error-npm-badge-png]][error-npm-badge] |
+| [indexeddb][indexeddb-github-readme]         | Wrapper to IndexedDB client-side storage.                         | [![npm version][indexeddb-npm-badge-png]][indexeddb-npm-badge] |
+| name                                         | The name with prefix and suffix.                                  | ![inprogress] |
+| preferences                                  | Preferences, settings, options, configuration and setup in steps. | ![inprogress] |
+| [prism][prism-github-readme]                 | [`Prism`][prism-js] highlighter module.                           | [![npm version][prism-npm-badge-png]][prism-npm-badge] |
+| [property][property-github-readme]           | Handles object properties.                                        | [![npm version][property-npm-badge-png]][property-npm-badge] |
+| [range][range-github-readme]                 | The range between a minimum and maximum.                          | [![npm version][range-npm-badge-png]][range-npm-badge] |
+| [reactive][reactive-github-readme]           | Automatize the process of creating some rxjs features.            | [![npm version][reactive-npm-badge-png]][reactive-npm-badge] |
+| [sass][sass-github-readme]                   | Extension for sass modules and new modules.                       | [![npm version][sass-npm-badge-png]][sass-npm-badge] |
+| [sass-list][sass-list-github-readme]         | Modified list Sass module.                                        | [![npm version][sass-list-npm-badge-png]][sass-list-npm-badge] |
+| [sass-string][sass-string-github-readme]     | Modified string Sass module.                                      | [![npm version][sass-string-npm-badge-png]][sass-string-npm-badge] |
+| [spectre.css][spectrecss-github-readme]      | Modified Spectre.css - a lightweight, responsive, and modern CSS framework originally designed by Yan Zhu. | [![npm version][spectrecss-npm-badge-png]][spectrecss-npm-badge] |
+| storage                                      | The storage of data under allowed names.                          | ![inprogress] |
+| tag                                          | Any tag with optional attributes.                                 | ![inprogress] |
+| [testing][testing-github-readme]             | Support for testing other packages.                               | [![npm version][testing-npm-badge-png]][testing-npm-badge] |
+| text                                         | Text on the template with replaceable tags.                       | ![inprogress] |
+| [type][type-github-readme]                   | Common types, type guards, and type checkers.                     | [![npm version][type-npm-badge-png]][type-npm-badge] |
+| [ui][ui-github-readme]                       | User interface.                                                   | [![npm version][ui-npm-badge-png]][ui-npm-badge] |
+| [wrapper][wrapper-github-readme]             | Wrap the text with the opening and closing chars.                 | [![npm version][wrapper-npm-badge-png]][wrapper-npm-badge] |
+
+
+
+> Click on the package name to visit the package GitHub README.md
+
+<!-- Funding -->
+[github-badge-sponsor]: https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&link=https://github.com/sponsors/angular-package
+[github-sponsor-link]: https://github.com/sponsors/angular-package
+[patreon-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dsciborrudnicki%26type%3Dpatrons&style=flat
+[patreon-link]: https://patreon.com/sciborrudnicki
 
 [angulario]: https://angular.io
 [skeleton]: https://github.com/angular-package/skeleton
@@ -1677,60 +992,7 @@ MIT © angular-package ([license][property-badge-license])
 [fix]: https://img.shields.io/badge/-fix-red
 [new]: https://img.shields.io/badge/-new-green
 [update]: https://img.shields.io/badge/-update-red
-
-<!-- Property: badges -->
-[property-badge-issues]: https://img.shields.io/github/issues/angular-package/property
-[property-badge-forks]: https://img.shields.io/github/forks/angular-package/property
-[property-badge-stars]: https://img.shields.io/github/stars/angular-package/property
-[property-badge-license]: https://img.shields.io/github/license/angular-package/property
-
-<!-- Property: github -->
-[property-issues]: https://github.com/angular-package/property/issues
-[property-forks]: https://github.com/angular-package/property/network
-[property-license]: https://github.com/angular-package/property/blob/master/LICENSE
-[property-stars]: https://github.com/angular-package/property/stargazers
-
-<!-- Package: property -->
-[property-npm-svg]: https://badge.fury.io/js/%40angular-package%2Fproperty.svg
-[property-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fproperty
-[property-readme-github]: https://github.com/angular-package/property#readme
-[property-readme-npm]: https://www.npmjs.com/package/@angular-package/property#readme
-
-<!-- Package: type -->
-[type-npm-svg]: https://badge.fury.io/js/%40angular-package%2Ftype.svg
-[type-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftype
-[type-readme-github]: https://github.com/angular-package/type#readme
-[type-readme-npm]: https://www.npmjs.com/package/@angular-package/type#readme
-
-[package-type-resultcallback]: https://github.com/angular-package/type#resultcallback
-[package-type-key]: https://github.com/angular-package/type#key
-
-<!-- Package: change-detection -->
-[cd-readme-github]: https://github.com/angular-package/change-detection#readme
-
-<!-- Package: prism -->
-[prism-readme-github]: https://github.com/angular-package/prism#readme
-
-<!-- Package: ui -->
-[ui-readme-github]: https://github.com/angular-package/ui#readme
-
-<!-- Property: type -->
-[accessor-descriptor]: #accessordescriptor
-[common-descriptor]: #commondescriptor
-[data-descriptor]: #datadescriptor
-[this-accessor-descriptor]: #thisaccessordescriptor
-
-[accessordescriptors]: #accessordescriptors
-[accessordescriptors-accessorcallback]: #accessorcallback
-[accessordescriptors-define]: #accessordescriptorsdefine
-[accessordescriptors-prototype-set]: #accessordescriptorsprototypeset
-
-[datadescriptors]: #datadescriptors
-[datadescriptors-datacallback]: #datacallback
-[datadescriptors-prototype-set]: #datadescriptorsprototypeset
-
-[descriptor-defineaccessor]: #descriptordefineaccessor
-[descriptor-definedata]: #descriptordefinedata
+[inprogress]: https://img.shields.io/badge/-In%20progress-gray
 
 <!-- GIT -->
 [git-semver]: http://semver.org/
@@ -1739,6 +1001,269 @@ MIT © angular-package ([license][property-badge-license])
 [git-commit-angular]: https://gist.github.com/stephenparish/9941e89d80e2bc58a153
 [git-commit-karma]: http://karma-runner.github.io/0.10/dev/git-commit-msg.html
 [git-commit-conventional]: https://www.conventionalcommits.org/en/v1.0.0/
+
+<!-- Package: property  -->
+  <!-- GitHub: badges -->
+  [property-badge-issues]: https://img.shields.io/github/issues/angular-package/property
+  [property-badge-forks]: https://img.shields.io/github/forks/angular-package/property
+  [property-badge-stars]: https://img.shields.io/github/stars/angular-package/property
+  [property-badge-license]: https://img.shields.io/github/license/angular-package/property
+  <!-- GitHub: badges links -->
+  [property-issues]: https://github.com/angular-package/property/issues
+  [property-forks]: https://github.com/angular-package/property/network
+  [property-license]: https://github.com/angular-package/property/blob/master/LICENSE
+  [property-stars]: https://github.com/angular-package/property/stargazers
+
+<!-- Package: callback -->
+  <!-- npm -->
+  [callback-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fcallback.svg
+  [callback-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fcallback.png
+  [callback-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fcallback
+  [callback-npm-readme]: https://www.npmjs.com/package/@angular-package/callback#readme
+
+  <!-- GitHub -->
+  [callback-github-readme]: https://github.com/angular-package/callback#readme
+
+  [package-callback-callbackpayload]: https://github.com/angular-package/callback#callbackpayload
+  [package-callback-resultcallback]: https://github.com/angular-package/callback#resultcallback
+
+<!-- Package: change-detection -->
+  <!-- npm -->
+  [cd-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fchange-detection.svg
+  [cd-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fchange-detection.png
+  [cd-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fchange-detection
+  [cd-npm-readme]: https://www.npmjs.com/package/@angular-package/change-detection#readme
+
+  <!-- GitHub -->
+  [cd-github-readme]: https://github.com/angular-package/change-detection#readme
+
+<!-- Package: component-loader -->
+  <!-- npm -->
+  [cl-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fcomponent-loader.svg
+  [cl-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fcomponent-loader.png
+  [cl-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fcomponent-loader
+  [cl-npm-readme]: https://www.npmjs.com/package/@angular-package/component-loader#readme
+
+  <!-- GitHub -->
+  [cl-github-readme]: https://github.com/angular-package/component-loader#readme
+
+<!-- Package: core -->
+  <!-- npm -->
+  [core-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fcore.svg
+  [core-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fcore.png
+  [core-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fcore
+  [core-npm-readme]: https://www.npmjs.com/package/@angular-package/core#readme
+
+  <!-- GitHub -->
+  [core-github-readme]: https://github.com/angular-package/core#readme
+
+<!-- Package: error -->
+  <!-- npm -->
+  [error-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Ferror.svg
+  [error-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Ferror.png
+  [error-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ferror
+  [error-npm-readme]: https://www.npmjs.com/package/@angular-package/error#readme
+
+  <!-- GitHub -->
+  [error-github-readme]: https://github.com/angular-package/error#readme
+
+<!-- Package: indexeddb -->
+  <!-- npm -->
+  [indexeddb-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Findexeddb.svg
+  [indexeddb-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Findexeddb.png
+  [indexeddb-npm-badge]: https://badge.fury.io/js/%40angular-package%2Findexeddb
+  [indexeddb-npm-readme]: https://www.npmjs.com/package/@angular-package/indexeddb#readme
+
+  <!-- GitHub -->
+  [indexeddb-github-readme]: https://github.com/angular-package/indexeddb#readme
+
+<!-- Package: name -->
+  <!-- npm -->
+  [name-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fname.svg
+  [name-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fname.png
+  [name-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fname
+  [name-npm-readme]: https://www.npmjs.com/package/@angular-package/name#readme
+
+  <!-- GitHub -->
+  [name-github-readme]: https://github.com/angular-package/name#readme
+
+<!-- Package: preferences -->
+  <!-- npm -->
+  [preferences-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fpreferences.svg
+  [preferences-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fpreferences.png
+  [preferences-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fpreferences
+  [preferences-npm-readme]: https://www.npmjs.com/package/@angular-package/preferences#readme
+
+  <!-- GitHub -->
+  [preferences-github-readme]: https://github.com/angular-package/preferences#readme
+
+<!-- Package: prism -->
+  <!-- npm -->
+  [prism-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fprism.svg
+  [prism-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fprism.png
+  [prism-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fprism
+  [prism-npm-readme]: https://www.npmjs.com/package/@angular-package/prism#readme
+
+  <!-- GitHub -->
+  [prism-github-readme]: https://github.com/angular-package/prism#readme
+
+<!-- Package: property -->
+  <!-- npm -->
+  [property-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fproperty.svg
+  [property-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fproperty.png
+  [property-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fproperty
+  [property-npm-readme]: https://www.npmjs.com/package/@angular-package/property#readme
+
+  <!-- GitHub -->
+  [property-github-readme]: https://github.com/angular-package/property#readme
+
+<!-- Package: range -->
+  <!-- npm -->
+  [range-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Frange.svg
+  [range-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Frange.png
+  [range-npm-badge]: https://badge.fury.io/js/%40angular-package%2Frange
+  [range-npm-readme]: https://www.npmjs.com/package/@angular-package/range#readme
+
+  <!-- GitHub -->
+  [range-github-readme]: https://github.com/angular-package/range#readme
+
+<!-- Package: reactive -->
+  <!-- npm -->
+  [reactive-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Freactive.svg
+  [reactive-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Freactive.png
+  [reactive-npm-badge]: https://badge.fury.io/js/%40angular-package%2Freactive
+  [reactive-npm-readme]: https://www.npmjs.com/package/@angular-package/reactive#readme
+
+  <!-- GitHub -->
+  [reactive-github-readme]: https://github.com/angular-package/reactive#readme
+
+<!-- Package: sass -->
+  <!-- npm -->
+  [sass-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fsass.svg
+  [sass-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fsass.png
+  [sass-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fsass
+  [sass-npm-readme]: https://www.npmjs.com/package/@angular-package/sass#readme
+
+  <!-- GitHub -->
+  [sass-github-readme]: https://github.com/angular-package/sass#readme
+
+<!-- Package: sass-list -->
+  <!-- npm -->
+  [sass-list-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fsass-list.svg
+  [sass-list-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fsass-list.png
+  [sass-list-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fsass-list
+  [sass-list-npm-readme]: https://www.npmjs.com/package/@angular-package/sass-list#readme
+
+  <!-- GitHub -->
+  [sass-list-github-readme]: https://github.com/angular-package/sass-string#readme
+
+<!-- Package: sass-string -->
+  <!-- npm -->
+  [sass-string-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fsass-string.svg
+  [sass-string-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fsass-string.png
+  [sass-string-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fsass-string
+  [sass-string-npm-readme]: https://www.npmjs.com/package/@angular-package/sass-string#readme
+
+  <!-- GitHub -->
+  [sass-string-github-readme]: https://github.com/angular-package/sass-string#readme
+
+<!-- Package: spectre.css -->
+  <!-- npm -->
+  [spectrecss-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fspectrecss.svg
+  [spectrecss-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fspectrecss.png
+  [spectrecss-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fspectre.css
+  [spectrecss-npm-readme]: https://www.npmjs.com/package/@angular-package/spectre.css#readme
+
+  <!-- GitHub -->
+  [spectrecss-github-readme]: https://github.com/angular-package/spectre.css#readme
+
+<!-- Package: storage -->
+  <!-- npm -->
+  [storage-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fstorage.svg
+  [storage-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fstorage.png
+  [storage-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fstorage
+  [storage-npm-readme]: https://www.npmjs.com/package/@angular-package/storage#readme
+
+  <!-- GitHub -->
+  [storage-github-readme]: https://github.com/angular-package/storage#readme
+
+<!-- Package: tag -->
+  <!-- npm -->
+  [tag-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Ftag.svg
+  [tag-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Ftag.png
+  [tag-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftag
+  [tag-npm-readme]: https://www.npmjs.com/package/@angular-package/tag#readme
+
+  <!-- GitHub -->
+  [tag-github-readme]: https://github.com/angular-package/tag#readme
+
+<!-- Package: testing -->
+  <!-- npm -->
+  [testing-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Ftesting.svg
+  [testing-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Ftesting.png
+  [testing-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftesting
+  [testing-npm-readme]: https://www.npmjs.com/package/@angular-package/testing#readme
+
+  <!-- GitHub -->
+  [testing-github-readme]: https://github.com/angular-package/testing#readme
+
+<!-- Package: text -->
+  <!-- npm -->
+  [text-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Ftext.svg
+  [text-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Ftext.png
+  [text-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftext
+  [text-npm-readme]: https://www.npmjs.com/package/@angular-package/text#readme
+
+  <!-- GitHub -->
+  [text-github-readme]: https://github.com/angular-package/text#readme
+
+<!-- Package: type -->
+  <!-- npm -->
+  [type-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Ftype.svg
+  [type-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Ftype.png
+  [type-npm-badge]: https://badge.fury.io/js/%40angular-package%2Ftype
+  [type-npm-readme]: https://www.npmjs.com/package/@angular-package/type#readme
+
+  <!-- GitHub -->
+  [type-github-readme]: https://github.com/angular-package/type#readme
+
+<!-- Package: ui -->
+  <!-- npm -->
+  [ui-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fui.svg
+  [ui-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fui.png
+  [ui-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fui
+  [ui-npm-readme]: https://www.npmjs.com/package/@angular-package/ui#readme
+
+  <!-- GitHub -->
+  [ui-github-readme]: https://github.com/angular-package/ui#readme
+
+<!-- Package: wrapper -->
+  <!-- npm -->
+  [wrapper-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fwrapper.png
+  [wrapper-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fwrapper
+  [wrapper-npm-readme]: https://www.npmjs.com/package/@angular-package/wrapper#readme
+
+  <!-- GitHub -->
+  [wrapper-github-readme]: https://github.com/angular-package/wrapper#readme
+
+<!-- Property: type -->
+[accessor-descriptor]: #accessordescriptor
+[common-descriptor]: #commondescriptor
+[data-descriptor]: #datadescriptor
+[this-accessor-descriptor]: #thisaccessordescriptor
+
+[accessordescriptors]: #accessordescriptors
+[accessordescriptors-define]: #accessordescriptorsdefine
+[accessordescriptors-prototype-set]: #accessordescriptorsprototypeset
+
+[datadescriptors]: #datadescriptors
+[datadescriptors-prototype-set]: #datadescriptorsprototypeset
+
+[descriptor-defineaccessor]: #descriptordefineaccessor
+[descriptor-definedata]: #descriptordefinedata
+
+<!-- Prism -->
+[prism-js]: https://prismjs.com/
 
 <!-- Javascript  -->
 [js-array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
@@ -1775,6 +1300,8 @@ MIT © angular-package ([license][property-badge-license])
 [js-object-define-property]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
 
 [primitive]: https://developer.mozilla.org/en-US/docs/Glossary/Primitive
+
+[js-regexp]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
 [js-string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
 [stringconstructor]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/String
