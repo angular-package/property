@@ -947,8 +947,8 @@ Useful and simple to use packages.
 | [core][core-github-readme]                   | Core features.                                                    | [![npm version][core-npm-badge-png]][core-npm-badge] |
 | [error][error-github-readme]                 | Manages an [`Error`][js-error].                                   | [![npm version][error-npm-badge-png]][error-npm-badge] |
 | [indexeddb][indexeddb-github-readme]         | Wrapper to IndexedDB client-side storage.                         | [![npm version][indexeddb-npm-badge-png]][indexeddb-npm-badge] |
-| [name][name-github-readme]                   | The name with prefix and suffix.                                  | [![npm version][name-npm-badge-png]][name-npm-badge] |
-| [preferences][preferences-github-readme]     | Preferences, settings, options, configuration and setup in steps. | [![npm version][preferences-npm-badge-png]][preferences-npm-badge] |
+| name                                         | The name with prefix and suffix.                                  | ![inprogress] |
+| preferences                                  | Preferences, settings, options, configuration and setup in steps. | ![inprogress] |
 | [prism][prism-github-readme]                 | [`Prism`][prism-js] highlighter module.                           | [![npm version][prism-npm-badge-png]][prism-npm-badge] |
 | [property][property-github-readme]           | Handles object properties.                                        | [![npm version][property-npm-badge-png]][property-npm-badge] |
 | [range][range-github-readme]                 | The range between a minimum and maximum.                          | [![npm version][range-npm-badge-png]][range-npm-badge] |
@@ -957,13 +957,15 @@ Useful and simple to use packages.
 | [sass-list][sass-list-github-readme]         | Modified list Sass module.                                        | [![npm version][sass-list-npm-badge-png]][sass-list-npm-badge] |
 | [sass-string][sass-string-github-readme]     | Modified string Sass module.                                      | [![npm version][sass-string-npm-badge-png]][sass-string-npm-badge] |
 | [spectre.css][spectrecss-github-readme]      | Modified Spectre.css - a lightweight, responsive, and modern CSS framework originally designed by Yan Zhu. | [![npm version][spectrecss-npm-badge-png]][spectrecss-npm-badge] |
-| [storage][storage-github-readme]             | The storage of data under allowed names.                          | [![npm version][storage-npm-badge-png]][storage-npm-badge] |
-| [tag][tag-github-readme]                     | Any tag with optional attributes.                                 | [![npm version][tag-npm-badge-png]][tag-npm-badge] |
+| storage                                      | The storage of data under allowed names.                          | ![inprogress] |
+| tag                                          | Any tag with optional attributes.                                 | ![inprogress] |
 | [testing][testing-github-readme]             | Support for testing other packages.                               | [![npm version][testing-npm-badge-png]][testing-npm-badge] |
-| [text][text-github-readme]                   | Text on the template with replaceable tags.                       | [![npm version][text-npm-badge-png]][text-npm-badge] |
+| text                                         | Text on the template with replaceable tags.                       | ![inprogress] |
 | [type][type-github-readme]                   | Common types, type guards, and type checkers.                     | [![npm version][type-npm-badge-png]][type-npm-badge] |
 | [ui][ui-github-readme]                       | User interface.                                                   | [![npm version][ui-npm-badge-png]][ui-npm-badge] |
 | [wrapper][wrapper-github-readme]             | Wrap the text with the opening and closing chars.                 | [![npm version][wrapper-npm-badge-png]][wrapper-npm-badge] |
+
+
 
 > Click on the package name to visit the package GitHub README.md
 
@@ -980,6 +982,7 @@ Useful and simple to use packages.
 [fix]: https://img.shields.io/badge/-fix-red
 [new]: https://img.shields.io/badge/-new-green
 [update]: https://img.shields.io/badge/-update-red
+[inprogress]: https://img.shields.io/badge/-In%20progress-gray
 
 <!-- GIT -->
 [git-semver]: http://semver.org/
@@ -1154,15 +1157,15 @@ Useful and simple to use packages.
   <!-- GitHub -->
   [sass-string-github-readme]: https://github.com/angular-package/sass-string#readme
 
-<!-- Package: sass -->
+<!-- Package: spectre.css -->
   <!-- npm -->
   [spectrecss-npm-badge-svg]: https://badge.fury.io/js/%40angular-package%2Fspectrecss.svg
   [spectrecss-npm-badge-png]: https://badge.fury.io/js/%40angular-package%2Fspectrecss.png
   [spectrecss-npm-badge]: https://badge.fury.io/js/%40angular-package%2Fspectrecss
-  [spectrecss-npm-readme]: https://www.npmjs.com/package/@angular-package/spectrecss#readme
+  [spectrecss-npm-readme]: https://www.npmjs.com/package/@angular-package/spectre.css#readme
 
   <!-- GitHub -->
-  [spectrecss-github-readme]: https://github.com/angular-package/spectrecss#readme
+  [spectrecss-github-readme]: https://github.com/angular-package/spectre.css#readme
 
 <!-- Package: storage -->
   <!-- npm -->
