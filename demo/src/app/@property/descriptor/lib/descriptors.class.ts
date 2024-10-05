@@ -80,7 +80,6 @@ export class Descriptors<
    * @angularpackage
    */
   public setAll<Key extends Keys>(object: Obj): this {
-    console.log(`setAll`);
     // Pick all the descriptors of the given `object`.
     const objectDescriptors = Descriptor.getAll(object);
     // If description exists in the object set them into the map storage.
