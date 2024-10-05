@@ -1,20 +1,34 @@
 {
   "name": "@angular-package/property",
-  "version": "0.0.1-alpha.0",
+  "version": "1.0.0-alpha",
   "description": "Features to handle object properties.",
-  "author": "Angular Package <angular-package@wvvw.dev> (https://wvvw.dev)",
+  "author": "Angular Package <contact@angular-package.dev> (https://angular-package.dev)",
   "homepage": "https://github.com/angular-package/property#readme",
-  "peerDependencies": {
-    "@angular-package/type": "^4.1.4",
-    "@angular/common": "^12.0.3",
-    "@angular/core": "^12.0.3"
-  },
-  "dependencies": {
-    "tslib": "^2.1.0"
-  },
+  "main": "./index.scss",
+  "license": "MIT",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
+  },
+  "devDependencies": {
+    "sass": "^1.78.0",
+    "stylelint": "^15.10.3",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-standard-scss": "^11.0.0",
+    "stylelint-order": "^6.0.3"
+  },
+  "scripts": {
+    "prepublishOnly": "npm install rimraf && npm run pkg && npm run clean",
+    "pkg": "npm pkg delete module es2020 esm2020 fesm2020 fesm2015 typings exports dependencies",
+    "clean": "./node_modules/rimraf/dist/esm/bin.mjs ./esm2020 ./fesm2015 ./fesm2020 ./index.d.ts ./public-api.d.ts ./node_modules && npm pkg delete scripts",
+    "sass": "./node_modules/sass/sass.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angular-package/property.git"
+  },
+  "bugs": {
+    "url": "https://github.com/angular-package/property/issues"
   },
   "keywords": [
     "angular-package",
@@ -29,12 +43,22 @@
     "property name",
     "property descriptor"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/angular-package/property.git"
-  },
-  "bugs": {
-    "url": "https://github.com/angular-package/property/issues"
-  },
-  "license": "MIT"
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://checkout.revolut.com/pay/048b10a3-0e10-42c8-a917-e3e9cb4c8e29"
+    },
+    {
+      "type": "individual",
+      "url": "https://docs.angular-package.dev/donate/cryptocurrency"
+    },
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/angularpackage"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/angular-package"
+    }
+  ]
 }
