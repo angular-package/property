@@ -34,7 +34,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
    */
   public static define<Value, Obj extends object = object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback: ResultCallback = callbacks.accessor
+    callback: ResultCallback = callbacks['accessor']
   ): ThisAccessorDescriptor<Value, Obj> {
     const result = {
       ...{
@@ -82,7 +82,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
    */
   static guard<Value, Obj extends object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback: ResultCallback = callbacks.accessor
+    callback: ResultCallback = callbacks['accessor']
   ): descriptor is ThisAccessorDescriptor<Value, Obj> {
     let result = true;
     Object
