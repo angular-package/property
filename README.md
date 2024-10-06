@@ -57,6 +57,8 @@ export {
 ## Table of contents
 
 * [Skeleton](#skeleton)
+* [Code scaffolding](#code-scaffolding)
+* [Documentation](#documentation)
 * [Installation](#installation)
 * [Callback](#callback)
 * [Package](#package)
@@ -121,6 +123,12 @@ Run `ng test property` to execute the unit tests via [Karma](https://karma-runne
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+<br>
+
+## Documentation
+
+The documentation is in construction and it's available at [https://docs.angular-package.dev/property](https://docs.angular-package.dev/property/)
 
 <br>
 
