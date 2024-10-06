@@ -1085,24 +1085,24 @@ public static set<Obj extends object, Name extends keyof Obj>(
 
 | Name                     | Description |
 | :----------------------- | :---------- |
-| `Obj extends object`     | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the argument `object` linked with the return type `Obj[Name]` |
-| `Name extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `name` argument that's linked to the return type `Obj[Name]` |
+| `Obj extends object`     | Constrained with the `object` type, `Obj` variable by default of the value from the captured type of the argument `object`. |
+| `Name extends keyof Obj` | Constrained with the property name from the `Obj` variable to ensure to not grab accidentally a property that does not exist in the `Obj`, by default of the value from the `name` argument. |
 
 **Parameters:**
 
 | Name: `type`       | Description                                                                                                    |
 | :----------------- | :------------------------------------------------------------------------------------------------------------- |
-| `object: Obj`      | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to set the value with the indicated `name` as its property name. The value is not checked against the proper `object` type |
-| `name: Name`       | A `keyof` type property name from the `object`, by default of type captured from the provided `name` as the name of the property that the `object` contains |
-| `value: Obj[Name]` | The `value` of the type captured from the provided `name` in the provided `object`. The `value` is not checked against the proper type |
+| `object: Obj`      | An `object` of a generic `Obj` type, by default of the type captured from the provided `object`, to set the value with the indicated `name` as its property name. The value is not checked against the proper `object` type. |
+| `name: Name`       | A `keyof` type property name from the `object`, by default of type captured from the provided `name` as the name of the property that the `object` contains. |
+| `value: Obj[Name]` | The `value` of the type captured from the provided `name` in the provided `object`. The `value` is not checked against the proper type. |
 
 **Returns:**
 
-| Returns | Type     | Description                                   |
-| :-------| :------: | :-------------------------------------------- |
-| `this`  | Property | The **return type** is an `Property` instance |
+| Returns | Type     | Description                                    |
+| :-------| :------: | :--------------------------------------------- |
+| `this`  | Instance | The **returned type** is the `Property` class. |
 
-The **return value** is the value from the property of the `object`.
+The **returned value** is an instance of `Property`.
 
 **Usage:**
 
@@ -1133,8 +1133,6 @@ const people: People = new People();
 Property.set(person, 'age', 7); // Returns 7
 Property.set(people, 'age', 27); // Returns 27
 ```
-
-
 
 ### `Property.get()`
 
