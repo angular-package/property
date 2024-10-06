@@ -20,31 +20,6 @@ import { ResultCallback } from '../type/result-callback.type';
  * + Get privately stored data descriptor defined by the `set()` method of the instance.
  */
 export class DataDescriptors<Value> {
-  // Defaults to data descriptor.
-  #descriptor: DataDescriptor<Value> = {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    value: undefined,
-  };
-
-  /**
-   * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
-   */
-  get get(): DataDescriptor<Value> {
-    return this.#descriptor;
-  }
-
-  /**
-   * Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
-   * @param descriptor An optional `object` of a `DataDescriptor<Value>` interface to initially set.
-   */
-  constructor(
-    descriptor?: DataDescriptor<Value>
-  ) {
-    descriptor && this.set(descriptor);
-  }
-
   /**
    * Returns strictly defined data descriptor of a `DataDescriptor<Value>` interface on `writable` or `value` property detected.
    * Strictly means, parameter `descriptor` is type guarded and method picks `configurable`, `enumerable`, `writable`, `value`
@@ -71,6 +46,29 @@ export class DataDescriptors<Value> {
   }
 
   /**
+   * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
+   */
+  get get(): DataDescriptor<Value> {
+    return this.#descriptor;
+  }
+
+  // Defaults to data descriptor.
+  #descriptor: DataDescriptor<Value> = {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: undefined,
+  };
+
+  /**
+   * Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
+   * @param descriptor An optional `object` of a `DataDescriptor<Value>` interface to initially set.
+   */
+  constructor(descriptor?: DataDescriptor<Value>) {
+    descriptor && this.set(descriptor);
+  }
+
+  /**
    * Guards the `descriptor` to be an `object` of a `DataDescriptor<Value>` interface.
    * @param descriptor Object of a `DataDescriptor<Value>` interface to guard.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor`
@@ -81,7 +79,7 @@ export class DataDescriptors<Value> {
    */
   static guard<Value>(
     descriptor: DataDescriptor<Value>,
-    callback: ResultCallback = callbacks.data
+    callback: ResultCallback = callbacks['data']
   ): descriptor is DataDescriptor<Value> {
     let result = true;
     Object
