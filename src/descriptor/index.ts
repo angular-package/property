@@ -1,5 +1,5 @@
 // Class.
-export { Descriptor, Descriptors } from './lib';
+export { AccessorDescriptors, DataDescriptors, Descriptor, Descriptors } from './lib';
 // Interface.
 export { AccessorDescriptor, CommonDescriptor, DataDescriptor } from './interface';
 // Type.
