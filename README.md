@@ -1004,25 +1004,25 @@ export class WrapProperty<
 > { ... }
 ```
 
-### `Property` instance accessors
+### `WrapProperty` instance accessors
 
-### `Property.prototype.descriptors`
+### `WrapProperty.prototype.descriptors`
 
 ```typescript
 public get descriptors(): Descriptors<Obj, Names>
 ```
 
-### `Property` instance private
+### `WrapProperty` instance private
 
-### `Property.#descriptors`
+### `WrapProperty.#descriptors`
 
 ```typescript
 #descriptors: Descriptors<Obj, Names>;
 ```
 
-### `Property` instance methods
+### `WrapProperty` instance methods
 
-### `Property.prototype.wrap()`
+### `WrapProperty.prototype.wrap()`
 
 ```typescript
 public wrap<Name extends Names>(
@@ -1032,7 +1032,7 @@ public wrap<Name extends Names>(
 ): this { ... }
 ```
 
-### `Property.prototype.unwrap()`
+### `WrapProperty.prototype.unwrap()`
 
 
 
@@ -1040,7 +1040,7 @@ public wrap<Name extends Names>(
 public unwrap(...names: Names[]): this { ... }
 ```
 
-### `Property.prototype.#unwrap()`
+### `WrapProperty.prototype.#unwrap()`
 
 ```typescript
 #wrap<Name extends Names>(
