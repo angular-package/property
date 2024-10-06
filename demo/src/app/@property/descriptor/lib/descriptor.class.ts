@@ -1,19 +1,23 @@
 // Class.
 import { AccessorDescriptors } from './accessor-descriptors.class';
 import { DataDescriptors } from './data-descriptors.class';
+import { Objects } from '../../object';
 
 // Interface.
 import { DataDescriptor } from '../interface';
+import { GetSelectedDescriptor } from '../interface/get-selected-descriptor.interface';
+import { SetSelectedDescriptor } from '../interface/set-selected-descriptor.interface';
 
 // Type.
-import { ThisAccessorDescriptor } from '../type';
+import { AnyDescriptor } from '../type/any-descriptor.type';
 import { ObjectPropertyDescriptors } from '../type/object-property-descriptors.type';
-import { ResultCallback } from '../type/result-callback.type';
+import { ResultCallback } from '../../type/result-callback.type';
+import { ThisAccessorDescriptor } from '../type';
 
 /**
  *
  */
-export class Descriptor {
+export class Descriptor<Value, Obj extends object = object> {
   /**
    * Returns defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type, on `get` or `set` property detected.
    * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to define with the default values of the
@@ -24,7 +28,7 @@ export class Descriptor {
    * which means it doesn't contain `get` or `set` property.
    * @returns The return value is an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
    */
-  static defineAccessor<Value, Obj extends object>(
+  public static defineAccessor<Value, Obj extends object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback?: ResultCallback
   ): ThisAccessorDescriptor<Value, Obj> {
@@ -39,13 +43,39 @@ export class Descriptor {
    * with the `writable` or `value` property, by default it uses `dataCallback()` function from the static `DataDescriptors.guard()` method.
    * @returns The return value is an `object` of a `DataDescriptor<Value>` interface.
    */
-  static defineData<Value>(
+  public static defineData<Value>(
     descriptor: DataDescriptor<Value>,
     callback?: ResultCallback
   ): DataDescriptor<Value> {
     return DataDescriptors.define(descriptor, callback);
   }
 
+  /**
+   * Returns property descriptors from the specified detected object.
+   * @param object An `object` of a generic `Obj` type to get own property descriptor with the specified `key`.
+   * If `class` is provided then it uses its prototype.
+   * @returns The return value is an `object` of a `ObjectPropertyDescriptors<Obj>` type.
+   */
+  public static fromObject<Obj extends object>(
+    object: Obj
+  ): ObjectPropertyDescriptors<Obj> | undefined {
+    return Object.getOwnPropertyDescriptors(Objects.get<Obj>(object));
+  }
+
+  /**
+   * Returns property descriptor from the `object` or `class` prototype.
+   * Wrapper function for the `getOwnPropertyDescriptor`, which "Gets the own property descriptor of the specified object."
+   * @param object An `object` of a generic `Obj` type or a class to get own property descriptor with the specified `key`.
+   * If `class` is provided then it uses its prototype to get the property descriptor.
+   * @param key A `keyof Obj` value to get property descriptor from the `object`.
+   * @returns The return value is an `object` of a `PropertyDescriptor` interface or an `undefined`.
+   */
+  static fromProperty<Obj extends object, Key extends keyof Obj>(
+    object: Obj,
+    key: Key
+  ): PropertyDescriptor | undefined {
+    return Object.getOwnPropertyDescriptor(Objects.get(object), key);
+  }
   /**
    *
    * @param object
@@ -121,4 +151,55 @@ export class Descriptor {
       ? (object as any)['__proto__']
       : object.prototype;
   }
+
+  /**
+   * Creates an instance, and optionally sets descriptor of any type.
+   * @param descriptor An optional `object` of an `AnyDescriptor<Value, Obj>` type to initially set any kind of descriptor.
+   */
+  constructor(descriptor?: AnyDescriptor<Value, Obj>) {
+    if (descriptor) {
+      this.#accessor.set(descriptor, (result) => result);
+      this.#data.set(descriptor, (result) => result);
+    }
+  }
+
+  // Get privately stored descriptor, and from the object or object property.
+  get get(): GetSelectedDescriptor<Value, Obj> {
+    return {
+      accessor: this.#accessor.get,
+      data: this.#data.get,
+      from: {
+        object: Descriptor.fromObject,
+        property: Descriptor.fromProperty,
+      },
+    };
+  }
+
+  // Set selected accessor or data descriptor.
+  get set(): SetSelectedDescriptor<Value, Obj> {
+    return {
+      accessor: (
+        descriptor: ThisAccessorDescriptor<Value, Obj>,
+        callback?: ResultCallback
+      ): this => {
+        this.#accessor.set(descriptor, callback);
+        return this;
+      },
+      data: (
+        descriptor: DataDescriptor<Value>,
+        callback?: ResultCallback
+      ): this => {
+        this.#data.set(descriptor, callback);
+        return this;
+      },
+    };
+  }
+
+  // Private accessor descriptor instance.
+  #accessor: AccessorDescriptors<Value, Obj> = new AccessorDescriptors<
+    Value,
+    Obj
+  >();
+  // Private data descriptor instance.
+  #data: DataDescriptors<Value> = new DataDescriptors<Value>();
 }

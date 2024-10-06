@@ -5,7 +5,7 @@ import { Property } from '../../lib';
 import { callbacks } from '../../callback/src/callback.object';
 
 // Type.
-import { ResultCallback } from '../type/result-callback.type';
+import { ResultCallback } from '../../type/result-callback.type';
 import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
 
 /**

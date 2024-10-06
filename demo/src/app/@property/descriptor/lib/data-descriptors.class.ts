@@ -5,7 +5,7 @@ import { callbacks } from '../../callback/src/callback.object';
 // Interface.
 import { DataDescriptor } from '../interface/data-descriptor.interface';
 // Type.
-import { ResultCallback } from '../type/result-callback.type';
+import { ResultCallback } from '../../type/result-callback.type';
 
 /**
  * Strictly defines, sets, and stores privately property data descriptor of a `DataDescriptor<Value>` interface.
