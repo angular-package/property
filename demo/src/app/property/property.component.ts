@@ -63,6 +63,12 @@ export class PropertyComponent implements OnInit {
 
     // console.log(pick);
 
+    const descriptor = new Descriptor({configurable: true, enumerable: false, value: 27});
+    console.log(`descriptor`, descriptor);
+    console.log(`get.accessor`, descriptor.get.accessor);
+    console.log(`get.data`, descriptor.get.data);
+    console.log(`get.accessor`, descriptor.set.accessor);
+    console.log(`get.data`, descriptor.get.data);
   }
 }
 

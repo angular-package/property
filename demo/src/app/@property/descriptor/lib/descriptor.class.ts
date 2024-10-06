@@ -158,8 +158,8 @@ export class Descriptor<Value, Obj extends object = object> {
    */
   constructor(descriptor?: AnyDescriptor<Value, Obj>) {
     if (descriptor) {
-      this.#accessor.set(descriptor, (result) => result);
-      this.#data.set(descriptor, (result) => result);
+      this.#accessor.set(descriptor, result => result);
+      this.#data.set(descriptor, result => result);
     }
   }
 
