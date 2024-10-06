@@ -6,6 +6,10 @@
 
 The angular-package supports the development process of [angular](https://angular.io)-based applications in varied ways through the thoughtful, reusable, easy-to-use small pieces of code called packages.
 
+<br>
+
+<a href="https://angular.io"><img src="https://raw.githubusercontent.com/angular-package/property/refs/heads/develop/ts-logo-512.png" width="92" height="92" /></a>
+
 ## angular-package/property
 
 Features to handle properties.
@@ -30,6 +34,8 @@ export {
 
 export {
   // Class.
+  AccessorDescriptors,
+  DataDescriptors,
   Descriptor,
   Descriptors,
   // Interface.
@@ -40,7 +46,10 @@ export {
   ThisAccessorDescriptor,
 } from './descriptor';
 
-export { GetterCallback, SetterCallback } from './type';
+export {
+  GetterCallback,
+  SetterCallback
+} from './type';
 ```
 
 [Previous README.md](https://github.com/angular-package/property/blob/44608671696872ea163b8b6cfa704471fafd8ac3/README.md)
@@ -59,6 +68,8 @@ export { GetterCallback, SetterCallback } from './type';
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
   * [Descriptors](#descriptors)
+  * [Property](#property)
+  * [WrapProperty](#wrapproperty)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -156,22 +167,21 @@ Descriptor features to import.
 ```typescript
 // Class.
 export {
+  AccessorDescriptors,
+  DataDescriptors,
   Descriptor,
   Descriptors
 } from './lib';
-
 // Interface.
 export {
   AccessorDescriptor,
   CommonDescriptor,
   DataDescriptor
 } from './interface';
-
 // Type.
 export {
   ThisAccessorDescriptor
 } from './type';
-
 ```
 
 ----
@@ -916,6 +926,132 @@ export class Descriptors<
   Keys extends keyof Obj
 > { ... }
 ```
+
+### Property
+
+Object to handle properties.
+
+### Property static methods
+
+### `Property.define()`
+
+The static method defines property in `object` of `name` with the `data` or `accessor` descriptor.
+
+```typescript
+public static define<Obj extends object, Name extends PropertyKey, Value>(
+  object: Obj,
+  name: Name,
+  data?: DataDescriptor<Value>,
+  accessor?: AccessorDescriptor<Value> & ThisType<Obj>
+): Obj & { [K in Name]: Value } { ... }
+```
+
+### `Property.set()`
+
+The static method to set property `value` of `name` in `object`.
+
+```typescript
+public static set<Obj extends object, Name extends keyof Obj>(
+  object: Obj,
+  name: Name,
+  value: Obj[Name]
+): typeof Property { ... }
+```
+
+### `Property.get()`
+
+The static method to get property value from `object` of `name`.
+
+```typescript
+public static get<Obj extends object, Name extends keyof Obj>(
+  object: Obj,
+  name: Name
+): Obj[Name] { ... }
+```
+
+### `Property.pick()`
+
+The static method to pick properties of `names` from `object`.
+
+```typescript
+public static pick<Obj extends object, Names extends keyof Obj>(
+  object: Obj,
+  ...names: Names[]
+): { [Key in Names]: Obj[Key] } { ... }
+```
+
+### `Property.wrap()`
+
+The static method to wrap properties in `object` of `names` with `getterCallback` and `setterCallback`.
+
+```typescript
+public static wrap<Obj extends object | Function, Names extends keyof Obj>(
+  object: Obj,
+  names: Names[],
+  getterCallback?: GetterCallback<Obj, Names>,
+  setterCallback?: SetterCallback<Obj, Names>
+): WrapProperty<Obj, Names> { ... }
+```
+
+### WrapProperty
+
+Object to wrap properties with getter/setter.
+
+```typescript
+export class WrapProperty<
+  Obj extends object | Function,
+  Names extends keyof Obj
+> { ... }
+```
+
+### `Property` instance accessors
+
+### `Property.prototype.descriptors`
+
+```typescript
+public get descriptors(): Descriptors<Obj, Names>
+```
+
+### `Property` instance private
+
+### `Property.#descriptors`
+
+```typescript
+#descriptors: Descriptors<Obj, Names>;
+```
+
+### `Property` instance methods
+
+### `Property.prototype.wrap()`
+
+```typescript
+public wrap<Name extends Names>(
+  names: Name | Name[],
+  getterCallback?: GetterCallback<Obj, Name>,
+  setterCallback?: SetterCallback<Obj, Name>
+): this { ... }
+```
+
+### `Property.prototype.unwrap()`
+
+
+
+```typescript
+public unwrap(...names: Names[]): this { ... }
+```
+
+### `Property.prototype.#unwrap()`
+
+```typescript
+#wrap<Name extends Names>(
+  object: Obj,
+  name: Name,
+  getterCallback?: GetterCallback<Obj, Name>,
+  setterCallback?: SetterCallback<Obj, Name>
+): this { ... }
+```
+
+<br>
 
 ## GIT
 
