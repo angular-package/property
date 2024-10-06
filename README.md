@@ -6,6 +6,10 @@
 
 The angular-package supports the development process of [angular](https://angular.io)-based applications in varied ways through the thoughtful, reusable, easy-to-use small pieces of code called packages.
 
+<br>
+
+<a href="https://angular.io"><img src="https://raw.githubusercontent.com/angular-package/detection/refs/heads/2.0.0/angular_gradient.png" width="92" height="92" /></a>
+
 ## angular-package/property
 
 Features to handle properties.
