@@ -9,6 +9,8 @@ export {
 
 export {
   // Class.
+  AccessorDescriptors,
+  DataDescriptors,
   Descriptor,
   Descriptors,
   // Interface.
