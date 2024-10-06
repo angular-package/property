@@ -79,7 +79,7 @@ export class DataDescriptors<Value> {
    */
   static guard<Value>(
     descriptor: DataDescriptor<Value>,
-    callback: ResultCallback = callbacks.data
+    callback: ResultCallback = callbacks['data']
   ): descriptor is DataDescriptor<Value> {
     let result = true;
     Object

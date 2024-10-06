@@ -34,7 +34,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
    */
   public static define<Value, Obj extends object = object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback: ResultCallback = callbacks.accessor
+    callback: ResultCallback = callbacks['accessor']
   ): ThisAccessorDescriptor<Value, Obj> {
     const result = {
       ...{
@@ -47,18 +47,18 @@ export class AccessorDescriptors<Value, Obj extends object> {
     return result;
   }
 
-  // Single private accessor descriptor.
-  #descriptor: ThisAccessorDescriptor<Value, Obj> = {
-    configurable: true,
-    enumerable: true,
-  };
-
   /**
    * Get privately stored accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type defined by the `set()` method.
    */
   get get(): ThisAccessorDescriptor<Value, Obj> {
     return this.#descriptor;
   }
+
+  // Single private accessor descriptor.
+  #descriptor: ThisAccessorDescriptor<Value, Obj> = {
+    configurable: true,
+    enumerable: true,
+  };
 
   /**
    * Creates an instance, and optionally sets an accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
@@ -82,7 +82,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
    */
   static guard<Value, Obj extends object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
-    callback: ResultCallback = callbacks.accessor
+    callback: ResultCallback = callbacks['accessor']
   ): descriptor is ThisAccessorDescriptor<Value, Obj> {
     let result = true;
     Object
