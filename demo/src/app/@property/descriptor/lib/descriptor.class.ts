@@ -13,13 +13,14 @@ import { AnyDescriptor } from '../type/any-descriptor.type';
 import { ObjectPropertyDescriptors } from '../type/object-property-descriptors.type';
 import { ResultCallback } from '../../type/result-callback.type';
 import { ThisAccessorDescriptor } from '../type';
+import { callbacks } from '../../callback/src/callback.object';
 
 /**
  *
  */
 export class Descriptor<Value, Obj extends object = object> {
   /**
-   * Returns defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type, on `get` or `set` property detected.
+   * Returns accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type, on `get` or `set` property detected.
    * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to define with the default values of the
    * `CommonDescriptor`.
    * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an
@@ -36,7 +37,7 @@ export class Descriptor<Value, Obj extends object = object> {
   }
 
   /**
-   * Returns defined data descriptor of a `DataDescriptor<Value>` interface, on `writable` or `value` property detected.
+   * Returns data descriptor of a `DataDescriptor<Value>` interface, on `writable` or `value` property detected.
    * @param descriptor An `object` of a `DataDescriptor<Value>` interface, to set with the default values of the
    * `CommonDescriptor`.
    * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the `descriptor` is an `object`
@@ -70,7 +71,7 @@ export class Descriptor<Value, Obj extends object = object> {
    * @param key A `keyof Obj` value to get property descriptor from the `object`.
    * @returns The return value is an `object` of a `PropertyDescriptor` interface or an `undefined`.
    */
-  static fromProperty<Obj extends object, Key extends keyof Obj>(
+  public static fromProperty<Obj extends object, Key extends keyof Obj>(
     object: Obj,
     key: Key
   ): PropertyDescriptor | undefined {

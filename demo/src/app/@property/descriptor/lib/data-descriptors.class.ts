@@ -30,9 +30,9 @@ export class DataDescriptors<Value> {
    * with the `writable` or `value` property, by default it uses `dataCallback()` function from the static `guard()` method.
    * @returns The return value is an `object` of a `DataDescriptor<Value>` interface.
    */
-  static define<Value>(
+  public static define<Value>(
     descriptor: DataDescriptor<Value>,
-    callback?: ResultCallback
+    callback: ResultCallback = callbacks['data']
   ): DataDescriptor<Value> {
     const result = {
       ...{
@@ -43,6 +43,28 @@ export class DataDescriptors<Value> {
     };
     callback && callback(typeof result === 'object', result);
     return result;
+  }
+
+  /**
+   * Guards the `descriptor` to be an `object` of a `DataDescriptor<Value>` interface.
+   * @param descriptor Object of a `DataDescriptor<Value>` interface to guard.
+   * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor`
+   * is an `object` with the `writable` or `value` property, by default it uses `dataCallback()` function.
+   * @throws Throws an error if the `descriptor` is not an `object` of a `DataDescriptor<Value>` interface, which means doesn't
+   * contain `writable` or `value` property.
+   * @returns The return value is a `boolean` indicating whether the `descriptor` is an `object` with the `writable` or `value` property.
+   */
+  public static guard<Value>(
+    descriptor: DataDescriptor<Value>,
+    callback: ResultCallback = callbacks['data']
+  ): descriptor is DataDescriptor<Value> {
+    let result = true;
+    Object
+      .keys(descriptor)
+      .forEach(key => (result === true) && (result = key in {
+        'configurable': true, 'enumerable': true, 'writable': true, 'value': true
+      }));
+    return callback(result, descriptor);
   }
 
   /**
@@ -64,30 +86,11 @@ export class DataDescriptors<Value> {
    * Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
    * @param descriptor An optional `object` of a `DataDescriptor<Value>` interface to initially set.
    */
-  constructor(descriptor?: DataDescriptor<Value>) {
-    descriptor && this.set(descriptor);
-  }
-
-  /**
-   * Guards the `descriptor` to be an `object` of a `DataDescriptor<Value>` interface.
-   * @param descriptor Object of a `DataDescriptor<Value>` interface to guard.
-   * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor`
-   * is an `object` with the `writable` or `value` property, by default it uses `dataCallback()` function.
-   * @throws Throws an error if the `descriptor` is not an `object` of a `DataDescriptor<Value>` interface, which means doesn't
-   * contain `writable` or `value` property.
-   * @returns The return value is a `boolean` indicating whether the `descriptor` is an `object` with the `writable` or `value` property.
-   */
-  static guard<Value>(
-    descriptor: DataDescriptor<Value>,
-    callback: ResultCallback = callbacks['data']
-  ): descriptor is DataDescriptor<Value> {
-    let result = true;
-    Object
-      .keys(descriptor)
-      .forEach(key => (result === true) && (result = key in {
-        'configurable': true, 'enumerable': true, 'writable': true, 'value': true
-      }));
-    return callback(result, descriptor);
+  constructor(
+    descriptor?: DataDescriptor<Value>,
+    callback?: ResultCallback
+  ) {
+    descriptor && this.set(descriptor, callback);
   }
 
   /**

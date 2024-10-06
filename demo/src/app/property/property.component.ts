@@ -33,35 +33,35 @@ export class PropertyComponent implements OnInit {
 
   ngOnInit(): void {
     // get
-    // console.log(Descriptor.get(this, 'title'));
+    console.log(Descriptor.get(this, 'title'));
 
     // getAll
-    // console.log(Descriptor.getAll(this));
+    console.log(Descriptor.getAll(this));
 
     // pick
-    // console.log(Descriptor.pick(this, 'title', 'age'));
+    console.log(Descriptor.pick(this, 'title', 'age'));
 
     // define property with data descriptor
-    // console.log(Property.define(this, 'birthday', {configurable: true, value: 1981}))
+    console.log(Property.define(this, 'birthday', {configurable: true, value: 1981}))
 
     // define property with accessor descriptor
-    // console.log(Property.define(this, 'active', undefined, {
-    //   get(): number {
-    //     return this.age;
-    //   },
-    //   set(age: number) {
-    //     this.age = age;
-    //   }
-    // }))
+    console.log(Property.define(this, 'active', undefined, {
+      get(): number {
+        return this.age;
+      },
+      set(age: number) {
+        this.age = age;
+      }
+    }))
 
     this.active = 37;
 
 
-    // console.log(Property.set(this, 'active', 47))
+    console.log(Property.set(this, 'active', 47))
 
     const pick = Property.pick(this, 'title', 'active');
 
-    // console.log(pick);
+    console.log(pick);
 
     const descriptor = new Descriptor({configurable: true, enumerable: false, value: 27});
     console.log(`descriptor`, descriptor);
@@ -71,4 +71,3 @@ export class PropertyComponent implements OnInit {
     console.log(`get.data`, descriptor.get.data);
   }
 }
-
