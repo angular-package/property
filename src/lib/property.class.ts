@@ -1,5 +1,5 @@
 // Class.
-import { WrapProperty } from './wrap-property.class';
+import { PropertyWrapper } from './property-wrapper.class';
 
 // Type.
 import { GetterCallback } from '../type/getter-callback.type';
@@ -15,7 +15,7 @@ import { DataDescriptor } from '../descriptor/interface/data-descriptor.interfac
 export class Property<
   Obj extends object,
   Names extends keyof Obj
-> extends WrapProperty<Obj, Names> {
+> extends PropertyWrapper<Obj, Names> {
   /**
    * The method defines `accessor` or `data` descriptor property in `object` of `name`.
    * @param object
@@ -98,8 +98,8 @@ export class Property<
     names: Names[],
     getterCallback?: GetterCallback<Obj, Names>,
     setterCallback?: SetterCallback<Obj, Names>
-  ): WrapProperty<Obj, Names> {
-    return new WrapProperty(object, ...names).wrap(
+  ): PropertyWrapper<Obj, Names> {
+    return new PropertyWrapper(object, ...names).wrap(
       names,
       getterCallback,
       setterCallback
@@ -107,7 +107,7 @@ export class Property<
   }
 
   /**
-   *
+   * Creates an instance of `Property`.
    * @param object
    * @param names
    * @angularpackage
@@ -143,8 +143,7 @@ export class Property<
     name: Name,
     value: Obj[Name]
   ): this {
-    super.object[name] = value;
-    // Object.assign(super.object, {[name]: value});
+    Object.assign(super.object, {[name]: value});
     return this;
   }
 
