@@ -18,6 +18,13 @@ export class WrapProperty<
   }
 
   /**
+   * 
+   */
+  public get object(): Obj {
+    return this.#object;
+  }
+
+  /**
    *
    */
   public get wrapped(): Set<Names> {
