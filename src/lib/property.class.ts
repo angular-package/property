@@ -10,18 +10,18 @@ import { AccessorDescriptor } from '../descriptor/interface/accessor-descriptor.
 import { DataDescriptor } from '../descriptor/interface/data-descriptor.interface';
 
 /**
- *
+ * 
  */
 export class Property<
   Obj extends object,
   Names extends keyof Obj
 > extends WrapProperty<Obj, Names> {
   /**
-   *
+   * The method defines `accessor` or `data` descriptor property in `object` of `name`.
    * @param object
    * @param name
    * @param accessor
-   * @returns
+   * @returns The returned value `object` with.
    * @angularpackage
    */
   public static define<Obj extends object, Name extends PropertyKey, Value>(
@@ -29,16 +29,14 @@ export class Property<
     name: Name,
     data?: DataDescriptor<Value>,
     accessor?: AccessorDescriptor<Value> & ThisType<Obj>
-  ): Obj & { [K in Name]: Value } {
-    typeof data === 'object'
-      ? Object.defineProperty(object, name, data)
-      : typeof accessor === 'object' &&
-        Object.defineProperty(object, name, accessor);
-    return object as any;
+  ): Obj & { [K in Name]: Value } | Obj {
+    return data && Object.defineProperty(object, name, data) as Obj & { [K in Name]: Value }
+      || accessor && Object.defineProperty(object, name, accessor) as Obj & { [K in Name]: Value }
+      || object;
   }
 
   /**
-   *
+   * The method sets the `value` of indicated property by its `name` in the `object`.
    * @param obj
    * @param name
    * @returns
@@ -49,12 +47,12 @@ export class Property<
     name: Name,
     value: Obj[Name]
   ): typeof Property {
-    object[name] = value;
+    Object.assign(object, {[name]: value});
     return this;
   }
 
   /**
-   *
+   * The method return the value of the specified property `name` from the `object`.
    * @param object
    * @param name
    * @returns
@@ -68,7 +66,7 @@ export class Property<
   }
 
   /**
-   *
+   * The method gets specified properties from the specified `object`.
    * @param object
    * @param names
    * @returns
@@ -77,7 +75,7 @@ export class Property<
   public static pick<Obj extends object, Names extends keyof Obj>(
     object: Obj,
     ...names: Names[]
-  ): { [Key in Names]: Obj[Key] } {
+  ): { [Key in Names]: Obj[Key] } | undefined {
     return Object.assign(
       {},
       ...names.map(key =>
@@ -87,7 +85,7 @@ export class Property<
   }
 
   /**
-   *
+   * The static method wraps properties of `names` .
    * @param object
    * @param names
    * @param getterCallback
@@ -116,5 +114,59 @@ export class Property<
    */
   constructor(object: Obj, ...names: Names[]) {
     super(object, ...names);
+  }
+
+  /**
+   * The instance method defines `accessor` or `data` descriptor property in `this.#object` of `name`.
+   * @param object
+   * @param name
+   * @param accessor
+   * @returns The returned value `object` with .
+   * @angularpackage
+   */
+  public define<Name extends PropertyKey, Value>(
+    name: Name,
+    data?: DataDescriptor<Value>,
+    accessor?: AccessorDescriptor<Value> & ThisType<Obj>
+  ): Obj & { [K in Name]: Value } | Obj {
+    return this.#defineProperty(super.object, name, data, accessor) as any;
+  }
+
+  /**
+   * 
+   * @param object 
+   * @param name 
+   * @param value 
+   * @returns 
+   */
+  public set<Name extends keyof Obj>(
+    name: Name,
+    value: Obj[Name]
+  ): this {
+    super.object[name] = value;
+    // Object.assign(super.object, {[name]: value});
+    return this;
+  }
+
+  /**
+   * 
+   * @param object 
+   * @param name 
+   * @param data 
+   * @param accessor 
+   * @returns 
+   * @angularpackage
+   */
+  #defineProperty<O extends Obj, Name extends PropertyKey, Value>(
+    object: O,
+    name: Name,
+    data?: DataDescriptor<Value>,
+    accessor?: AccessorDescriptor<Value> & ThisType<Obj>
+  ): Obj & { [K in Name]: Value } | Obj {
+    return data
+      ? Object.defineProperty(object, name, data) as Obj & { [K in Name]: Value } : 
+      accessor 
+        ? Object.defineProperty(object, name, accessor) as Obj & { [K in Name]: Value }
+        : object;
   }
 }
