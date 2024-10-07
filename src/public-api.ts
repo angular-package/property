@@ -4,7 +4,7 @@
 export {
   // Class.
   Property,
-  WrapProperty,
+  PropertyWrapper,
 } from './lib';
 
 export {
