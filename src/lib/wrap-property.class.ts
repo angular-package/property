@@ -123,7 +123,7 @@ export class WrapProperty<
     getterCallback?: GetterCallback<Obj, Name>,
     setterCallback?: SetterCallback<Obj, Name>
   ): this {
-    const thisInstance = this;
+    const wrapPropertyInstance = this;
     if (this.#wrapped.has(name) === false) {
       if (typeof object === 'object' || typeof object === 'function') {
         // If the descriptor is not already found set the original descriptor if exists.
@@ -146,31 +146,31 @@ export class WrapProperty<
             // Prepare variable to return.
             let result;
             // Perform stored getter.
-            thisInstance.descriptors.has(name) &&
-              thisInstance.descriptors
+            wrapPropertyInstance.descriptors.has(name) &&
+              wrapPropertyInstance.descriptors
                 .get(name)
                 ?.get?.apply(this, arguments as any);
 
             // Custom getter.
             typeof getterCallback === 'function' &&
-              (result = getterCallback(name, this));
+              (result = getterCallback.apply(this, [name, this]));
 
             // Returns the value.
-            return result || thisInstance.wrappedValues.get(name);
+            return result || wrapPropertyInstance.wrappedValues.get(name);
           },
           set(value: Obj[Name]): void {
             // Store the old value to pass to setterCallback.
-            const oldValue = thisInstance.wrappedValues.get(name);
+            const oldValue = wrapPropertyInstance.wrappedValues.get(name);
             // Perform stored setter.
-            thisInstance.descriptors.has(name) &&
-              thisInstance.descriptors
+            wrapPropertyInstance.descriptors.has(name) &&
+              wrapPropertyInstance.descriptors
                 .get(name)
                 ?.set?.apply(this, arguments as any);
             // Set the value.
-            thisInstance.wrappedValues.set(name, value);
+            wrapPropertyInstance.wrappedValues.set(name, value);
             // Use custom setter.
             typeof setterCallback === 'function' &&
-              setterCallback(value, oldValue, name, this);
+              setterCallback.apply(this, [value, oldValue, name, this])
           },
         });
         this.#wrapped.add(name);
