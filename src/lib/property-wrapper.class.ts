@@ -4,9 +4,9 @@ import { Descriptors } from '../descriptor/lib/descriptors.class';
 import { GetterCallback } from '../type/getter-callback.type';
 import { SetterCallback } from '../type/setter-callback.type';
 /**
- *
+ * Wrap and unwrap properties in `object`.
  */
-export class WrapProperty<
+export class PropertyWrapper<
   Obj extends object | Function,
   Names extends keyof Obj
 > {
@@ -38,6 +38,18 @@ export class WrapProperty<
     return this.#wrappedValues;
   }
 
+  #deactivated = {
+    /**
+     * Deactivated from executing getter of property names.
+     */
+    getter: new Set<Names>(),
+
+    /**
+     * Deactivated from executing setter of property names.
+     */
+    setter: new Set<Names>()
+  }
+
   /**
    *
    */
@@ -59,18 +71,59 @@ export class WrapProperty<
   #wrappedValues: Map<Names, any> = new Map();
 
   /**
-   *
+   * Creates an instance of `WrapProperty`.
    * @param object
    * @param names
    * @angularpackage
    */
   constructor(object: Obj, ...names: Names[]) {
     this.#object = object;
-    this.#descriptors = new Descriptors(object, ...names);
+    !this.#descriptors && (this.#descriptors = new Descriptors(object, ...names));
   }
 
   /**
-   *
+   * The method activates wrap in specified property `names`.
+   * @returns The returned value is an instance of `PropertyWrapper`.
+   * @angularpackage
+   */
+  public activate(accessor: 'getter' | 'setter', ...names: Names[]): this {
+    names.forEach(name => this.#deactivated[accessor].delete(name));
+    return this;
+  }
+
+  /**
+   * The method deactivates wrap in specified property `names`.
+   * @returns The returned value is an instance of `PropertyWrapper`.
+   * @angularpackage
+   */
+  public deactivate(accessor: 'getter' | 'setter', ...names: Names[]): this {
+    names.forEach(name => this.#deactivated[accessor].add(name));
+    return this;
+  }
+
+  /**
+   * The method check whether accessor of the `name` is active.
+   * @param accessor The `getter` or `setter` accessor to check.
+   * @param name The property name of accessor to check.
+   * @returns The returned value is a `boolean` indicating whether the `name` has `getter` or `setter` accessor active.
+   * @angularpackage
+   */
+  public isActive<Name extends Names>(accessor: 'getter' | 'setter', name: Name): boolean {
+    return this.#deactivated[accessor].has(name) === false;
+  }
+
+  /**
+   * The method checks whether property of `name` is wrapped.
+   * @param name The property name to check.
+   * @returns The returned value is a `boolean` indicating the property of `name` is wrapped.
+   * @angularpackage
+   */
+  public isWrapped<Name extends Names>(name: Name): boolean {
+    return this.#wrapped.has(name);
+  }
+
+  /**
+   * The method wraps the property with getter and setter callback.
    * @param names
    * @param getterCallback
    * @param setterCallback
@@ -89,7 +142,7 @@ export class WrapProperty<
   }
 
   /**
-   *
+   * The method unwrap property of `names`.
    * @param names
    * @returns
    * @angularpackage
@@ -97,12 +150,14 @@ export class WrapProperty<
   public unwrap(...names: Names[]): this {
     Array.isArray(names) &&
       names.forEach(
-        (name) => (
+        name => (
           // Remove from the #wrapped storage.
           this.#wrapped.delete(name),
-          Object.defineProperty(this.#object, name, {
-            ...this.#descriptors.get(name),
-          })
+          Object.defineProperty(
+            this.#object,
+            name,
+            this.#descriptors.get(name)
+          )
         )
       );
     return this;
@@ -123,7 +178,7 @@ export class WrapProperty<
     getterCallback?: GetterCallback<Obj, Name>,
     setterCallback?: SetterCallback<Obj, Name>
   ): this {
-    const wrapPropertyInstance = this;
+    const propertyWrapperInstance = this;
     if (this.#wrapped.has(name) === false) {
       if (typeof object === 'object' || typeof object === 'function') {
         // If the descriptor is not already found set the original descriptor if exists.
@@ -139,38 +194,43 @@ export class WrapProperty<
 
         // Define property.
         Object.defineProperty(detectedSource, name, {
+          // Configurable.
           configurable: true,
+
           // If true then Maximum call exceeded.
           enumerable: false,
+
+          // Getter accessor.
           get(): Obj[Name] {
-            // Prepare variable to return.
-            let result;
             // Perform stored getter.
-            wrapPropertyInstance.descriptors.has(name) &&
-              wrapPropertyInstance.descriptors
+            propertyWrapperInstance.descriptors.has(name) &&
+              propertyWrapperInstance.descriptors
                 .get(name)
-                ?.get?.apply(this, arguments as any);
+                ?.get
+                ?.apply(this, arguments);
 
             // Custom getter.
-            typeof getterCallback === 'function' &&
-              (result = getterCallback.apply(this, [name, this]));
-
-            // Returns the value.
-            return result || wrapPropertyInstance.wrappedValues.get(name);
+            return propertyWrapperInstance.isActive('getter', name) && typeof getterCallback === 'function'
+              ? getterCallback.apply(this, [name, this])
+              : propertyWrapperInstance.wrappedValues.get(name);
           },
+
+          // Setter accessor.
           set(value: Obj[Name]): void {
             // Store the old value to pass to setterCallback.
-            const oldValue = wrapPropertyInstance.wrappedValues.get(name);
+            const oldValue = propertyWrapperInstance.wrappedValues.get(name);
             // Perform stored setter.
-            wrapPropertyInstance.descriptors.has(name) &&
-              wrapPropertyInstance.descriptors
+            propertyWrapperInstance.descriptors.has(name) &&
+              propertyWrapperInstance.descriptors
                 .get(name)
-                ?.set?.apply(this, arguments as any);
+                ?.set
+                ?.apply(this, arguments as any);
             // Set the value.
-            wrapPropertyInstance.wrappedValues.set(name, value);
+            propertyWrapperInstance.wrappedValues.set(name, value);
             // Use custom setter.
-            typeof setterCallback === 'function' &&
-              setterCallback.apply(this, [value, oldValue, name, this])
+            propertyWrapperInstance.isActive('setter', name)
+              && typeof setterCallback === 'function'
+              && setterCallback.apply(this, [value, oldValue, name, this]);
           },
         });
         this.#wrapped.add(name);
