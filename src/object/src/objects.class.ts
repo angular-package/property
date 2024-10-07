@@ -1,27 +1,32 @@
+// Class.
+import { Property } from "../../lib";
+
+// Type.
 import { ResultCallback } from "../../type/result-callback.type";
 
 /**
  *
  */
-export class Objects<Obj extends object> {
+export class Objects<Obj extends object, Names extends keyof Obj = keyof Obj> extends Object {
   /**
-   * Detects the type of the specified `object` against and returns its prototype when it's a `class`.
-   * @param object Object of a generic `Obj` type to check if it's a `class` or just the `object`.
+   * Returns object with merged with prototype.
+   * @param object Object of a generic `Obj` type.
    * @param callback
    * @returns
    */
   public static get = <Obj extends object>(
     object: Obj,
-    callback?: ResultCallback
   ): Obj => {
-    return this.guardClass(object, callback)
-      ? Objects.getPrototype(object)
-      : this.guardObject<Obj>(object, callback)
-      ? object
-      : object;
+    return {
+      ...(object as any)['prototype'] && (object as any['prototype']) || {},
+      ...(object as any)['__proto__'] && (object as any)['__proto__'] || {},
+      ...Object.getPrototypeOf(object) || {},
+      ...object || {},
+    };
   }
 
   /**
+   * @deprecated
    * Returns the `object` `prototype` of a type detected from the `object`.
    * @param object The `object` that contains the `prototype`.
    * @returns The return value is an `object` of a generic `Obj` type.
@@ -30,56 +35,109 @@ export class Objects<Obj extends object> {
     return Object.getPrototypeOf(object);
   }
 
-  public static hasOwnProperty<O extends object, K extends keyof O>(
-    object: O,
-    key: K
+  /**
+   * 
+   * @param object 
+   * @param key 
+   * @returns 
+   */
+  public static hasOwnProperty<Obj extends object, Key extends keyof Obj>(
+    object: Obj,
+    key: Key
   ): boolean {
     return {}.hasOwnProperty.call(object, key);
   }
 
-  public static guardClass<Obj extends object, Payload extends object = object>(
-    cls: Obj,
-    callback?: ResultCallback,
-    payload?: Payload
-  ) {
-    const result = typeof cls === 'function' ||
-    (cls instanceof Function && typeof cls === 'function')
-    ? /class/.test(Function.prototype.toString.call(cls).slice(0, 5)) : false;
-    return (callback && callback(result, cls, payload)) || result;
-  }
-
-  public static guardObject<Obj extends object, Payload extends object = object>(
+  /**
+   * 
+   * @param object 
+   * @param callback 
+   * @param payload 
+   * @returns 
+   */
+  public static guard<Obj extends object, Payload extends object = object>(
     object: Obj,
     callback?: ResultCallback,
     payload?: Payload
   ) {
-    const result = (typeof object === 'object' || typeof object === 'object') &&
-      object instanceof Object
-      return (callback && callback(result, object, payload)) || result;
+    const result = this.isObject(object);
+    return (callback && callback(result, object, payload)) || result;
+  }
+
+  /**
+   * 
+   * @param value 
+   * @returns 
+   */
+  public static isObject(value: any, ...keys: PropertyKey[]) {
+    const isObject = typeof value === 'object' &&
+      Object.prototype.toString.call(value).slice(8, -1).toLowerCase() === 'object' &&
+      value instanceof Object;
+
+    let result = true;
+    if (keys && isObject) {
+      keys.forEach(key => (result === true) && (result = key in value));
+    }
+
+    return keys ? isObject && result : isObject;
   }
 
   /**
    * 
    */
-  get get(): Obj | undefined {
+  public get get(): Obj | undefined {
     return this.#object || undefined;
   }
 
+  /**
+   * 
+   */
+  public get property(): Property<Obj, Names> | undefined {
+    return this.#property;
+  }
+
+  /**
+   * 
+   */
   #object: Obj | undefined;
 
-  constructor(value?: Obj) {
-    value && this.set(value);
+  /**
+   * 
+   */
+  #property: Property<Obj, Names> | undefined;
+
+  /**
+   * Creates an instance of `Objects`.
+   * @param object 
+   */
+  constructor(object?: Obj, ...names: Names[]) {
+    super(object);
+    object
+      && this.set(object)
+      && this.#object && (this.#property = new Property(this.#object, ...names));
   }
 
-  public hasOwnProperty<O extends Obj, K extends keyof O>(
-    object: O,
-    key: K
+  /**
+   * 
+   * @param key 
+   * @returns 
+   */
+  public hasOwnProperty<O extends Obj, Key extends keyof O>(
+    key: Key
   ): boolean {
-    return {}.hasOwnProperty.call(object, key);
+    return super.hasOwnProperty(key);
   }
 
+  /**
+   * The method sets
+   * @param object 
+   * @returns 
+   */
   public set<O extends Obj>(object: O): this {
     this.#object = Objects.get(object);
     return this;
   }
 }
+
+// Alias name to Objects.
+export class Obj<Obj extends object> extends Objects<Obj> {}
