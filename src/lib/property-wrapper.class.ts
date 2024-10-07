@@ -53,7 +53,7 @@ export class PropertyWrapper<
   /**
    *
    */
-  #descriptors: Descriptors<Obj, Names>;
+  #descriptors!: Descriptors<Obj, Names>;
 
   /**
    *
@@ -78,7 +78,7 @@ export class PropertyWrapper<
    */
   constructor(object: Obj, ...names: Names[]) {
     this.#object = object;
-    !this.#descriptors && (this.#descriptors = new Descriptors(object, ...names));
+    this.#descriptors = new Descriptors(object, ...names);
   }
 
   /**
@@ -156,7 +156,7 @@ export class PropertyWrapper<
           Object.defineProperty(
             this.#object,
             name,
-            this.#descriptors.get(name)
+            this.#descriptors.get(name)!
           )
         )
       );
@@ -207,10 +207,11 @@ export class PropertyWrapper<
               propertyWrapperInstance.descriptors
                 .get(name)
                 ?.get
-                ?.apply(this, arguments);
+                ?.apply(this, arguments as any);
 
             // Custom getter.
-            return propertyWrapperInstance.isActive('getter', name) && typeof getterCallback === 'function'
+            return propertyWrapperInstance.isActive('getter', name)
+              && typeof getterCallback === 'function'
               ? getterCallback.apply(this, [name, this])
               : propertyWrapperInstance.wrappedValues.get(name);
           },
