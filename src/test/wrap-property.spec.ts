@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { WrapProperty } from '../lib/wrap-property.class';
+import { PropertyWrapper } from '../lib/property-wrapper.class';
 
 @Component({
   selector: 'lib-selector',
