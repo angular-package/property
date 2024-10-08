@@ -48,9 +48,7 @@ export class Objects<
     objName: Name,
     key: Key,
   ): Objs[Name][Key] {
-    (this.#objects[objName] as unknown as ObjsContainer<Objs, Name>)
-      .getProperty(key);
-    return 
+    return this.getObj(objName)!.getProperty(key);
   }
 
   /**
@@ -65,15 +63,7 @@ export class Objects<
     key: Key,
     value: Objs[Name][Key]
   ): this {
-    (this.#objects[objName] as unknown as ObjsContainer<Objs, Name>).setProperty(key, value);
+    this.getObj(objName)!.setProperty(key, value);
     return this;
   }
 }
-
-const o = new Objects({
-  math: {a: 1, b: 2},
-  calc: {c: 3, d: 4}
-});
-o.setProperty('math', 'a', 2);
-o.getProperty('math', 'b');
-console.log(o.getObj('calc').get.d);
