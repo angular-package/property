@@ -80,6 +80,9 @@ export {
   * [Descriptors](#descriptors)
   * [Property](#property)
   * [PropertyWrapper](#propertywrapper)
+  * [Object](#object)
+    * [Obj](#obj)
+    * [Objects](#objects)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -1292,37 +1295,145 @@ class PropertyWrapper<
 
 ### `PropertyWrapper.prototype.descriptors`
 
+Property descriptors of `object`. 
+
 ```typescript
-public get descriptors(): Descriptors<Obj, Names>
+public get descriptors(): Descriptors<Obj, Names> {}
+```
+
+### `PropertyWrapper.prototype.object`
+
+The object of `Obj`.
+
+```typescript
+public get object(): Obj {}
+```
+
+### `PropertyWrapper.prototype.wrapped`
+
+Wrapped property names.
+
+```typescript
+public get wrapped(): Set<Names> {}
+```
+
+### `PropertyWrapper.prototype.wrappedValues`
+
+Wrapped property values.
+
+```typescript
+public get wrappedValues(): Map<Names, any> {}
 ```
 
 ### `PropertyWrapper` instance private
 
-### `PropertyWrapper.#descriptors`
+### `PropertyWrapper.#deactivated`
+
+Deactivated accessor `getter` of property names under `getter` and `setter` under `setter`.
 
 ```typescript
-#descriptors: Descriptors<Obj, Names>;
+readonly #deactivated = {
+  /**
+   * Deactivated from executing getter of property names.
+   */
+  getter: new Set<Names>(),
+
+  /**
+   * Deactivated from executing setter of property names.
+   */
+  setter: new Set<Names>()
+}
+```
+
+### `PropertyWrapper.#descriptors`
+
+Privately stored property descriptors.
+
+```typescript
+readonly #descriptors: Descriptors<Obj, Names>;
+```
+
+### `PropertyWrapper.#object`
+
+Privately stored initialized object.
+
+```typescript
+readonly #object: Obj;
+```
+
+### `PropertyWrapper.#wrapped`
+
+Privately stored wrapped property names.
+
+```typescript
+readonly #wrapped: Set<Names> = new Set();
+```
+
+### `PropertyWrapper.#wrappedValues`
+
+Privately stored wrapped property values.
+
+```typescript
+readonly #wrappedValues: Map<Names, any> = new Map();
 ```
 
 ### `PropertyWrapper` instance methods
 
+### `PropertyWrapper.prototype.activate()`
+
+The method activates wrap in specified property `names`.
+
+```typescript
+public activate(accessor: 'getter' | 'setter', ...names: Names[]): this { ... }
+```
+
+### `PropertyWrapper.prototype.deactivate()`
+
+The method deactivates wrap in specified property `names`.
+
+```typescript
+public deactivate(accessor: 'getter' | 'setter', ...names: Names[]): this { ... }
+```
+
+### `PropertyWrapper.prototype.isActive()`
+
+The method check whether accessor of the `name` is active.
+
+```typescript
+public isActive<Name extends Names>(accessor: 'getter' | 'setter', name: Name): boolean { ... }
+```
+
+### `PropertyWrapper.prototype.isWrapped()`
+
+The method checks whether property of `name` is wrapped.
+
+```typescript
+public isWrapped<Name extends Names>(name: Name): boolean { ... }
+```
+
 ### `PropertyWrapper.prototype.wrap()`
+
+The method wraps the property with getter and setter callback.
 
 ```typescript
 public wrap<Name extends Names>(
   names: Name | Name[],
   getterCallback?: GetterCallback<Obj, Name>,
   setterCallback?: SetterCallback<Obj, Name>
-): this { ... }
+): this {... }
 ```
 
 ### `PropertyWrapper.prototype.unwrap()`
+
+The method unwrap property of `names`.
 
 ```typescript
 public unwrap(...names: Names[]): this { ... }
 ```
 
 ### `PropertyWrapper.prototype.#unwrap()`
+
+The method unwrap property of `names`.
 
 ```typescript
 #wrap<Name extends Names>(
@@ -1332,6 +1443,14 @@ public unwrap(...names: Names[]): this { ... }
   setterCallback?: SetterCallback<Obj, Name>
 ): this { ... }
 ```
+
+<br>
+
+### Object
+
+### `Obj`
+
+### `Objects`
 
 <br>
 
