@@ -1,7 +1,6 @@
 // Class.
 import { AccessorDescriptors } from './accessor-descriptors.class';
 import { DataDescriptors } from './data-descriptors.class';
-import { Objects } from '../../object';
 
 // Interface.
 import { DataDescriptor } from '../interface';
@@ -13,10 +12,9 @@ import { AnyDescriptor } from '../type/any-descriptor.type';
 import { ObjectPropertyDescriptors } from '../type/object-property-descriptors.type';
 import { ResultCallback } from '../../type/result-callback.type';
 import { ThisAccessorDescriptor } from '../type';
-import { callbacks } from '../../callback/src/callback.object';
 
 /**
- *
+ * Prototype: __proto__, prototype, getPrototypeOf()
  */
 export class Descriptor<Value, Obj extends object = object> {
   /**
@@ -32,7 +30,7 @@ export class Descriptor<Value, Obj extends object = object> {
   public static defineAccessor<Value, Obj extends object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback?: ResultCallback
-  ): ThisAccessorDescriptor<Value, Obj> {
+  ): ThisAccessorDescriptor<Value, Obj> | undefined {
     return AccessorDescriptors.define(descriptor, callback);
   }
 
@@ -47,7 +45,7 @@ export class Descriptor<Value, Obj extends object = object> {
   public static defineData<Value>(
     descriptor: DataDescriptor<Value>,
     callback?: ResultCallback
-  ): DataDescriptor<Value> {
+  ): DataDescriptor<Value> | undefined {
     return DataDescriptors.define(descriptor, callback);
   }
 
@@ -60,7 +58,11 @@ export class Descriptor<Value, Obj extends object = object> {
   public static fromObject<Obj extends object>(
     object: Obj
   ): ObjectPropertyDescriptors<Obj> | undefined {
-    return Object.getOwnPropertyDescriptors(Objects.get<Obj>(object));
+    return {
+      // ...object['prototype'] && Object.getOwnPropertyDescriptors(object['prototype']) || {},
+      ...Object.getOwnPropertyDescriptors(Object.getPrototypeOf(object)) || {}, // ['__proto__'] equivalent to getPrototypeOf()
+      ...Object.getOwnPropertyDescriptors(object) || {},
+    } as any;
   }
 
   /**
@@ -75,38 +77,32 @@ export class Descriptor<Value, Obj extends object = object> {
     object: Obj,
     key: Key
   ): PropertyDescriptor | undefined {
-    return Object.getOwnPropertyDescriptor(Objects.get(object), key);
-  }
-  /**
-   *
-   * @param object
-   * @param name
-   * @returns
-   * @angularpackage
-   */
-  public static get<Obj, Name extends keyof Obj>(
-    object: Obj,
-    name: Name
-  ): PropertyDescriptor | undefined {
     return (
-      Object.getOwnPropertyDescriptor(object, name) ||
-      Object.getOwnPropertyDescriptor(this.#detectObject(object), name)
+      Object.getOwnPropertyDescriptor(object, key) ||
+      // (object['prototype'] && Object.getOwnPropertyDescriptor(object['prototype'], name)) ||  // Consider to add.
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(object), key)
     );
   }
 
   /**
-   *
-   * @param object
-   * @returns
+   * @alias fromProperty()
    * @angularpackage
    */
-  public static getAll<Obj extends object | Function>(
+  public static get<Obj extends object, Name extends keyof Obj>(
+    object: Obj,
+    name: Name
+  ): PropertyDescriptor | undefined {
+    return this.fromProperty(object, name);
+  }
+
+  /**
+   * @alias fromObject()
+   * @angularpackage
+   */
+  public static getAll<Obj extends object>(
     object: Obj
-  ): ObjectPropertyDescriptors<Obj> {
-    return {
-      ...Object.getOwnPropertyDescriptors(object),
-      ...Object.getOwnPropertyDescriptors(this.#detectObject(object)),
-    };
+  ): ObjectPropertyDescriptors<Obj> | undefined {
+    return this.fromObject(object);
   }
 
   /**
@@ -142,18 +138,6 @@ export class Descriptor<Value, Obj extends object = object> {
   }
 
   /**
-   * Returns the `__proto__` or `prototype` of the given `object` depending on the detected type.
-   * @param object
-   * @returns
-   * @angularpackage
-   */
-  static #detectObject(object: any): object {
-    return typeof object === 'object'
-      ? (object as any)['__proto__']
-      : object.prototype;
-  }
-
-  /**
    * Creates an instance, and optionally sets descriptor of any type.
    * @param descriptor An optional `object` of an `AnyDescriptor<Value, Obj>` type to initially set any kind of descriptor.
    */
@@ -165,7 +149,7 @@ export class Descriptor<Value, Obj extends object = object> {
   }
 
   // Get privately stored descriptor, and from the object or object property.
-  get get(): GetSelectedDescriptor<Value, Obj> {
+  public get get(): GetSelectedDescriptor<Value, Obj> {
     return {
       accessor: this.#accessor.get,
       data: this.#data.get,
@@ -177,7 +161,7 @@ export class Descriptor<Value, Obj extends object = object> {
   }
 
   // Set selected accessor or data descriptor.
-  get set(): SetSelectedDescriptor<Value, Obj> {
+  public get set(): SetSelectedDescriptor<Value, Obj> {
     return {
       accessor: (
         descriptor: ThisAccessorDescriptor<Value, Obj>,

@@ -1,11 +1,11 @@
 // Class.
-import { Objects } from "./objects.class";
+import { Obj } from "./obj.class";
 
 // Type.
 import { ResultCallback } from "../../type/result-callback.type";
 
 /**
- *
+ * @deprecated
  * @param object
  * @param callback
  * @returns
@@ -13,4 +13,4 @@ import { ResultCallback } from "../../type/result-callback.type";
 export const getObject = <Obj extends object>(
   object: Obj,
   callback?: ResultCallback
-): Obj => (Objects.guardObject(object, callback) ? object : object);
+): Obj => (Obj.guard(object, callback) ? object : object);

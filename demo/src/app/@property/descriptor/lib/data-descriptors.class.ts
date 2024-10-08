@@ -1,4 +1,5 @@
 // Class.
+import { Obj } from '../../object';
 import { Property } from '../../lib';
 // Callback.
 import { callbacks } from '../../callback/src/callback.object';
@@ -33,16 +34,16 @@ export class DataDescriptors<Value> {
   public static define<Value>(
     descriptor: DataDescriptor<Value>,
     callback: ResultCallback = callbacks['data']
-  ): DataDescriptor<Value> {
-    const result = {
-      ...{
-        configurable: true,
-        enumerable: true,
-      },
-      ...Property.pick(descriptor, 'configurable', 'enumerable', 'writable', 'value')
-    };
-    callback && callback(typeof result === 'object', result);
-    return result;
+  ): DataDescriptor<Value> | undefined {
+    return callback(Obj.isObject(descriptor, 'configurable', 'enumerable', 'writable', 'value'), descriptor)
+      ? {
+        ...{
+          configurable: true,
+          enumerable: true,
+        },
+        ...Property.pick(descriptor, 'configurable', 'enumerable', 'writable', 'value')
+      }
+      : undefined;
   }
 
   /**
@@ -62,7 +63,7 @@ export class DataDescriptors<Value> {
     Object
       .keys(descriptor)
       .forEach(key => (result === true) && (result = key in {
-        'configurable': true, 'enumerable': true, 'writable': true, 'value': true
+        configurable: true, enumerable: true, writable: true, value: true
       }));
     return callback(result, descriptor);
   }
@@ -70,7 +71,7 @@ export class DataDescriptors<Value> {
   /**
    * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
    */
-  get get(): DataDescriptor<Value> {
+  public get get(): DataDescriptor<Value> {
     return this.#descriptor;
   }
 

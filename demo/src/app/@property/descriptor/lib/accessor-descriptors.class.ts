@@ -1,4 +1,5 @@
 // Class.
+import { Obj } from '../../object';
 import { Property } from '../../lib';
 
 // Callback.
@@ -29,21 +30,21 @@ export class AccessorDescriptors<Value, Obj extends object> {
    * with `get` or `set` property, by default it uses `accessorCallback()` function.
    * @throws Throws an error if the descriptor is not an object of a `ThisAccessorDescriptor<Value, Obj>` type, which means it
    * doesn't contain `get` or `set` property.
-   * @returns The return value is an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
+   * @returns The returned value is an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
    */
   public static define<Value, Obj extends object = object>(
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback: ResultCallback = callbacks['accessor']
-  ): ThisAccessorDescriptor<Value, Obj> {
-    const result = {
-      ...{
-        configurable: true,
-        enumerable: true,
-      },
-      ...Property.pick(descriptor, 'configurable', 'enumerable', 'get', 'set')
-    };
-    callback && callback(typeof result === 'object', result);
-    return result;
+  ): ThisAccessorDescriptor<Value, Obj> | undefined {
+    return callback(Obj.isObject(descriptor, 'configurable', 'enumerable', 'get', 'set'), descriptor)
+      ? {
+        ...{
+          configurable: true,
+          enumerable: true,
+        },
+        ...Property.pick(descriptor, 'configurable', 'enumerable', 'get', 'set')
+      }
+      : undefined;
   }
 
   /**
@@ -63,7 +64,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
     Object
       .keys(descriptor)
       .forEach(key => (result === true) && (result = key in {
-        'configurable': true, 'enumerable': true, 'get': true, 'set': true
+        configurable: true, enumerable: true, get: true, set: true
       }));
     return callback(result, descriptor);
   }
@@ -74,6 +75,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
   public get get(): ThisAccessorDescriptor<Value, Obj> {
     return this.#descriptor;
   }
+
 
   // Single private accessor descriptor.
   #descriptor: ThisAccessorDescriptor<Value, Obj> = {
@@ -106,7 +108,10 @@ export class AccessorDescriptors<Value, Obj extends object> {
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback?: ResultCallback
   ): this {
-    this.#descriptor = AccessorDescriptors.define(descriptor, callback);
+    this.#descriptor = {
+      ...this.#descriptor,
+      ...AccessorDescriptors.define(descriptor, callback),
+    };
     return this;
   }
 }
