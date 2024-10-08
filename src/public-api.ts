@@ -22,6 +22,11 @@ export {
 } from './descriptor';
 
 export {
+  Obj,
+  Objects
+} from './object';
+
+export {
   GetterCallback,
   SetterCallback
 } from './type';
