@@ -12,9 +12,16 @@ export class Objects<
   Names extends keyof Objs
 > {
   /**
+   * @angularpackage
+   */
+  public get get(): Objs {
+    return this.#objects;
+  }
+
+  /**
    * 
    */
-  #objects: Objs = {} as any;
+  readonly #objects: Objs = {} as any;
 
 
   /**
@@ -22,9 +29,7 @@ export class Objects<
    * @param object 
    */
   constructor(objects: Objs) {
-    Object.entries(objects).forEach(([key, obj]) => {
-      this.#objects = Object.assign(this.#objects, {[key]: new Obj(obj)});
-    });
+    Object.entries(objects).forEach(([key, obj]) => Object.assign(this.#objects, {[key]: new Obj(obj)}));
   }
 
   /**
