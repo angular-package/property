@@ -171,13 +171,14 @@ const obj = new Obj(
 Access to property class by `property` accessor.
 
 ```typescript
-console.log(`obj.property `, obj.property);
+obj.property;
 ```
 
 Access to object stored in `Obj`.
 
 ```typescript
-console.log(`obj.property `, obj.get);
+console.log(`obj.get `, obj.get); // {"string": "string", "language": ["polish", "english"],"$number": 27}
+console.log(`obj.property.object `, obj.property.object); // {"string": "string", "language": ["polish", "english"],"$number": 27}
 ```
 
 Set property by using `setProperty()` and `set()` methods, and get property by using `getProperty()` and `get()` methods.
