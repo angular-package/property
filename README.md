@@ -168,17 +168,17 @@ const obj = new Obj(
 );
 ```
 
-Access to property class by `property` accessor.
+Access to `Property` class by `property` accessor.
 
 ```typescript
-obj.property;
+obj.property; // {descriptors, object, wrapped, wrappedValues}
 ```
 
 Access to object stored in `Obj`.
 
 ```typescript
-console.log(`obj.get `, obj.get); // {"string": "string", "language": ["polish", "english"],"$number": 27}
-console.log(`obj.property.object `, obj.property.object); // {"string": "string", "language": ["polish", "english"],"$number": 27}
+obj.get; // {"string": "string", "language": ["polish", "english"],"$number": 27}
+obj.property.object; // {"string": "string", "language": ["polish", "english"],"$number": 27}
 ```
 
 Set property by using `setProperty()` and `set()` methods, and get property by using `getProperty()` and `get()` methods.
@@ -186,16 +186,21 @@ Set property by using `setProperty()` and `set()` methods, and get property by u
 ```typescript
 // Set property.
 obj.setProperty('number', 37);
-console.log(`obj.getProperty('number') `, obj.getProperty('number')); // 37
 
+// Get property.
+obj.getProperty('number'); // 37
+
+// Set property.
 obj.property.set('number', 47);
-console.log(`obj.property.get('number') `, obj.property.get('number')); // 47
+
+// Get property.
+obj.property.get('number'); // 47
 ```
 
-Check whether obj has property.
+Check whether `obj` has property.
 
 ```typescript
-console.log(`obj.hasOwnProperty('number') `, obj.hasOwnProperty('number')); // true
+obj.hasOwnProperty('number'); // true
 ```
 
 Wrap property.
@@ -232,10 +237,7 @@ obj.get.number = 15; // By object.
 obj.setProperty('number', 27); // By method.
 
 // Check by get method and object.
-console.log(obj.get.number, obj.getProperty('number')); // 27 27
-
-// Check obj.
-console.log(obj);
+obj.getProperty('number'); // 27
 ```
 
 ----
