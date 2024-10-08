@@ -1,143 +1,79 @@
 // Class.
-import { Property } from "../../lib";
+import { Obj } from "./obj.class";
 
 // Type.
-import { ResultCallback } from "../../type/result-callback.type";
+import { ObjsContainer } from "../type/objs-container.type";
 
 /**
  *
  */
-export class Objects<Obj extends object, Names extends keyof Obj = keyof Obj> extends Object {
-  /**
-   * Returns object with merged with prototype.
-   * @param object Object of a generic `Obj` type.
-   * @param callback
-   * @returns
-   */
-  public static get = <Obj extends object>(
-    object: Obj,
-  ): Obj => {
-    return {
-      ...(object as any)['prototype'] && (object as any['prototype']) || {},
-      ...(object as any)['__proto__'] && (object as any)['__proto__'] || {},
-      ...Object.getPrototypeOf(object) || {},
-      ...object || {},
-    };
-  }
-
-  /**
-   * @deprecated
-   * Returns the `object` `prototype` of a type detected from the `object`.
-   * @param object The `object` that contains the `prototype`.
-   * @returns The return value is an `object` of a generic `Obj` type.
-   */
-  public static getPrototype<Obj extends object>(object: Obj): Obj {
-    return Object.getPrototypeOf(object);
-  }
-
-  /**
-   * 
-   * @param object 
-   * @param key 
-   * @returns 
-   */
-  public static hasOwnProperty<Obj extends object, Key extends keyof Obj>(
-    object: Obj,
-    key: Key
-  ): boolean {
-    return {}.hasOwnProperty.call(object, key);
-  }
-
-  /**
-   * 
-   * @param object 
-   * @param callback 
-   * @param payload 
-   * @returns 
-   */
-  public static guard<Obj extends object, Payload extends object = object>(
-    object: Obj,
-    callback?: ResultCallback,
-    payload?: Payload
-  ) {
-    const result = this.isObject(object);
-    return (callback && callback(result, object, payload)) || result;
-  }
-
-  /**
-   * 
-   * @param value 
-   * @returns 
-   */
-  public static isObject(value: any, ...keys: PropertyKey[]) {
-    const isObject = typeof value === 'object' &&
-      Object.prototype.toString.call(value).slice(8, -1).toLowerCase() === 'object' &&
-      value instanceof Object;
-
-    let result = true;
-    if (keys && isObject) {
-      keys.forEach(key => (result === true) && (result = key in value));
-    }
-
-    return keys ? isObject && result : isObject;
-  }
-
+export class Objects<
+  Objs extends object,
+  Names extends keyof Objs
+> {
   /**
    * 
    */
-  public get get(): Obj | undefined {
-    return this.#object || undefined;
-  }
+  #objects: Objs = {} as any;
 
-  /**
-   * 
-   */
-  public get property(): Property<Obj, Names> | undefined {
-    return this.#property;
-  }
-
-  /**
-   * 
-   */
-  #object: Obj | undefined;
-
-  /**
-   * 
-   */
-  #property: Property<Obj, Names> | undefined;
 
   /**
    * Creates an instance of `Objects`.
    * @param object 
    */
-  constructor(object?: Obj, ...names: Names[]) {
-    super(object);
-    object
-      && this.set(object)
-      && this.#object && (this.#property = new Property(this.#object, ...names));
+  constructor(objects: Objs) {
+    Object.entries(objects).forEach(([key, obj]) => {
+      console.log(`key`, key, `obj`, obj);
+      this.#objects = Object.assign(this.#objects, {[key]: new Obj(obj)});
+    });
   }
 
   /**
    * 
-   * @param key 
+   * @param name 
    * @returns 
    */
-  public hasOwnProperty<O extends Obj, Key extends keyof O>(
-    key: Key
-  ): boolean {
-    return super.hasOwnProperty(key);
+  public getObj<Name extends Names>(
+    name: Name
+  ): ObjsContainer<Objs, Name> {
+    return this.#objects[name] as unknown as ObjsContainer<Objs, Name>;
   }
 
   /**
-   * The method sets
-   * @param object 
+   * Returns the value 
+   * @param key 
    * @returns 
    */
-  public set<O extends Obj>(object: O): this {
-    this.#object = Objects.get(object);
+  public getProperty<Name extends Names, Key extends keyof Objs[Name]>(
+    objName: Name,
+    key: Key,
+  ): Objs[Name][Key] {
+    (this.#objects[objName] as unknown as ObjsContainer<Objs, Name>)
+      .getProperty(key);
+    return 
+  }
+
+  /**
+   * The method sets property in the initialized `object`.
+   * @param key The property key to set the `value` in the `object`.
+   * @param value The value to set in the `object` under given `key`.
+   * @returns The returned is an instance of `Objects`.
+   * @angularpackage
+   */
+  public setProperty<Name extends Names, Key extends keyof Objs[Name]>(
+    objName: Name,
+    key: Key,
+    value: Objs[Name][Key]
+  ): this {
+    (this.#objects[objName] as unknown as ObjsContainer<Objs, Name>).setProperty(key, value);
     return this;
   }
 }
 
-// Alias name to Objects.
-export class Obj<Obj extends object> extends Objects<Obj> {}
+const o = new Objects({
+  math: {a: 1, b: 2},
+  calc: {c: 3, d: 4}
+});
+o.setProperty('math', 'a', 2);
+o.getProperty('math', 'b');
+console.log(o.getObj('calc').get.d);
