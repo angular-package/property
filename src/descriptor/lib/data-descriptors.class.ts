@@ -1,5 +1,5 @@
 // Class.
-import { Objects } from '../../object';
+import { Obj } from '../../object';
 import { Property } from '../../lib';
 // Callback.
 import { callbacks } from '../../callback/src/callback.object';
@@ -35,7 +35,7 @@ export class DataDescriptors<Value> {
     descriptor: DataDescriptor<Value>,
     callback: ResultCallback = callbacks['data']
   ): DataDescriptor<Value> | undefined {
-    return callback(Objects.isObject(descriptor, 'configurable', 'enumerable', 'writable', 'value'), descriptor)
+    return callback(Obj.isObject(descriptor, 'configurable', 'enumerable', 'writable', 'value'), descriptor)
       ? {
         ...{
           configurable: true,

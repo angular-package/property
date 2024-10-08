@@ -1,5 +1,5 @@
 // Class.
-import { Objects } from '../../object';
+import { Obj } from '../../object';
 import { Property } from '../../lib';
 
 // Callback.
@@ -36,7 +36,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback: ResultCallback = callbacks['accessor']
   ): ThisAccessorDescriptor<Value, Obj> | undefined {
-    return callback(Objects.isObject(descriptor, 'configurable', 'enumerable', 'get', 'set'), descriptor)
+    return callback(Obj.isObject(descriptor, 'configurable', 'enumerable', 'get', 'set'), descriptor)
       ? {
         ...{
           configurable: true,

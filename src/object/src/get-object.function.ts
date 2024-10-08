@@ -1,5 +1,5 @@
 // Class.
-import { Objects } from "./objects.class";
+import { Obj } from "./obj.class";
 
 // Type.
 import { ResultCallback } from "../../type/result-callback.type";
@@ -13,4 +13,4 @@ import { ResultCallback } from "../../type/result-callback.type";
 export const getObject = <Obj extends object>(
   object: Obj,
   callback?: ResultCallback
-): Obj => (Objects.guard(object, callback) ? object : object);
+): Obj => (Obj.guard(object, callback) ? object : object);
