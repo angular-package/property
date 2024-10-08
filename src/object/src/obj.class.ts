@@ -1,16 +1,19 @@
 // Class.
+import { AccessorDescriptor, DataDescriptor } from "../../descriptor";
 import { Property } from "../../lib";
 
+
 // Type.
+import { GetterCallback, SetterCallback } from "../../type";
 import { ResultCallback } from "../../type/result-callback.type";
 
 /**
  *
  */
 export class Obj<
-  Obj extends object,
+  Obj extends object = object,
   Keys extends keyof Obj = keyof Obj
-> extends Object {
+> {
   /**
    * Returns object with merged with prototype.
    * @param object Object of a generic `Obj` type.
@@ -86,38 +89,45 @@ export class Obj<
   }
 
   /**
-   * 
+   * The get accessor to return initialized object.
    */
-  public get get(): Obj | undefined {
-    return this.#object || undefined;
+  public get get(): Obj {
+    return this.#property.object;
   }
 
   /**
-   * 
+   * The get accessor to return initialized `Property`.
    */
   public get property(): Property<Obj, Keys> {
     return this.#property;
   }
 
   /**
-   * 
+   * Privately stored initialized `Property`.
    */
-  #object: Obj | undefined;
-
-  /**
-   * 
-   */
-  #property!: Property<Obj, Keys>;
+  readonly #property: Property<Obj, Keys>;
 
   /**
    * Creates an instance of `Objects`.
    * @param object 
    */
-  constructor(object?: Obj, ...names: Keys[]) {
-    super(object);
-    object
-      && this.set(object)
-      && (this.#property = new Property(this.#object!, ...names));
+  constructor(object: Obj = {} as Obj, ...names: Keys[]) {    
+    this.#property = new Property(object, ...names);
+  }
+
+  /**
+   * The instance method defines `accessor` or `data` descriptor property of `name` in stored `object`.
+   * @param name The property name to define in the `object`.
+   * @param data 
+   * @param accessor 
+   * @returns 
+   */
+  public defineProperty<Name extends PropertyKey, Value>(
+    name: Name,
+    data?: DataDescriptor<Value>,
+    accessor?: AccessorDescriptor<Value> & ThisType<Obj>
+  ): Obj & { [K in Name]: Value } | Obj {
+    return this.#property.define(name, data, accessor);
   }
 
   /**
@@ -125,29 +135,34 @@ export class Obj<
    * @param key 
    * @returns 
    */
-  public hasOwnProperty<O extends Obj, Key extends keyof O>(
+  public hasOwnProperty<Key extends Keys>(
     key: Key
   ): boolean {
-    return super.hasOwnProperty(key);
+    return Obj.hasOwnProperty(this.#property.object, key);
   }
 
   /**
-   * The method sets `object` in 
-   * @param object 
-   * @returns 
-   */
-  public set<O extends Obj>(object: O): this {
-    this.#object = Obj.get(object);
-    return this;
-  }
-
-  /**
-   * Returns the value 
+   * Returns the value from the
    * @param key 
    * @returns 
    */
-  public getProperty<Key extends keyof Obj>(key: Key): Obj[Key] {
-    return this.property.object[key];
+  public getProperty<Key extends Keys>(
+    key: Key
+  ): Obj[Key] {
+    return this.#property.get(key);
+  }
+
+  /**
+   * @deprecated
+   * The method sets `object`.
+   * @param object 
+   * @returns 
+   */
+  public set<O extends Obj>(
+    object: O
+  ): this {
+    // this.#object = object;
+    return this;
   }
 
   /**
@@ -157,11 +172,37 @@ export class Obj<
    * @returns The returned is an instance of `Objects`.
    * @angularpackage
    */
-  public setProperty<Key extends keyof Obj>(
+  public setProperty<Key extends Keys>(
     key: Key,
     value: Obj[Key]
   ): this {
-    this.property.set(key, value);
+    this.#property.set(key, value);
     return this;
   }
+
+  /**
+   * TODO: Check key of array.
+   * The method wraps the property with getter and setter callback.
+   * @param key 
+   * @param value 
+   * @returns 
+   * @angularpackage
+   */
+  public wrapProperty<Key extends Keys>(
+    key: Key | Key[],
+    getterCallback?: GetterCallback<Obj, Key>,
+    setterCallback?: SetterCallback<Obj, Key>
+  ): this {
+    this.#property.wrap(key, getterCallback, setterCallback);
+    return this;
+  }
+
+  /**
+   * 
+   * @returns 
+   */
+  public valueOf(): Obj {
+    return this.#property.object;
+  }
 }
+
