@@ -53,22 +53,22 @@ export class PropertyWrapper<
   /**
    *
    */
-  #descriptors!: Descriptors<Obj, Names>;
+  readonly #descriptors: Descriptors<Obj, Names>;
+
+  /**
+   * Privately stored initialized object.
+   */
+  readonly #object: Obj;
 
   /**
    *
    */
-  #object: Obj;
+  readonly #wrapped: Set<Names> = new Set();
 
   /**
    *
    */
-  #wrapped: Set<Names> = new Set();
-
-  /**
-   *
-   */
-  #wrappedValues: Map<Names, any> = new Map();
+  readonly #wrappedValues: Map<Names, any> = new Map();
 
   /**
    * Creates an instance of `WrapProperty`.
@@ -78,7 +78,7 @@ export class PropertyWrapper<
    */
   constructor(object: Obj, ...names: Names[]) {
     this.#object = object;
-    this.#descriptors = new Descriptors(object, ...names);
+    this.#descriptors = new Descriptors(this.#object, ...names);
   }
 
   /**
