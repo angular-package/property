@@ -107,7 +107,7 @@ export class Obj<
   /**
    * 
    */
-  #property: Property<Obj, Keys>;
+  #property!: Property<Obj, Keys>;
 
   /**
    * Creates an instance of `Objects`.
@@ -117,7 +117,7 @@ export class Obj<
     super(object);
     object
       && this.set(object)
-      && (this.#property = new Property(this.#object, ...names));
+      && (this.#property = new Property(this.#object!, ...names));
   }
 
   /**
