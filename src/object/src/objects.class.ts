@@ -23,7 +23,6 @@ export class Objects<
    */
   constructor(objects: Objs) {
     Object.entries(objects).forEach(([key, obj]) => {
-      console.log(`key`, key, `obj`, obj);
       this.#objects = Object.assign(this.#objects, {[key]: new Obj(obj)});
     });
   }
