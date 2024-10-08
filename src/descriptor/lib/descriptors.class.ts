@@ -20,7 +20,7 @@ export class Descriptors<
    * Privately stored property descriptors.
    * @angularpackage
    */
-  #descriptors: Map<Keys, PropertyDescriptor> = new Map();
+  readonly #descriptors: Map<Keys, PropertyDescriptor> = new Map();
 
   /**
    * Creates an instance of `Descriptors` with obj and `keys` to pick descriptors.
