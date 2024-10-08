@@ -36,22 +36,6 @@ export class Property<
   }
 
   /**
-   * The method sets the `value` of indicated property by its `name` in the `object`.
-   * @param obj
-   * @param name
-   * @returns
-   * @angularpackage
-   */
-  public static set<Obj extends object, Name extends keyof Obj>(
-    object: Obj,
-    name: Name,
-    value: Obj[Name]
-  ): typeof Property {
-    Object.assign(object, {[name]: value});
-    return this;
-  }
-
-  /**
    * The method return the value of the specified property `name` from the `object`.
    * @param object
    * @param name
@@ -66,7 +50,7 @@ export class Property<
   }
 
   /**
-   * The method gets specified properties from the specified `object`.
+   * The static method gets specified properties from the specified `object`.
    * @param object
    * @param names
    * @returns
@@ -82,6 +66,22 @@ export class Property<
         typeof object[key] !== 'undefined' ? { [key]: object[key] } : undefined
       )
     );
+  }
+
+  /**
+   * The method sets the `value` of indicated property by its `name` in the `object`.
+   * @param obj
+   * @param name
+   * @returns
+   * @angularpackage
+   */
+  public static set<Obj extends object, Name extends keyof Obj>(
+    object: Obj,
+    name: Name,
+    value: Obj[Name]
+  ): typeof Property {
+    Object.assign(object, {[name]: value});
+    return this;
   }
 
   /**
@@ -112,12 +112,15 @@ export class Property<
    * @param names
    * @angularpackage
    */
-  constructor(object: Obj, ...names: Names[]) {
+  constructor(
+    object: Obj,
+    ...names: Names[]
+  ) {
     super(object, ...names);
   }
 
   /**
-   * The instance method defines `accessor` or `data` descriptor property in `this.#object` of `name`.
+   * The instance method defines `accessor` or `data` descriptor property of `name` in stored `object`.
    * @param object
    * @param name
    * @param accessor
@@ -129,11 +132,23 @@ export class Property<
     data?: DataDescriptor<Value>,
     accessor?: AccessorDescriptor<Value> & ThisType<Obj>
   ): Obj & { [K in Name]: Value } | Obj {
-    return this.#defineProperty(super.object, name, data, accessor) as any;
+    return this.#define(super.object, name, data, accessor) as any;
   }
 
   /**
    * 
+   * @param name 
+   * @returns 
+   * @angularpackage
+   */
+  public get<Name extends keyof Obj>(
+    name: Name,
+  ): Obj[Name] {
+    return super.object[name];
+  }
+
+  /**
+   *
    * @param object 
    * @param name 
    * @param value 
@@ -156,7 +171,7 @@ export class Property<
    * @returns 
    * @angularpackage
    */
-  #defineProperty<O extends Obj, Name extends PropertyKey, Value>(
+  #define<O extends Obj, Name extends PropertyKey, Value>(
     object: O,
     name: Name,
     data?: DataDescriptor<Value>,
