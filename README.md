@@ -152,7 +152,7 @@ npm i --save @angular-package/property
 
 ## Learn
 
-How to use `Obj` / `Objects`.
+How to use `Obj`.
 
 ```typescript
 import { Obj, Objects } from '@angular-package/property';
@@ -166,7 +166,40 @@ const obj = new Obj(
   // If empty, then all property descriptors of the given object are stored.
   'number', 'language', 'string'
 );
+```
 
+Access to property class by `property` accessor.
+
+```typescript
+console.log(`obj.property `, obj.property);
+```
+
+Access to object stored in `Obj`.
+
+```typescript
+console.log(`obj.property `, obj.get);
+```
+
+Set property by using `setProperty()` and `set()` methods, and get property by using `getProperty()` and `get()` methods.
+
+```typescript
+// Set property.
+obj.setProperty('number', 37);
+console.log(`obj.getProperty('number') `, obj.getProperty('number')); // 37
+
+obj.property.set('number', 47);
+console.log(`obj.property.get('number') `, obj.property.get('number')); // 47
+```
+
+Check whether obj has property.
+
+```typescript
+console.log(`obj.hasOwnProperty('number') `, obj.hasOwnProperty('number')); // true
+```
+
+Wrap property.
+
+```typescript
 // Wrap property `number` to bind it with `$number`.
 obj.property.wrap(
   'number',
@@ -188,22 +221,24 @@ obj.property.wrap(
     this.$number = value;
   }
 );
+```
 
-// Check if `number` property is connected with `$number`.
-// Set proper
-obj.get.number = 15; // By using object.
-// By method.
-obj.setProperty('number', 27);
+Check if `number` property is connected with `$number`.
+
+```typescript
+// Set property.
+obj.get.number = 15; // By object.
+obj.setProperty('number', 27); // By method.
 
 // Check by get method and object.
 console.log(obj.get.number, obj.getProperty('number')); // 27 27
 
 // Check obj.
 console.log(obj);
-
 ```
 
 ----
+
 ## Callback
 
 Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
