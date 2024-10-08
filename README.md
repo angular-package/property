@@ -10,7 +10,9 @@ The angular-package supports the development process of [angular](https://angula
 
 <a href="https://angular.io"><img src="https://raw.githubusercontent.com/angular-package/property/refs/heads/develop/ts-logo-512.png" width="92" height="92" /></a>
 
-## angular-package/property
+## Property
+
+@angular-package/property
 
 Features to handle properties.
 
@@ -29,7 +31,7 @@ Features to handle properties.
 export {
   // Class.
   Property,
-  WrapProperty,
+  PropertyWrapper,
 } from './lib';
 
 export {
@@ -47,6 +49,11 @@ export {
 } from './descriptor';
 
 export {
+  Obj,
+  Objects
+} from './object';
+
+export {
   GetterCallback,
   SetterCallback
 } from './type';
@@ -60,6 +67,7 @@ export {
 * [Code scaffolding](#code-scaffolding)
 * [Documentation](#documentation)
 * [Installation](#installation)
+* [Learn](#learn)
 * [Callback](#callback)
 * [Package](#package)
   * [Descriptor](#descriptor-package)
@@ -71,7 +79,7 @@ export {
     * [Type](#descriptor-type)
   * [Descriptors](#descriptors)
   * [Property](#property)
-  * [WrapProperty](#wrapproperty)
+  * [PropertyWrapper](#propertywrapper)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -142,6 +150,60 @@ npm i --save @angular-package/property
 
 ----
 
+## Learn
+
+How to use `Obj` / `Objects`.
+
+```typescript
+import { Obj, Objects } from '@angular-package/property';
+
+// Create new instance of `Obj`.
+const obj = new Obj(
+  // Object to perform property wrap.
+  { number: 27, string: 'string', language: ['polish', 'english'], $number: 0 },
+
+  // Properties to store original setter/getter descriptor in `PropertyWrapper` instance.
+  // If empty, then all property descriptors of the given object are stored.
+  'number', 'language', 'string'
+);
+
+// Wrap property `number` to bind it with `$number`.
+obj.property.wrap(
+  'number',
+
+  // Define getter.
+  function(key, instance){
+    // key = 'number'
+    // instance = this
+    console.log(`getter:`, this); // Context this of the initialized object.
+    return this.$number;
+  },
+
+  // Define setter.
+  function(value, oldValue, key, instance){
+    // oldValue is a previous value
+    // key = 'number'
+    // instance = this
+    console.log(`setter: `, this); // Context this of the initialized object.
+    this.$number = value;
+  }
+);
+
+// Check if `number` property is connected with `$number`.
+// Set proper
+obj.get.number = 15; // By using object.
+// By method.
+obj.setProperty('number', 27);
+
+// Check by get method and object.
+console.log(obj.get.number, obj.getProperty('number')); // 27 27
+
+// Check obj.
+console.log(obj);
+
+```
+
+----
 ## Callback
 
 Wrapper for the [`ResultCallback`][package-type-resultcallback] type function to throw an [`Error`][js-error] with the specified message on the specified `false` or `true` state.
@@ -1174,39 +1236,39 @@ public static wrap<Obj extends object | Function, Names extends keyof Obj>(
   names: Names[],
   getterCallback?: GetterCallback<Obj, Names>,
   setterCallback?: SetterCallback<Obj, Names>
-): WrapProperty<Obj, Names> { ... }
+): PropertyWrapper<Obj, Names> { ... }
 ```
 
-### WrapProperty
+### PropertyWrapper
 
-Object to wrap properties with getter/setter.
+Wrap and unwrap properties with getter/setter in `object`.
 
 ```typescript
-class WrapProperty<
+class PropertyWrapper<
   Obj extends object | Function,
   Names extends keyof Obj
 > { ... }
 ```
 
-### `WrapProperty` instance accessors
+### `PropertyWrapper` instance accessors
 
-### `WrapProperty.prototype.descriptors`
+### `PropertyWrapper.prototype.descriptors`
 
 ```typescript
 public get descriptors(): Descriptors<Obj, Names>
 ```
 
-### `WrapProperty` instance private
+### `PropertyWrapper` instance private
 
-### `WrapProperty.#descriptors`
+### `PropertyWrapper.#descriptors`
 
 ```typescript
 #descriptors: Descriptors<Obj, Names>;
 ```
 
-### `WrapProperty` instance methods
+### `PropertyWrapper` instance methods
 
-### `WrapProperty.prototype.wrap()`
+### `PropertyWrapper.prototype.wrap()`
 
 ```typescript
 public wrap<Name extends Names>(
@@ -1216,13 +1278,13 @@ public wrap<Name extends Names>(
 ): this { ... }
 ```
 
-### `WrapProperty.prototype.unwrap()`
+### `PropertyWrapper.prototype.unwrap()`
 
 ```typescript
 public unwrap(...names: Names[]): this { ... }
 ```
 
-### `WrapProperty.prototype.#unwrap()`
+### `PropertyWrapper.prototype.#unwrap()`
 
 ```typescript
 #wrap<Name extends Names>(
