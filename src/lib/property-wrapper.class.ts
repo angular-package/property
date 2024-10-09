@@ -11,34 +11,37 @@ export class PropertyWrapper<
   Names extends keyof Obj
 > {
   /**
-   *
+   * Property descriptors of `object`.
    */
   public get descriptors(): Descriptors<Obj, Names> {
     return this.#descriptors;
   }
 
   /**
-   * 
+   * The object of `Obj`.
    */
   public get object(): Obj {
     return this.#object;
   }
 
   /**
-   *
+   * Wrapped property names.
    */
   public get wrapped(): Set<Names> {
     return this.#wrapped;
   }
 
   /**
-   *
+   * Wrapped property values.
    */
   public get wrappedValues(): Map<Names, any> {
     return this.#wrappedValues;
   }
 
-  #deactivated = {
+  /**
+   * Deactivated setters and getters of property names.
+   */
+  readonly #deactivated = {
     /**
      * Deactivated from executing getter of property names.
      */
@@ -51,7 +54,7 @@ export class PropertyWrapper<
   }
 
   /**
-   *
+   * Privately stored property descriptors.
    */
   readonly #descriptors: Descriptors<Obj, Names>;
 
@@ -61,12 +64,12 @@ export class PropertyWrapper<
   readonly #object: Obj;
 
   /**
-   *
+   * Privately stored wrapped property names.
    */
   readonly #wrapped: Set<Names> = new Set();
 
   /**
-   *
+   * Privately stored wrapped property values.
    */
   readonly #wrappedValues: Map<Names, any> = new Map();
 
