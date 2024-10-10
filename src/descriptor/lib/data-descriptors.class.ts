@@ -35,11 +35,12 @@ export class DataDescriptors<Value> {
     descriptor: DataDescriptor<Value>,
     callback: ResultCallback = callbacks['data']
   ): DataDescriptor<Value> | undefined {
-    return callback(Obj.isObject(descriptor, 'configurable', 'enumerable', 'writable', 'value'), descriptor)
+    return this.guard(descriptor, callback)
       ? {
         ...{
-          configurable: true,
-          enumerable: true,
+          configurable: DataDescriptors.configurable,
+          enumerable: DataDescriptors.enumerable,
+          writable: DataDescriptors.writable,  
         },
         ...Property.pick(descriptor, 'configurable', 'enumerable', 'writable', 'value')
       }
@@ -59,14 +60,17 @@ export class DataDescriptors<Value> {
     descriptor: DataDescriptor<Value>,
     callback: ResultCallback = callbacks['data']
   ): descriptor is DataDescriptor<Value> {
-    let result = true;
-    Object
-      .keys(descriptor)
-      .forEach(key => (result === true) && (result = key in {
-        configurable: true, enumerable: true, writable: true, value: true
-      }));
-    return callback(result, descriptor);
+    return callback('value' in descriptor, descriptor);
   }
+
+  // Default configurable.
+  public static configurable = true;
+
+  // Default enumerable.
+  public static enumerable = true;
+
+  // Default writable.
+  public static writable = true;
 
   /**
    * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
@@ -77,9 +81,11 @@ export class DataDescriptors<Value> {
 
   // Defaults to data descriptor.
   #descriptor: DataDescriptor<Value> = {
-    configurable: true,
-    enumerable: true,
-    writable: true,
+    ...{
+      configurable: DataDescriptors.configurable,
+      enumerable: DataDescriptors.enumerable,
+      writable: DataDescriptors.writable,  
+    },
     value: undefined,
   };
 
