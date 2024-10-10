@@ -1049,11 +1049,11 @@ class Descriptors<
 
 ### `Obj`
 
-Documentation is under construction [https://angular-package.gitbook.io/property/documentation/obj/overview](https://angular-package.gitbook.io/property/documentation/obj/overview).
+Documentation is under construction [here](https://angular-package.gitbook.io/property/documentation/obj/overview).
 
 ### `Objects`
 
-Documentation is under construction [https://angular-package.gitbook.io/property/documentation/objects/overview](https://angular-package.gitbook.io/property/documentation/objects/overview).
+Documentation is under construction [here](https://angular-package.gitbook.io/property/documentation/objects/overview).
 
 ### `Property`
 
@@ -1176,7 +1176,7 @@ public static wrap<Obj extends object | Function, Names extends keyof Obj>(
 
 ### `PropertyWrapper`
 
-Documentation is under construction [https://angular-package.gitbook.io/property/documentation/propertywrapper](https://angular-package.gitbook.io/property/documentation/propertywrapper).
+Documentation is under construction [here](https://angular-package.gitbook.io/property/documentation/propertywrapper).
 
 ----
 
