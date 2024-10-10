@@ -136,6 +136,27 @@ export class Descriptor<Value, Obj extends object = object> {
     return pickedDescriptors;
   }
 
+  /**
+   * The static getter accessor to define `accessor` and `data` descriptor.
+   * @returns The returned value is an `object` with `accessor` and `data` properties.
+   * @angularpackage
+   */
+  public static get define(): {
+    accessor: <Value, Obj extends object>(
+      descriptor: ThisAccessorDescriptor<Value, Obj>,
+      callback?: ResultCallback
+    ) => ThisAccessorDescriptor<Value, Obj> | undefined,
+    data: <Value>(
+      descriptor: DataDescriptor<Value>,
+      callback?: ResultCallback
+    ) => DataDescriptor<Value> | undefined
+  } {
+    return {
+      accessor: this.defineAccessor,
+      data: this.defineData
+    }
+  } 
+
   // Get privately stored descriptor, and from the object or object property.
   public get get(): GetSelectedDescriptor<Value, Obj> {
     return {
