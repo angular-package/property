@@ -50,9 +50,8 @@ export class Descriptor<Value, Obj extends object = object> {
   }
 
   /**
-   * Returns property descriptors from the specified detected object.
-   * @param object An `object` of a generic `Obj` type to get own property descriptor with the specified `key`.
-   * If `class` is provided then it uses its prototype.
+   * Returns property descriptors from the specified object and its prototype.
+   * @param object An `object` of a generic `Obj` type to get property descriptors.
    * @returns The return value is an `object` of a `ObjectPropertyDescriptors<Obj>` type.
    */
   public static fromObject<Obj extends object>(
@@ -137,17 +136,6 @@ export class Descriptor<Value, Obj extends object = object> {
     return pickedDescriptors;
   }
 
-  /**
-   * Creates an instance, and optionally sets descriptor of any type.
-   * @param descriptor An optional `object` of an `AnyDescriptor<Value, Obj>` type to initially set any kind of descriptor.
-   */
-  constructor(descriptor?: AnyDescriptor<Value, Obj>) {
-    if (descriptor) {
-      this.#accessor.set(descriptor, result => result);
-      this.#data.set(descriptor, result => result);
-    }
-  }
-
   // Get privately stored descriptor, and from the object or object property.
   public get get(): GetSelectedDescriptor<Value, Obj> {
     return {
@@ -187,4 +175,16 @@ export class Descriptor<Value, Obj extends object = object> {
   >();
   // Private data descriptor instance.
   #data: DataDescriptors<Value> = new DataDescriptors<Value>();
+
+  /**
+   * Creates an instance, and optionally sets descriptor of any type.
+   * @param descriptor An optional `object` of an `AnyDescriptor<Value, Obj>` type to initially set any kind of descriptor.
+   */
+  constructor(descriptor?: AnyDescriptor<Value, Obj>) {
+    if (descriptor) {
+      descriptor.value
+        ? this.#data.set(descriptor, result => result)
+        : this.#accessor.set(descriptor, result => result);
+    }
+  }
 }
