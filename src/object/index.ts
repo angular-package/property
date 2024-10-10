@@ -1,3 +1,3 @@
-export * from './src/get-object.function';
-export * from './src/obj.class';
-export * from './src/objects.class';
+export * from './lib/get-object.function';
+export * from './lib/obj.class';
+export * from './lib/objects.class';

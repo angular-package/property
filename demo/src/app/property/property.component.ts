@@ -12,7 +12,7 @@ import { Obj, Objects } from '../@property/object';
 
 // Class.
 import { AccessorDescriptors } from '../@property/descriptor/lib/accessor-descriptors.class';
-import { ObjectsQuery } from '../@property/object/src/objects-query.class';
+import { ObjectsQuery } from '../@property/object/lib/objects-query.class';
 
 
 class TestClass {

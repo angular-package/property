@@ -1,5 +1,5 @@
 // Class.
-import { Obj } from "../src/obj.class";
+import { Obj } from "../lib/obj.class";
 /**
  * 
  */
