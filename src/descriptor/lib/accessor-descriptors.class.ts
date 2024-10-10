@@ -60,7 +60,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
     descriptor: ThisAccessorDescriptor<Value, Obj>,
     callback: ResultCallback = callbacks['accessor']
   ): descriptor is ThisAccessorDescriptor<Value, Obj> {
-    return callback('get' in descriptor || 'set' in descriptor, descriptor);
+    return callback(Obj.isObject(descriptor) && ('get' in descriptor || 'set' in descriptor), descriptor);
   }
 
   // Default configurable.

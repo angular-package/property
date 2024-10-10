@@ -60,7 +60,7 @@ export class DataDescriptors<Value> {
     descriptor: DataDescriptor<Value>,
     callback: ResultCallback = callbacks['data']
   ): descriptor is DataDescriptor<Value> {
-    return callback('value' in descriptor, descriptor);
+    return callback(Obj.isObject(descriptor) &&  'value' in descriptor, descriptor);
   }
 
   // Default configurable.
