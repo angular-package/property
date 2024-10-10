@@ -77,11 +77,10 @@ export {
     * [Interface](#descriptor-interface)
     * [Type](#descriptor-type)
   * [Descriptors](#descriptors)
+  * [Obj](#obj)
+  * [Objects](#objects)
   * [Property](#property)
   * [PropertyWrapper](#propertywrapper)
-  * [Object](#object)
-    * [Obj](#obj)
-    * [Objects](#objects)
 * [Git](#git)
   * [Commit](#commit)
   * [Versioning](#versioning)
@@ -1048,6 +1047,14 @@ class Descriptors<
 > { ... }
 ```
 
+### `Obj`
+
+Documentation is under construction [https://angular-package.gitbook.io/property/documentation/obj/overview](https://angular-package.gitbook.io/property/documentation/obj/overview).
+
+### `Objects`
+
+Documentation is under construction [https://angular-package.gitbook.io/property/documentation/objects/overview](https://angular-package.gitbook.io/property/documentation/objects/overview).
+
 ### `Property`
 
 Object to handle properties.
@@ -1166,6 +1173,10 @@ public static wrap<Obj extends object | Function, Names extends keyof Obj>(
   setterCallback?: SetterCallback<Obj, Names>
 ): PropertyWrapper<Obj, Names> { ... }
 ```
+
+### `PropertyWrapper`
+
+Documentation is under construction [https://angular-package.gitbook.io/property/documentation/propertywrapper](https://angular-package.gitbook.io/property/documentation/propertywrapper).
 
 ----
 
