@@ -43,7 +43,10 @@ export class Objects<
    * @angularpackage
    */
   constructor(objects: Objs) {
-    Object.entries(objects).forEach(([key, obj]) => Object.assign(this.objects, {[key]: new Obj(obj)}));
+    Object
+      .entries(objects)
+      .forEach(([key, obj]) => Object.assign(
+        this.objects, {[ key]: new Obj(obj) }));
   }
 
   /**
@@ -59,7 +62,9 @@ export class Objects<
   >({}: Partial<{
     connect: {
       [N in Name]: {
-        [K in Key]: Partial<{ [TN in ToName]: keyof Objs[TN] | (keyof Objs[TN])[] }>
+        [K in Key]: Partial<{
+          [TN in ToName]: keyof Objs[TN] | (keyof Objs[TN])[]
+        }>
       }
     },
 
@@ -74,11 +79,14 @@ export class Objects<
     },
 
     // Set.
-    // set: {
-    //   [N in Name]: {
-    //     [K in Key]: Objs[N][K]
-    //   }
-    // },
+    set: {
+      [N in Name]: {
+        [K in Key]: {
+          value: Objs[N][K],
+          callbackfn: (value: Objs[N][K]) => void
+        }
+      }
+    },
   }>) {
     // forEach
     if (arguments[0].forEach) {
@@ -93,15 +101,28 @@ export class Objects<
         .entries(arguments[0].get) as [Name, {
           [K in Key]: (value: Objs[Name][K]) => void
         }][])
-        .forEach(([name, keyCallbackFn]) => {
+        .forEach(([name, keyCallbackFn]) => 
           (Object
             .entries(keyCallbackFn) as [Key, (value: Objs[Name][Key]) => void][])
-            .forEach(([key, callbackfn]) => callbackfn(Objects.objects[name].get[key]));
-        });
+            .forEach(([key, callbackfn]) => callbackfn(Objects.objects[name].get[key]))
+        );
     }
 
     // Set.
-    // if (arguments[0].set) {}
+    if (arguments[0].set) {
+      (Object
+        .entries(arguments[0].set) as [Name, {
+          [K in Key]: Partial<{ value: Objs[Name][K], callbackfn: (value: Objs[Name][Key]) => void }>
+        }][])
+        .forEach(([name, keyToValue]) => 
+          (Object
+            .entries(keyToValue) as [Key, Partial< { value: Objs[Name][Key], callbackfn: (value: Objs[Name][Key]) => void }>][])
+            .forEach(([key, set]) => (
+              Object.assign(Objects.objects[name].get, {[key]: set.value}),
+              set.callbackfn && set.value && set.callbackfn(set.value)
+            ))
+        )
+    }
 
     // Connect.
     if (arguments[0].connect) {
@@ -109,15 +130,15 @@ export class Objects<
         .entries(arguments[0].connect) as [Name, {
           [K in Key]: Partial<{ [TN in ToName]: keyof Objs[TN] | (keyof Objs[TN])[] }>
         }][])
-        .forEach(([name, keyTo]) => {
+        .forEach(([name, keyTo]) => 
           (Object
             .entries(keyTo) as [Key, Partial<{ [TN in ToName]: keyof Objs[TN] | (keyof Objs[TN])[] }>][])
             .forEach(([key, to]) => {
               (Object
                 .entries(to) as [ToName, keyof Objs[ToName] | (keyof Objs[ToName])[]][])
                 .forEach(([toName, toKey]) => this.connect(name, key, [toName, toKey]));
-            });
-        });
+            })
+        );
     }
     return this;
   }
@@ -142,8 +163,8 @@ export class Objects<
     ...to: [toName: ToName, toKey: ToKey | ToKey[]][]
   ): this {
     (!Objects.objects) && (Objects.objects = this.objects);
-    to.forEach(([toName, toKey]) => {
-      (!Array.isArray(toKey)) && (toKey = [toKey]);
+    to.forEach(([toName, toKey]) => (
+      (!Array.isArray(toKey)) && (toKey = [toKey]),
       toKey.forEach(toKey => {
         (this.objects[toName] as unknown as ObjsContainer<Objs, ToName>)!
           .wrapProperty(
@@ -152,8 +173,8 @@ export class Objects<
             value => Object.assign(Objects.objects[name].get, {[key]: value})
           );
         this.#addConnection(toName, toKey, name, key);
-      });
-    });
+      })
+    ));
     return this;
   }
 
