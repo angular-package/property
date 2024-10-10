@@ -5,15 +5,20 @@ import { AppService } from '../app.service';
 import { Property } from '../@property/lib';
 
 // Descriptor.
-import { Descriptor } from '../@property/descriptor';
+import { DataDescriptors, Descriptor } from '../@property/descriptor';
 
 // Objects.
 import { Obj, Objects } from '../@property/object';
 
 // Class.
 import { AccessorDescriptors } from '../@property/descriptor/lib/accessor-descriptors.class';
+import { ObjectsQuery } from '../@property/object/src/objects-query.class';
 
-new Objects({});
+
+class TestClass {
+  testA = 1;
+  testB = 2;
+}
 
 @Component({
   selector: 'app-property',
@@ -30,19 +35,179 @@ export class PropertyComponent implements OnInit {
   public test = 37;
 
   constructor(public appService: AppService) {
-    this.obj();
+
+    console.log(Obj.isObject({
+      'configurable': false
+    }, 'configurable', 'enumerable', 'writable', 'value'));
+
+    // this.accessorDescriptors();
+    // this.dataDescriptors();
+    // this.descriptor();
+    // this.obj();
+    // this.objects();
+    // this.objectsQuery();
+    // this.property();
+    // this.propertyWrapper();
   }
 
   /**
    * Example usage of `AccessorDescriptors`.
    */
-  public accessor() {
+  public accessorDescriptors() {
+    // Define.
+    const descriptor1 = AccessorDescriptors.define<number, {test: number}>(
+      { configurable: false, enumerable: false, get(){
+        return this.test;
+      }, set(value: number){
+        this.test = value;
+      }}
+    );
+    console.log(`descriptor1`, descriptor1);
+
+    const descriptor2 = AccessorDescriptors.define(
+      {configurable: false, enumerable: false, error: false} as any,
+      (result, value) => (console.log(`accessor define:`, result, value), result)
+    );
+
+    // Guard.
+    const guard = AccessorDescriptors.guard(
+      descriptor1,
+      (result, value) => {
+        console.log(`guard: `, result, value);
+        return value;
+      });
+
+    // Create an instance.
+    const instance = new AccessorDescriptors<number, {test: number}>({ configurable: false, enumerable: false, get(){
+      return this.test;
+    }, set(value: number){
+      this.test = value;
+    }}, (result, value) => {
+      console.log(
+        result, // true
+        value //
+      );
+      return result;
+    });
+  
+    console.log(`instance.get`, instance.get);
+
+    // Instance set().
+    instance.set({
+      configurable: false,
+      enumerable: false,
+      get() {
+        return this.test;
+      },
+      set(value) {
+        this.test = value + 27;
+      },
+    });
+
   }
 
   /**
    * Example usage of `DataDescriptors`.
    */
-  public data() {
+  public dataDescriptors() {
+    // Define.
+    const descriptor1 = DataDescriptors.define<number>(
+      { configurable: false, enumerable: false, value: 27, writable: false}
+    );
+    console.log(`descriptor1`, descriptor1);
+
+    // const descriptor2 = DataDescriptors.define(
+    //   {configurable: false, enumerable: false, value: 'string'} as any,
+    //   (result, value) => (console.log(`data define:`, result, value), result)
+    // );
+
+    // Guard.
+    const guard = DataDescriptors.guard(
+      descriptor1,
+      (result, value) => {
+        console.log(`guard: `,
+          result, // true
+          value // { "configurable": false, "enumerable": false, "writable": false, "value": 27 }
+        );
+        return value;
+      });
+
+    // Create an instance.
+    const instance = new DataDescriptors<number>({
+      configurable: false,
+      enumerable: false,
+      value: 37,
+      writable: false
+    });
+  
+    console.log(`instance.get`, instance.get);
+
+    // Instance set().
+    instance.set({
+      configurable: false,
+      enumerable: false,
+      value: 47,
+      writable: false
+    });
+
+  }
+
+  /**
+   * 
+   */
+  public descriptor() {
+    // defineAccessor()
+    const descriptor1 = Descriptor.defineAccessor<number, {test: number}>(
+      {
+        configurable: false,
+        enumerable: false,
+        get(){
+          return this.test;
+        },
+        set(value: number){
+          this.test = value;
+      }},
+
+      // Callbackfn.
+      (result, value) => {
+        console.log(
+        result, // true
+        value //
+      );
+      return result;
+    });
+
+    console.log(`defineAccessor()`, descriptor1);
+
+    // defineData()
+    const descriptor2 = Descriptor.defineData<number>({
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: 27
+    });
+
+    console.log(`defineData()`, descriptor2);
+
+    // fromObject
+    const object = {a: 1, b: 2, c: 3};
+
+    const descriptor3 = Descriptor.fromObject(object);
+
+    console.log(`fromObject()`, descriptor3);
+
+    // // get
+    // console.log(`Descriptor.get()`, Descriptor.get(this, 'title'));
+    // console.log(`Descriptor.get()`, Descriptor.get(Object.create({a: 1, b: 2}) as {a: 1, b: 2}, 'a'));
+    // // fromProperty
+    // console.log(`Descriptor.fromProperty()`, Descriptor.fromProperty(this, 'active'));
+    // console.log(`Descriptor.fromProperty()`, Descriptor.fromProperty(Object.create({a: 1, b: 2}) as {a: 1, b: 2}, 'a'));
+
+    // // getAll
+    // console.log(`Descriptor.getAll()`, Descriptor.getAll(this));
+
+    // // pick
+    // console.log(`Descriptor.pick()`, Descriptor.pick(this, 'title', 'age'));
   }
 
   /**
@@ -114,42 +279,6 @@ export class PropertyComponent implements OnInit {
    * Example usage of `Property`.
    */
   public property() {
-  }
-
-  public object() {
-    // const o = new Objects({
-    //   math: {a: 1, b: 2},
-    //   calc: {c: 3, d: 4}
-    // });
-    // o.setProperty('math', 'a', 2);
-    // o.getProperty('math', 'b');
-    // console.log(o.getObj('calc').get?.d);
-    
-  }
-
-  ngOnInit(): void {
-    // console.log(`AccessorDescriptors.define()`, AccessorDescriptors.define(
-    //   {configurable: false, enumerable: false, error: false} as any,
-    //   (result, value) => (console.log(`accessor define:`, result, value), result)
-    // ));
-
-    // // console.log(`AccessorDescriptors.define()`, AccessorDescriptors.define([1, 2, 3] as any));
-
-    // // get
-    // console.log(`Descriptor.get()`, Descriptor.get(this, 'title'));
-    // console.log(`Descriptor.get()`, Descriptor.get(Object.create({a: 1, b: 2}) as {a: 1, b: 2}, 'a'));
-    // // fromProperty
-    // console.log(`Descriptor.fromProperty()`, Descriptor.fromProperty(this, 'active'));
-    // console.log(`Descriptor.fromProperty()`, Descriptor.fromProperty(Object.create({a: 1, b: 2}) as {a: 1, b: 2}, 'a'));
-
-    // // getAll
-    // console.log(`Descriptor.getAll()`, Descriptor.getAll(this));
-    // // fromObject
-    // console.log(`Descriptor.getAll()`, Descriptor.fromObject(this));
-
-    // // pick
-    // console.log(`Descriptor.pick()`, Descriptor.pick(this, 'title', 'age'));
-
     // // define()
     // console.log(`Property.define()`, );
 
@@ -177,7 +306,129 @@ export class PropertyComponent implements OnInit {
     // const pick = Property.pick(this, 'title', 'active');
 
     // console.log(pick);
+  }
 
+  /**
+   * 
+   */
+  public objects() {
+    const objects = new Objects({
+      math: {a: 1, b: 2},
+      calc: {c: 3, d: 4},
+      test: new TestClass(),
+    });
+
+    // Connect object property to another object property/properties.
+    // o.connect('math', 'a', ['test', ['testA', 'testB']]);
+
+    // o.connect('math', 'a', 'test', ['testA', 'testB']);
+
+    objects.setProperty('math', 'a', 2); // 2
+    objects.getProperty('calc', 'd'); // 2
+
+    // // query Connect
+    // objects.query({connect: {'math': {'a': { 'test': ['testB', 'testA'] }}}});
+
+    // // query Get
+    // objects.query({get: {'math': {'a': value => console.log(`value: `, value) }}});
+
+    // // query Set
+    // objects.query({
+    //   set: {
+    //     calc: {
+    //       c: {value: 3, callbackfn: value => console.log(`set c: `, value)},
+    //       d: {value: 5, callbackfn: value => console.log(`set d: `, value)}
+    //     }
+    //   }
+    // })
+
+    // // query forEach
+    // objects.query({
+    //   forEach: ((name, objects) => {
+    //     if (name === 'calc') {
+    //       const a = objects[name];
+    //       console.log(
+    //         `obj`,
+    //         objects[name],
+    //         name
+    //       );
+    //     }
+    //   })
+    // });
+
+    console.log(objects.getObj('calc').get?.d); // 2
+    console.log(objects.getObj('test').get?.testB); // 2
+    console.log(objects.getObj('test').get?.testA); // 2
+
+    objects.setProperty('math', 'a', 27);
+
+    console.log(objects.getObj('test').get?.testB); // 27
+    console.log(objects.getObj('test').get?.testA); // 27
+  }
+
+  /**
+   * 
+   */
+  public objectsQuery() {
+
+    AccessorDescriptors.guard({
+      configurable: false,
+      enumerable: false,
+      get(){
+        return this.test;
+      },
+      set(value: number){
+        this.test = value;
+      }
+    });
+
+    const objects = new ObjectsQuery({
+      math: {a: 1, b: 2},
+      calc: {c: 3, d: 4},
+      test: new TestClass(),
+    });
+
+    // query Connect
+    objects.query({connect: {'math': {'a': { 'test': ['testB', 'testA'] }}}});
+
+    // query Get
+    objects.query({get: {'math': {'a': value => console.log(`value: `, value) }}});
+
+    // query Set
+    objects.query({
+      set: {
+        calc: {
+          c: {value: 3, callbackfn: value => console.log(`set c: `, value)},
+          d: {value: 5, callbackfn: value => console.log(`set d: `, value)}
+        }
+      }
+    })
+
+    // query forEach
+    objects.query({
+      forEach: ((name, objects) => {
+        if (name === 'calc') {
+          const a = objects[name];
+          console.log(
+            `obj`,
+            objects[name],
+            name
+          );
+        }
+      })
+    });
+
+    console.log(objects.getObj('calc').get?.d); // 2
+    console.log(objects.getObj('test').get?.testB); // 2
+    console.log(objects.getObj('test').get?.testA); // 2
+
+    objects.setProperty('math', 'a', 27);
+
+    console.log(objects.getObj('test').get?.testB); // 27
+    console.log(objects.getObj('test').get?.testA); // 27
+  }
+
+  ngOnInit(): void {
     // // const descriptor = new Descriptor({configurable: true, enumerable: false, value: 27});
     // // console.log(`descriptor`, descriptor);
     // // console.log(`get.accessor`, descriptor.get.accessor);

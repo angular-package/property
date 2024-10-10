@@ -4,7 +4,7 @@
 export {
   // Class.
   Property,
-  WrapProperty,
+  PropertyWrapper,
 } from './lib';
 
 export {
@@ -20,6 +20,11 @@ export {
   // Type.
   ThisAccessorDescriptor,
 } from './descriptor';
+
+export {
+  Obj,
+  Objects
+} from './object';
 
 export {
   GetterCallback,
