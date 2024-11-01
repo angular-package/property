@@ -3,19 +3,15 @@ import { GetterCallback, PrototypeOf, SetterCallback } from '../type';
 /**
  * Creates an instance of `WrapProperty`.
  * @class
- * @classdesc Wrap and unwrap properties in `object`.
+ * @classdesc Wrap property in `object`.
  */
 export class WrapProperty<
   Obj extends object | (new () => any),
   T = (Obj extends new () => any ? PrototypeOf<Obj> : Obj),
   Name extends keyof T = keyof T,
 > {
-
   public static descriptorIndicator = '$$';
   public static privateIndicator = '$';
-
-  #descriptor;
-  #private;
 
   constructor(
     object: Obj,
@@ -25,8 +21,6 @@ export class WrapProperty<
     configurable = false,
     enumerable = true,
   ) {
-    this.#descriptor = `${WrapProperty.descriptorIndicator}${String(name)}`;
-    this.#private = `${WrapProperty.privateIndicator}${String(name)}`;
     this
       .#definePrivate(object, name)
       .#storeDescriptor(object, name)
@@ -36,7 +30,7 @@ export class WrapProperty<
   #definePrivate(object: Obj, name: Name) {
     Object.defineProperty(
       typeof object === 'function' ? (object as new () => any).prototype : (object as any).__proto__,
-      this.#private, {
+      `${WrapProperty.privateIndicator}${String(name)}`, {
         configurable: false,
         enumerable: false,
         value: this.#getProto(object)[name],
@@ -96,7 +90,7 @@ export class WrapProperty<
   #storeDescriptor(object: Obj, name: Name) {
     Object.defineProperty(
       typeof object === 'function' ? (object as new () => any).prototype : (object as any).__proto__,
-      this.#descriptor, {
+      `${WrapProperty.descriptorIndicator}${String(name)}`, {
         value: Object.getOwnPropertyDescriptor(
           typeof object === "function" ? (object as new () => any).prototype : object,
           name
