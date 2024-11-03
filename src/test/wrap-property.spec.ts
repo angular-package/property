@@ -1,119 +1,133 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { PropertyWrapper } from '../lib/property-wrapper.class';
+import { PropertyWrapper, WrapProperty } from '../lib';
+import { GetterCallback, PrototypeOf, SetterCallback } from '../type';
 
-@Component({
-  selector: 'lib-selector',
-})
-@ChangeDetection('firstname', 'surname')
-class ExampleComponent {
-  public set surname(surname: string | undefined) {
-    this.#surname = surname;
+
+/**
+ * Check.
+ */
+export class ClassB {
+  public firstname = "Name";
+  public surname = "SurName";
+
+  #age = 27;
+  public set age(value: number) {
+    this.#age = value;
   }
-  public get surname(): string | undefined {
-    return this.#surname;
+  public get age() {
+    return this.#age;
   }
 
-  public firstname = 'my name';
-
-  public age = 35;
-
-  #surname?: string;
-
-  public service = {
-    firstname: '',
-    surname: '',
-  };
-
-  constructor() {}
-
-  @ExampleMethodDecorator('firstname')
-  public method(firstname: string, surname: string): string {
-    this.firstname = firstname;
-    this.surname = surname;
-    return this.firstname;
+  methodA() {
+    return "methodA";
   }
 }
 
-// const a = new ExampleComponent();
+// Wrap property in class.
+// new WrapProperty(ClassB, "firstname", {
+//   set(value: string) {
+//     console.log(`set`, value);
+//   },
+//   beforeGet(key, instance) {
+//     (this as any)[`$${key}`];
+//     console.log(`instance`, key, this, instance);
+//   },
+// });
 
-// a.age = 123;
-// console.log(a.age);
-// console.log(a.age);
-// console.log(a.age);
-
-// a.method('a', 'b');
-
-// new WrapProperty(a, 'age', 'firstname')
-//   .wrap(a, 'age', (property, instance) => {
-//     console.log(`getter: `, property, instance);
-//   }, (value, oldValue, instance) => {
-//     console.log(`setter`, value, oldValue, instance);
-//   });
-
-
-
-
-// a.firstname = 'new name';
-
-// a.firstname = 'second name';
-
-// console.log(a);
-
-// console.log(getDescriptor(a, 'age'));
-
-// console.log(getDescriptor(a, 'surname'));
-
-// console.log(getDescriptors(a));
+// new WrapProperty(ClassB, "firstname", {
+//   set(value: string) {
+//     console.log(`set 1`, value);
+//   },
+//   beforeGet(key, instance) {
+//     (this as any)[`$${key}`];
+//     console.log(`instance 1`, key, this, instance);
+//   },
+// });
 
 
-export function ChangeDetection(
-  ...properties: PropertyKey[]
-): ClassDecorator {
-  return <TFunction extends Function>(target: TFunction) => {
-    // console.log(target);
+const classB = new ClassB();
 
-    // new WrapProperty(target.prototype, 'surname',  'age' as any, 'firstname')
-    // .wrap(target, 'age', (property, instance) => {
-    //   console.log(`getter: `, property, instance);
-    // }, (value, oldValue, instance) => {
-    //   console.log(`setter`, value, oldValue, instance);
-    // });
+// PropertyWrapper
+// new PropertyWrapper(classB, "firstname").wrap(
+//   "firstname",
+//   function(key, instance) {
+//     console.log(`instance`, key, this, instance);
+//     return this.age as any;
+//   }, function(value){ 
+//     console.log(`set value:`, this);
+//   }
+// );
 
-    // const prop = 'firstname';
-    // new WrapProperty().wrap(
-    //   target,
-    //   prop as any,
-    //   (key, instance) => {
-    //     ((instance as any).cd as ChangeDetectorRef).detectChanges();
-    //   },
-    //   (value) => {
-    //   }
-    // );
+// new PropertyWrapper(classB, "firstname").wrap(
+//   "firstname",
+//   function(key, instance) {
+//     console.log(`1 instance`, key, this, instance);
+//     return this.age as any;
+//   }, function(value){ 
+//     console.log(`1 set value:`, this);
+//   }
+// );
 
-    return target;
-  };
-}
+// Wrap property in class instance.
+new WrapProperty(classB, "firstname", {
+  set(value) {
+    console.log(`1. set: `, value);
+  },
+  // beforeGet(key, instance) {
+  //   console.log(`before instance`, this, instance);
+  //   return null as any;
+  // },
+  get(key, instance) {
+    console.log(`1. get: '17' `, this, instance);
+    return '17';
+  }
+});
 
+new WrapProperty(classB, "firstname", {
+  set(value) {
+    console.log(`2. set: `, value);
+  },
+  // beforeGet(key, instance) {
+  //   console.log(`before 1 instance`, this, instance);
+  //   return null as any;
+  // },
+  get(key, instance) {
+    console.log(`2. get: '27'`, this, instance);
+    return '27';
+  }
+});
 
-export function ExampleMethodDecorator(
-  param: string | Array<string>
-): MethodDecorator {
-  return <T>(
-    target: Object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<T>
-  ): TypedPropertyDescriptor<T> | void => {
-    const originalMethod = descriptor.value;
+new WrapProperty(classB, "firstname", {
+  set(value) {
+    console.log(`3. set:`, value);
+  },
+  beforeGet(key, previousGet, value, instance) {
+    console.log(`3. beforeGet: `, previousGet, value, key, this, instance);
+    return previousGet;
+  },
+  get(key, instance) {
+    console.log(`3. get: '37'`, this, instance);
+    // return (this as any)[`$${key}`];
+    return "aaaaa";
+  }
+});
 
-    // console.log(target, propertyKey, descriptor);
+new WrapProperty(classB, "firstname", {
+  set(value) {
+    console.log(`4. set:`, value);
+  },
+  beforeGet(key, previousGet, value, instance) {
+    console.log(`4. beforeGet:`, previousGet, value, this, instance);
+    return value;
+  },
+  get(key, instance) {
+    console.log(`4. get: '47' `, this, instance);
+    return '47';
+  }
+});
 
-    // descriptor.value = function (this: any): void {
-    //   if (typeof param === 'string') {
-    //     param = [param];
-    //   }
-    //   return (originalMethod as any).apply(this, arguments);
-    // } as any;
+// (classB as any).__proto__.a$firstname = false;
+classB.firstname = "test";
+// classB.firstname = "test1";
 
-    return descriptor;
-  };
-}
+console.log(classB);
+
