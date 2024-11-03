@@ -3,7 +3,7 @@ import { errorCallback } from './error-callback.function';
 // Interface.
 import { Callbacks } from '../interface/callbacks.interface';
 /**
- * Object with all necessary callbacks for the property package.
+ * @description Object with all necessary callbacks for the property package.
  */
 export const callbacks: Callbacks = {
   accessor: errorCallback(`Accessor descriptor must be an \`ThisAccessorDescriptor<Value, Obj>\` type`),
