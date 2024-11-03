@@ -1,13 +1,11 @@
 // Class.
 import { Obj } from '../../object';
 import { Property } from '../../lib';
-
 // Callback.
 import { callbacks } from '../../callback/src/callback.object';
-
 // Type.
-import { ResultCallback } from '../../type/result-callback.type';
-import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
+import { ResultCallback } from '../../type';
+import { ThisAccessorDescriptor } from '../type';
 
 /**
  * Strictly defines, sets, and stores privately single property accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type.
@@ -23,7 +21,7 @@ import { ThisAccessorDescriptor } from '../type/this-accessor-descriptor.type';
  */
 export class AccessorDescriptors<Value, Obj extends object> {
   /**
-   * Returns strictly defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type on `get` or `set` property detected.
+   * @description Returns strictly defined accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type on `get` or `set` property detected.
    * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to define with the default values of the
    * `CommonDescriptor`.
    * @param callback A `ResultCallback` function to handle the result of the check whether the `descriptor` is an `object`
@@ -48,7 +46,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
   }
 
   /**
-   * Guards the `descriptor` to be an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
+   * @description Guards the `descriptor` to be an `object` of a `ThisAccessorDescriptor<Value, Obj>` type.
    * @param descriptor The object of a `ThisAccessorDescriptor<Value, Obj>` type to guard.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the descriptor is an `object`
    * containing the `get` or `set` property.
@@ -70,7 +68,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
   public static enumerable = true;
 
   /**
-   * Get privately stored accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type defined by the `set()` method.
+   * @description Get privately stored accessor descriptor of a `ThisAccessorDescriptor<Value, Obj>` type defined by the `set()` method.
    */
   public get get(): ThisAccessorDescriptor<Value, Obj> {
     return this.#descriptor;
@@ -94,7 +92,7 @@ export class AccessorDescriptors<Value, Obj extends object> {
   }
 
   /**
-   * Strictly sets with the last saved descriptor values, and stores privately single accessor descriptor.
+   * @description Strictly sets with the last saved descriptor values, and stores privately single accessor descriptor.
    * Strictly means, method picks `configurable`, `enumerable`, `get`, `set` properties from the `descriptor` to set.
    * @param descriptor An `object` of a `ThisAccessorDescriptor<Value, Obj>` type, to set with the last saved descriptor.
    * @param callback An optional `ResultCallback` function to handle the result of the check whether or not the descriptor is an `object`

@@ -4,9 +4,9 @@ import { Property } from '../../lib';
 // Callback.
 import { callbacks } from '../../callback/src/callback.object';
 // Interface.
-import { DataDescriptor } from '../interface/data-descriptor.interface';
+import { DataDescriptor } from '../interface';
 // Type.
-import { ResultCallback } from '../../type/result-callback.type';
+import { ResultCallback } from '../../type';
 
 /**
  * Strictly defines, sets, and stores privately property data descriptor of a `DataDescriptor<Value>` interface.
@@ -48,7 +48,7 @@ export class DataDescriptors<Value> {
   }
 
   /**
-   * Guards the `descriptor` to be an `object` of a `DataDescriptor<Value>` interface.
+   * @description Guards the `descriptor` to be an `object` of a `DataDescriptor<Value>` interface.
    * @param descriptor Object of a `DataDescriptor<Value>` interface to guard.
    * @param callback A `ResultCallback` function to handle the result of the check whether or not the `descriptor`
    * is an `object` with the `writable` or `value` property, by default it uses `dataCallback()` function.
@@ -73,7 +73,7 @@ export class DataDescriptors<Value> {
   public static writable = true;
 
   /**
-   * Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
+   * @description Get privately stored data descriptor of a `DataDescriptor<Value>` interface defined by the `set()` method.
    */
   public get get(): DataDescriptor<Value> {
     return this.#descriptor;
@@ -90,7 +90,7 @@ export class DataDescriptors<Value> {
   };
 
   /**
-   * Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
+   * @description Creates instance, and optionally set data descriptor of a `DataDescriptor<Value>` interface.
    * @param descriptor An optional `object` of a `DataDescriptor<Value>` interface to initially set.
    */
   constructor(
@@ -101,7 +101,7 @@ export class DataDescriptors<Value> {
   }
 
   /**
-   * Strictly sets with the last saved descriptor values, and stores privately data descriptor of a `DataDescriptor<Value>`
+   * @description Strictly sets with the last saved descriptor values, and stores privately data descriptor of a `DataDescriptor<Value>`
    * interface. Strictly means, parameter `descriptor` is type guarded and method picks `configurable`, `enumerable`, `writable`, `value`
    * properties from the provided `descriptor` object.
    * @param descriptor An `object` of a `DataDescriptor<Value>` interface, to set with the last saved descriptor.
