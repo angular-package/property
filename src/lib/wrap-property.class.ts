@@ -1,6 +1,6 @@
 // Type.
 import { PropDescriptor } from '../descriptor/lib/prop-descriptor.class';
-import { BeforeGetCallback, GetterCallback, PrototypeOf, SetterCallback } from '../type';
+import { GetterCallback, PrototypeOf, SetterCallback } from '../type';
 /**
  * Creates an instance of `WrapProperty`.
  * @class
@@ -11,9 +11,9 @@ export class WrapProperty<
   T = (Obj extends new () => any ? PrototypeOf<Obj> : Obj),
   Name extends keyof T = keyof T,
 > {
-  public static activeIndicator = 'a$';
-  public static descriptorIndicator = 'd$';
-  public static privateIndicator = '$';
+  public static privateIndicator = '_';
+  public static activeIndicator = `${WrapProperty.privateIndicator}a`;
+  public static descriptorIndicator = `${WrapProperty.privateIndicator}d`;
 
   #indicator;
 
@@ -21,7 +21,6 @@ export class WrapProperty<
     object: Obj,
     name: Name,
     callback: {
-      beforeGet?: BeforeGetCallback<T, Name>,
       get?: GetterCallback<T, Name>,
       set?: SetterCallback<T, Name>,
     },
@@ -35,7 +34,6 @@ export class WrapProperty<
   ) {
     this.#indicator = indicator;
     this
-      // .#defineIndicator(object, indicator)
       .#defineActive(object, name)
       .#definePrivate(object, name)
       .#defineDescriptor(object, name)
@@ -44,7 +42,6 @@ export class WrapProperty<
         name,
         callback.get,
         callback.set,
-        callback.beforeGet,
         configurable,
         enumerable
       )
@@ -81,16 +78,15 @@ export class WrapProperty<
 
   // Original descriptor.
   #defineDescriptor(object: Obj, name: Name) {
-    const obj = Object.getPrototypeOf(object);
     if (this.getPropertyName('descriptor', name) in object) {
       this.getPropertyDescriptor(object, name).add(object, name);
     } else {
       Object.defineProperty(
-        obj,
+        Object.getPrototypeOf(object),
         this.getPropertyName('descriptor', name), {
           configurable: false,
           enumerable: false,
-          value: new PropDescriptor(obj, name),
+          value: new PropDescriptor(object, name),
           writable: true
         }
       );  
@@ -101,7 +97,7 @@ export class WrapProperty<
   // Defines private property.
   #definePrivate(object: Obj, name: Name) {
     const obj = Object.getPrototypeOf(object);
-    if (this.getPropertyName('private', name) in obj) {
+    if (this.getPropertyName('private', name) in object) {
       Object.assign(obj, { [this.getPropertyName('private', name)]: obj[name] });
     } else {
       Object.defineProperty(
@@ -109,11 +105,11 @@ export class WrapProperty<
         this.getPropertyName('private', name), {
           configurable: false,
           enumerable: false,
-          value: obj[name],
+          value: (typeof object === 'function' ? Object.getPrototypeOf(object) : object)[name],
           writable: true
         }
       );  
-    }
+    }  
     return this;
   }
 
@@ -122,13 +118,12 @@ export class WrapProperty<
     name: Name,
     getterCallbackFn?: GetterCallback<T, Name>,
     setterCallbackFn?: SetterCallback<T, Name>,
-    beforeGetCallbackFn?: BeforeGetCallback<T, Name>,
-    // beforeGetCallbackFn?: BeforeSetCallback<T, Name>,
     configurable = true,
     enumerable = false,
   ) {
     const t = this;
-    const descriptorId = this.getPropertyDescriptor(typeof object === 'function' ? Object.getPrototypeOf(object) : object, name).size - 1;
+    // TODO: Check.
+    const descriptorId = this.getPropertyDescriptor(object, name).size - 1;
     Object.defineProperty(
       typeof object === 'function' ? Object.getPrototypeOf(object) : object,
       name, {
@@ -136,18 +131,18 @@ export class WrapProperty<
         enumerable,
         get(): T[Name] {
           // perform original getter.
-          const previousGet = (this[t.getPropertyName('descriptor', name)] as PropDescriptor<Obj>)
-            .get(descriptorId)
-            ?.get
-            ?.apply(this, arguments as any);
+          const propDescriptor = (this[t.getPropertyName('descriptor', name)] as PropDescriptor<Obj>);
+          const descriptor = propDescriptor.get(descriptorId);
+          const previousDescriptorValue = descriptor
+            ? 'value' in descriptor
+              ? descriptor.value
+              : descriptor.get?.apply(this, arguments as any)
+            : undefined;
 
           // Use custom getter.
           let value = typeof getterCallbackFn === "function" && this[t.getPropertyName('active', name)]
-            ? getterCallbackFn.apply(this, [name, this]) 
+            ? getterCallbackFn.apply(this, [name, previousDescriptorValue, this[t.getPropertyName('private', name)], this]) 
             : this[t.getPropertyName('private', name)];
-
-          // beforeGet callback
-          typeof beforeGetCallbackFn === "function" && (value = beforeGetCallbackFn.apply(this, [name, previousGet, value, this]));
 
           return value;
         },
@@ -160,13 +155,13 @@ export class WrapProperty<
             .get(descriptorId)
             ?.set
             ?.apply(this, arguments as any);
-  
-          // Set value in the private property.
-          Object.getPrototypeOf(this)[t.getPropertyName('private', name)] = value;
-  
+    
           // Use custom setter.
           typeof setterCallbackFn === "function" && this[t.getPropertyName('active', name)] &&
             setterCallbackFn.apply(this, [value, previousValue, name, this]);
+
+          // Set value in the private property.
+          Object.getPrototypeOf(this)[t.getPropertyName('private', name)] = value;
         }
       }
     );  
